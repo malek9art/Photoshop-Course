@@ -19,6 +19,9 @@ export function QuizPlayer({ code }: { code: string }) {
   const [result, setResult] = useState<{ score: number; passed: boolean } | null>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [attemptsLeft, setAttemptsLeft] = useState<number | null>(null);
+  const [cooldownUntil, setCooldownUntil] = useState<string | null>(null);
+  const [bestScore, setBestScore] = useState<number | null>(null);
   const startedRef = useRef(false);
   const lastGradeRef = useRef<{ score: number; passed: boolean } | null>(null);
 
@@ -31,6 +34,9 @@ export function QuizPlayer({ code }: { code: string }) {
         setMeta({ code: data.code, title: data.title, config: data.config });
         setItems(data.items);
         setItemIds(data.items.map((i: QuizItem) => i.id));
+        setAttemptsLeft(data.attemptsLeft ?? null);
+        setCooldownUntil(data.cooldownUntil ?? null);
+        setBestScore(data.bestScore ?? null);
       })
       .catch(() => setError("تعذر تحميل الاختبار. تأكد من وجود ملف الاختبار."));
   }, [code]);
@@ -45,11 +51,18 @@ export function QuizPlayer({ code }: { code: string }) {
         body: JSON.stringify({ itemIds, answers: [...answers, chosen] }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error);
+      if (!res.ok) {
+        if (res.status === 429) setError("فترة التهدئة سارية بين المحاولات (24 ساعة — DOC-08 §5).");
+        else if (res.status === 403) setError("استنفدت محاولاتك الثلاث لهذا الاختبار (DOC-08 §5).");
+        else setError(data.error ?? "حدث خطأ أثناء التصحيح.");
+        return;
+      }
       lastGradeRef.current = { score: data.score, passed: data.passed };
       const last = data.results[data.results.length - 1];
       setFeedback(last);
       setAnswers((prev) => [...prev, chosen]);
+      setAttemptsLeft(data.attemptsLeft ?? attemptsLeft);
+      setBestScore(data.bestScore ?? bestScore);
     } finally {
       setBusy(false);
     }
@@ -72,6 +85,26 @@ export function QuizPlayer({ code }: { code: string }) {
   if (error) return <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>;
   if (!meta || items.length === 0) {
     return <p className="text-sm text-neutral-500">جارٍ تحميل الاختبار…</p>;
+  }
+  // DOC-08 §5: block when attempts exhausted or cooldown active (logged-in users).
+  if (attemptsLeft === 0 || cooldownUntil) {
+    return (
+      <div className="card mx-auto max-w-md p-8 text-center">
+        <p className="text-4xl" aria-hidden="true">⏳</p>
+        <h2 className="mt-3 text-lg font-bold text-neutral-900">الاختبار غير متاح حاليًا</h2>
+        {cooldownUntil ? (
+          <p className="mt-2 text-sm text-neutral-600">
+            فترة التهدئة بين المحاولات سارية حتى {new Date(cooldownUntil).toLocaleString("ar-SA")} — أعد المحاولة بعدها (24 ساعة — DOC-08 §5).
+          </p>
+        ) : (
+          <p className="mt-2 text-sm text-neutral-600">استنفدت المحاولات الثلاث المسموحة لهذا الاختبار (DOC-08 §5).</p>
+        )}
+        {bestScore !== null && (
+          <p className="mt-2 text-xs text-neutral-500">أفضل نتيجة مسجلة: {bestScore}%</p>
+        )}
+        <button type="button" onClick={() => router.push("/catalog")} className="btn-primary mt-6">العودة إلى المكتبة</button>
+      </div>
+    );
   }
   if (result) {
     return (
@@ -97,6 +130,8 @@ export function QuizPlayer({ code }: { code: string }) {
         <h1 className="text-xl font-extrabold text-neutral-900">{meta.title}</h1>
         <p className="mt-1 text-xs text-neutral-500">
           السؤال {idx + 1} من {items.length} · نسبة النجاح {meta.config.passPct}%
+          {attemptsLeft !== null && ` · المحاولات المتبقية: ${attemptsLeft}/3`}
+          {bestScore !== null && bestScore > 0 && ` · أفضل نتيجة: ${bestScore}%`}
         </p>
         <div className="mt-3 flex gap-1" aria-hidden="true">
           {items.map((_, i) => (

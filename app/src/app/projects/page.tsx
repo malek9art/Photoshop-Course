@@ -30,7 +30,8 @@ function listProjects(): ProjectDoc[] {
   return out.sort();
 }
 
-export default async function ProjectsPage() {
+export default async function ProjectsPage({ searchParams }: { searchParams: Promise<{ error?: string; submitted?: string }> }) {
+  const { error, submitted } = await searchParams;
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/projects");
   const projects = listProjects();
@@ -43,8 +44,24 @@ export default async function ProjectsPage() {
     <div className="space-y-8">
       <header>
         <h1 className="text-2xl font-extrabold text-neutral-900">المشاريع</h1>
-        <p className="mt-1 text-sm text-neutral-500">مشاريع المراحل — طبّق ما تعلمته وقدّم عملك للمراجعة.</p>
+        <p className="mt-1 text-sm text-neutral-500">مشاريع المراحل — طبّق ما تعلمته وقدّم عملك للمراجعة (محاولتان كحد أقصى، بفاصل 3 أيام — DOC-08 §5).</p>
       </header>
+
+      {error === "max-submissions" && (
+        <p role="alert" className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          بلغت الحد الأقصى لتسليمات هذا المشروع (محاولتان — DOC-08 §5).
+        </p>
+      )}
+      {error === "cooldown" && (
+        <p role="alert" className="rounded-lg bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          فترة التهدئة بين تسليمات المشروع سارية (3 أيام — DOC-08 §5). أعد المحاولة لاحقًا.
+        </p>
+      )}
+      {submitted === "1" && (
+        <p role="status" className="rounded-lg bg-primary-50 px-4 py-3 text-sm text-primary-800">
+          تم استلام تسليمك — سيُراجع وفق الروبرك خلال 72 ساعة (DOC-08 §8).
+        </p>
+      )}
 
       {mine.length > 0 && (
         <section aria-label="تسليماتي">
@@ -63,14 +80,28 @@ export default async function ProjectsPage() {
         </section>
       )}
 
-      {projects.map((p) => (
+      {projects.map((p) => {
+        const submittedCount = mine.filter((s) => s.project_code === p.code).length;
+        const remaining = 2 - submittedCount; // DOC-08 §5: 2 submissions max
+        const exhausted = remaining <= 0;
+        return (
         <section key={p.code} aria-label={p.title} className="scroll-mt-24">
           <Card className="p-6 md:p-8">
             <div className="mb-2 flex items-center gap-2">
               <span className="text-xs font-bold text-primary-700">{p.code}</span>
+              {submittedCount > 0 && (
+                <span className={`badge ${exhausted ? "badge-amber" : "badge-gray"}`}>
+                  التسليمات: {submittedCount}/2
+                </span>
+              )}
             </div>
             <Markdown>{p.markdown}</Markdown>
 
+            {exhausted ? (
+              <p className="mt-6 rounded-lg border border-dashed border-amber-300 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+                بلغت الحد الأقصى لتسليمات هذا المشروع (محاولتان — DOC-08 §5).
+              </p>
+            ) : (
             <form method="post" action="/api/projects" className="mt-6 rounded-lg border border-dashed border-neutral-300 bg-neutral-50 p-4">
               <input type="hidden" name="project_code" value={p.code} />
               <label htmlFor={`title-${p.code}`} className="label">عنوان التسليم</label>
@@ -79,9 +110,11 @@ export default async function ProjectsPage() {
               <textarea id={`note-${p.code}`} name="note" rows={2} className="input" placeholder="وصف مختصر لما أنجزته…" />
               <button type="submit" className="btn-primary mt-4">تسليم المشروع</button>
             </form>
+            )}
           </Card>
         </section>
-      ))}
+        );
+      })}
     </div>
   );
 }

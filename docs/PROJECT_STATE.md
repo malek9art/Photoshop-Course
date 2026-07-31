@@ -7,7 +7,7 @@
 | **Title** | Project State |
 | **Purpose** | The single "where are we right now?" document. It holds the current phase, milestone/task/decision/risk snapshots, the state-update protocol every agent must follow after each task, and the precise next actions before Phase 1 begins. |
 | **Owner** | Project Manager (role) |
-| **Version** | 1.3.3 |
+| **Version** | 1.3.4 |
 | **Status** | Active |
 | **Dependencies** | DOC-09 (roadmap), DOC-11 (tasks), DOC-14 (decisions), DOC-15 (risks), DOC-18 (manifest), DOC-13 (changelog) |
 | **Last Updated** | 2026-07-31 |
@@ -130,6 +130,7 @@ PROJECT_STATE exists so that any agent can answer in under two minutes: *what ph
 | B-05 | Projects & certificates (rubric grading UI, certificate records) | ✅ Done (2026-08-01) — submissions + issuance live; rubric grading UI pending B-08 |
 | B-06 | Admin dashboard (content/curriculum/users/analytics) | ✅ Done (2026-08-01) — stats/users/attempts/submissions/certificate issuance |
 | B-07 | Database consolidation + remaining modules until complete | ✅ Done (2026-08-01) — exams (AT-06, 30 items/75%/2 attempts/7d cooldown), rubric grading (AT-05, 4 criteria), public verification (SCR-05), revocation (SCR-25), full cert gating (DOC-08 §7.1) |
+| B-08 | Assessment retake enforcement (DOC-08 §5) | ✅ Done (2026-08-01) — module quizzes: 3 attempts / 24h cooldown / best score / pool refresh; projects: 2 submissions / 3-day cooldown |
 
 The next agent must:
 1. **Read**: AGENTS.md → MASTER_INDEX → PROJECT_STATE → POLICY_LOCK → AGENT_STARTUP_CHECKLIST → DOC-02 (architecture) → DOC-04 (UI blueprint) → DOC-05 (database blueprint) → DOC-06 (design system).
@@ -183,6 +184,7 @@ The next agent must:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.3.4 | 2026-08-01 | AGT-003 | Batch B-08 completed (CHG-009): retake enforcement per DOC-08 §5 (quizzes 3×/24h, projects 2×/3d). |
 | 1.3.3 | 2026-08-01 | AGT-003 | Batch B-07 completed (CHG-008): stage exams (AT-06), rubric grading (AT-05), public verification (SCR-05), revocation (SCR-25), full cert gating (DOC-08 §7.1). |
 | 1.3.2 | 2026-08-01 | AGT-003 | Batches B-04…B-06 completed (CHG-007): quiz system, projects & certificates, admin dashboard. B-07 in progress. |
 | 1.3.1 | 2026-08-01 | AGT-003 | Batches B-01…B-03 completed (CHG-006): first runnable slice — structure, RTL UI, navigation, auth, lesson player. |

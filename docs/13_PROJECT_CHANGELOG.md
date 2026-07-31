@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.7 |
+| **Version** | 1.0.8 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-07-31 |
@@ -139,6 +139,7 @@ Each entry uses this exact structure:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.8 | 2026-08-01 | AGT-003 | Batch B-08 recorded (CHG-009): retake enforcement per DOC-08 §5 (quizzes 3×/24h, projects 2×/3d). |
 | 1.0.7 | 2026-08-01 | AGT-003 | Batch B-07 recorded (CHG-008): exams (AT-06), rubric grading (AT-05), public verification (SCR-05), revocation, full cert gating. |
 | 1.0.6 | 2026-08-01 | AGT-003 | Batches B-04…B-06 recorded (CHG-007): quiz system, projects & certificates, admin dashboard. |
 | 1.0.5 | 2026-08-01 | AGT-003 | Batch B-01/B-02/B-03 recorded (CHG-006): first runnable platform slice (structure, RTL UI, navigation, auth, lesson player). |
