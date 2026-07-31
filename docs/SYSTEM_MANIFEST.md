@@ -7,7 +7,7 @@
 | **Title** | System Manifest |
 | **Purpose** | The authoritative, live registry of the implementation state of every system component, subsystem, and repository artifact. DOC-02 describes the *designed* system; this manifest records *what actually exists* and its maturity. It is the first place a platform agent checks before touching any subsystem. |
 | **Owner** | Lead Architect (role) |
-| **Version** | 1.0.2 |
+| **Version** | 1.0.3 |
 | **Status** | Active |
 | **Dependencies** | DOC-02 (component/subsystem definitions), DOC-05 (entities), DOC-09 (roadmap), DOC-11 (tasks), DOC-25 (versioning) |
 | **Last Updated** | 2026-07-31 |
@@ -58,10 +58,10 @@ Maturity levels are recorded per row in the **Maturity** column: `Design → Spe
 
 | ID | Component (DOC-02 §4) | Status | Maturity | Implemented by (task/milestone) | Manifest notes |
 |----|-----------------------|--------|----------|-------------------------------|----------------|
-| C-01 | Web App (PWA) | 🟦 Planned | Design | MS-08 (TASK-205…210) | None built — documentation only |
+| C-01 | Web App (PWA) | 🟨 In progress | Prototype | B-01 (app/ scaffold, RTL shell, navigation) | Next.js 15 (ADR-010) |
 | C-02 | Admin Console | 🟦 Planned | Design | MS-10 (TASK-213…215) | None built |
 | C-03 | Public Verification Page | 🟦 Planned | Design | MS-09 (TASK-212) | None built |
-| C-04 | API Gateway / BFF | 🟦 Planned | Design | MS-07/08 (TASK-201, 205) | Requires OPD-001 |
+| C-04 | API Gateway / BFF | 🟨 In progress | Prototype | B-01 (route handlers) | Next.js route handlers (ADR-010) |
 | C-05 | Auth & Session Service | 🟦 Planned | Design | MS-08 (TASK-205) | Requires OPD-001 |
 | C-06 | Catalog & Curriculum Module | 🟦 Planned | Design | MS-08 (TASK-206) | Requires OPD-001/002 |
 | C-07 | Learning Engine | 🟦 Planned | Design | MS-08 (TASK-207) | Requires OPD-001/002/003 |
@@ -102,7 +102,7 @@ Maturity levels are recorded per row in the **Maturity** column: `Design → Spe
 
 | Field | Value |
 |-------|-------|
-| **Overall platform status** | 🟦 Planned — no implementation artifacts exist (documentation-only phase, MS-01 complete) |
+| **Overall platform status** | 🟨 **In progress** — implementation phase (2026-08-01, ADR-010); Batch 1 (structure + RTL UI + navigation) underway |
 | **Documentation system status** | 🟩 Complete (DOC-01…29 baseline) |
 | **Manifest version** | 1.0.0 |
 | **Last reconciled with filesystem** | 2026-07-31 |
@@ -123,6 +123,7 @@ Maturity levels are recorded per row in the **Maturity** column: `Design → Spe
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.3 | 2026-08-01 | AGT-003 | Implementation phase: overall status In progress; C-01/C-04 In progress (B-01) (CHG-005). |
 | 1.0.2 | 2026-07-31 | AGT-002 | Artifact manifest: `content/` created with P1-A pilot (28 lessons In review); completed handovers include HDO-004 (CHG-004). |
 | 1.0.1 | 2026-07-31 | Project Foundation Architect | Artifact manifest extended: closure docs DOC-30…38, HDO-003; overall status updated (CHG-003). |
 | 1.0.0 | 2026-07-31 | Project Foundation Architect | Initial baseline (DOC-18): 15 components, 5 subsystems, artifact manifest — all Planned/Implemented-docs state. |

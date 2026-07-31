@@ -7,7 +7,7 @@
 | **Title** | Agent Registry |
 | **Purpose** | The registry of every AI agent and human role working on the project. It assigns stable agent IDs (AGT-NNN), records roles, scopes, and session history, and makes accountability explicit: who claimed which task, who wrote which handover, who verified what. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.1 |
+| **Version** | 1.0.2 |
 | **Status** | Active |
 | **Dependencies** | DOC-10 (rules), DOC-11 (task assignments), DOC-12 (handovers), DOC-24 (ID formats) |
 | **Last Updated** | 2026-07-31 |
@@ -53,6 +53,7 @@ Multiple independent AI agents collaborate on this project without meeting. The 
 |-----|---------------|------------|------------------------|--------|-----------------------------------|-------|
 | AGT-001 | Project Foundation Architect | `arena/019fb8fa-photoshop-course` (2026-07-31, sessions 1–2) | Documentation & governance; foundation phase | Active | HDO-001 (baseline), HDO-002 (extension); TASK-001…032 | Registered as originator of the foundation |
 | AGT-002 | Phase 1 Content Producer (Agent 02) | `arena/019fb8fa-photoshop-course` (2026-07-31, Phase-1 content session) | P1-A content production only: STG-01 + MOD-0201/0202 (28 lessons) | Active | HDO-004 (P1-A pilot); TASK-103 Completed (28 lessons + assessments delivered, In review) | Registered per DOC-26 §5.1; session record per §5.4 |
+| AGT-003 | Lead Software Engineer (Agent 03) | `arena/019fb8fa-photoshop-course` (2026-08-01, implementation sessions) | Platform implementation (app/), batches per DOC-09 priority; no content/doc expansion unless required to unblock | Active | ADR-010; CHG-005; implementation batches (see PROJECT_STATE) | Registered per DOC-26 §5.1 before implementation work |
 
 > New agents append a row with `AGT-NNN`, their role, session ID, scope, and Status = Active **before** claiming tasks (register-then-claim, DOC-10 R-01/R-09).
 
@@ -105,6 +106,7 @@ Human roles are durable function names used as document owners and reviewers. Th
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
 | 1.0.1 | 2026-07-31 | AGT-002 | AGT-002 registered (Phase 1 Content Producer), scope P1-A, TASK-103 claimed and completed (28 lessons + assessments, In review) (CHG-004). |
+| 1.0.2 | 2026-08-01 | AGT-003 | AGT-003 registered (Lead Software Engineer), scope platform implementation (CHG-005). |
 | 1.0.0 | 2026-07-31 | Project Foundation Architect | Initial baseline (DOC-26): ID scheme, AGT-001 registration, human roles registry, onboarding rules. |
 
 ## Notes

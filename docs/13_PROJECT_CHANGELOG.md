@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.3 |
+| **Version** | 1.0.4 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-07-31 |
@@ -99,7 +99,15 @@ Each entry uses this exact structure:
 - **Affected Documents:** New: `content/` (37 files). Updated: DOC-11 (v1.0.3), DOC-12 (v1.0.3), DOC-13 (v1.0.3), DOC-18 (v1.0.2), DOC-21 (v1.0.2), DOC-22 (v1.0.1), DOC-23 (v1.0.2), DOC-26 (v1.0.1), DOC-27 (v1.0.2), DOC-29 (v1.0.2), PROJECT_STATE (v1.2.0), docs/handovers/README.md. New handover: docs/handovers/HDO-004_TASK-103_2026-07-31.md.
 - **Version:** `content/` n/a → 1.0.0; DOC-11/12/13 1.0.2 → 1.0.3; DOC-18/21/23/27/29 1.0.1 → 1.0.2; DOC-22/26 1.0.0 → 1.0.1; PROJECT_STATE 1.1.0 → 1.2.0.
 
-> **Next entry:** `CHG-005` — to be appended by the next agent that modifies the repository.
+### CHG-005 — 2026-08-01
+- **Agent:** AGT-003 (Lead Software Engineer)
+- **Task(s):** Implementation phase kickoff (Batches B-01+); supersedes TASK-201/202 sequence per user directive
+- **Description:** Moved the project from planning (Foundation) to the **Implementation Phase** per user directive. Recorded ADR-010 (technology stack: Next.js 15 + TypeScript + Tailwind 3 + SQLite/node:sqlite, session auth with node:crypto scrypt, content-as-data from `content/`); resolved OPD-001/002; registered AGT-003. **Deviation (DOC-10 §9):** `app/` created ahead of the MS-08 gate and TASK-102/101 remain open — user-directed; the docs are used only for state/achievement updates, no new documentation files created. Platform built in small runnable implementation batches per DOC-09 priorities.
+- **Reason:** User directive to begin actual platform implementation (structure → RTL UI → navigation → users → lesson player → quizzes → projects/certificates → admin → database → completion).
+- **Affected Documents:** DOC-13 (v1.0.4), DOC-14 (v1.0.2), DOC-28 (v1.0.2), DOC-26 (v1.0.2), PROJECT_STATE (v1.3.0), SYSTEM_MANIFEST (v1.0.3). New: `app/` (platform source).
+- **Version:** DOC-14/26/28 1.0.1 → 1.0.2; DOC-13 1.0.3 → 1.0.4; PROJECT_STATE 1.2.0 → 1.3.0; SYSTEM_MANIFEST 1.0.2 → 1.0.3.
+
+> **Next entry:** `CHG-006` — to be appended by the next agent that modifies the repository.
 
 ---
 
@@ -107,6 +115,7 @@ Each entry uses this exact structure:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.4 | 2026-08-01 | AGT-003 | Implementation phase kickoff recorded (CHG-005): ADR-010, OPD-001/002 resolved, `app/` created. |
 | 1.0.3 | 2026-07-31 | AGT-002 | P1-A pilot content recorded (CHG-004): 28 lessons + assessments; registries/state updated. |
 | 1.0.2 | 2026-07-31 | Project Foundation Architect | Foundation closure recorded (CHG-003): DOC-30…38, ADR-009, GATE-F1 PASS. |
 | 1.0.1 | 2026-07-31 | Project Foundation Architect | Operating-docs extension recorded (CHG-002). |

@@ -7,7 +7,7 @@
 | **Title** | Decision Log (Architecture Decision Records) |
 | **Purpose** | Documents every architectural and policy decision: decision ID, problem, alternatives, chosen solution, reason, and impact. Also tracks **open decisions** that must be resolved before specific work can proceed. New decisions are appended — history is immutable (DOC-10 R-06). |
 | **Owner** | Lead Architect (role) for ADRs; Governance Lead for policy ADRs |
-| **Version** | 1.0.1 |
+| **Version** | 1.0.2 |
 | **Status** | Active |
 | **Dependencies** | DOC-02 (architecture), DOC-05 (data), DOC-09 (roadmap gates), DOC-13 (changelog) |
 | **Last Updated** | 2026-07-31 |
@@ -147,12 +147,23 @@ Every decision record uses this structure:
 | **Reason** | Independence (producer ≠ reviewer) makes DOC-16 gates trustworthy; role-based assignment keeps production flowing with many agents; user approval at phase gates preserves human authority (DOC-01/10). |
 | **Impact** | OPD-006 resolved. DOC-35 (REVIEW_PROTOCOL) is the operating detail; DOC-16 gates remain the review instrument; TASK-102 (independent baseline review) proceeds under this model; all Phase 1 content is subject to it. |
 
+### ADR-010 — Implementation phase kickoff: technology stack & local-first platform
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-01 |
+| **Status** | Accepted (user-directed implementation; DOC-10 §9 deviation documented in CHG-005) |
+| **Problem** | OPD-001/002 deferred the stack to MS-07; the user directed the project to move from planning to implementation now, requiring a concrete, runnable technology baseline for the platform. |
+| **Alternatives** | (a) Wait for MS-07 ADRs, (b) static HTML/CSS/JS prototype without backend, (c) Next.js + SQLite + TypeScript modular monolith (chosen), (d) separate SPA + API server |
+| **Chosen Solution** | **Next.js 15 (App Router) + TypeScript + Tailwind CSS 3** single modular-monolith application in `app/` (DOC-02 AP-4/AP-5); **SQLite via built-in `node:sqlite`** (zero native deps, local-first, Postgres-migration path at OPD-003); **session-based auth with `node:crypto` scrypt** + DB-backed sessions (ENT-SESSION); content served from the existing `content/` Markdown packages (ADR-006 content-as-data); API via route handlers (BFF, DOC-02 C-04). RTL-first (`dir="rtl"`), Arabic-first UI strings (ADR-002/003). |
+| **Reason** | User directive (implementation phase); single codebase maximizes multi-agent velocity; SQLite/node:sqlite requires no external services so every batch is runnable in this environment; Markdown content reuse links the platform to the produced P1-A lessons immediately. |
+| **Impact** | OPD-001, OPD-002 resolved (stack chosen); OPD-003/004/005 remain open (hosting/media/payment — non-blocking for local implementation); `app/` created (previously planned for MS-08 — deviation documented in CHG-005); SYSTEM_MANIFEST components C-01…C-14 move to In progress as batches land; lesson content remains the SSOT (DOC-03/07/22), the DB is derived data. |
+
 ## 3. Open Decisions (OPD)
 
 | ID | Decision | Needed by | Blocking | Notes |
 |----|----------|-----------|----------|-------|
-| OPD-001 | Application language & framework | MS-07 (TASK-201) | All platform coding | Candidates include type-safe web stacks; PWA requirement (DOC-02 C-01) |
-| OPD-002 | Primary database product | MS-07 (TASK-202) | All SQL/physical schema | Must honor DOC-05 logical model |
+| OPD-001 | Application language & framework | MS-07 (TASK-201) | All platform coding | **Resolved** 2026-08-01 by ADR-010: Next.js 15 + TypeScript (App Router) |
+| OPD-002 | Primary database product | MS-07 (TASK-202) | All SQL/physical schema | **Resolved** 2026-08-01 by ADR-010: SQLite (node:sqlite) local-first; Postgres migration path at OPD-003 |
 | OPD-003 | Hosting / CDN / media delivery | MS-07 (TASK-203) | Media pipeline, deployment | Includes data residency for MENA users (risk R-T-06) |
 | OPD-004 | Media transcoding pipeline | MS-07 (TASK-203) | Lesson video production | Captions/transcripts requirements (DOC-07 §6) |
 | OPD-005 | Payment provider & billing | MS-09/13 (TASK-204) | Premium monetization (DOC-01 §4.3) | Regional payment methods critical for MENA |
@@ -173,6 +184,7 @@ Every decision record uses this structure:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.2 | 2026-08-01 | AGT-003 (Lead Software Engineer) | ADR-010 added (implementation kickoff / tech stack); OPD-001/002 resolved (CHG-005). |
 | 1.0.1 | 2026-07-31 | Project Foundation Architect | ADR-009 added (review model); OPD-006 marked Resolved (CHG-003). |
 | 1.0.0 | 2026-07-31 | Project Foundation Architect | Initial baseline (DOC-14): 8 accepted ADRs, 8 open decisions. |
 

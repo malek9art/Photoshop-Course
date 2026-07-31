@@ -7,7 +7,7 @@
 | **Title** | Project State |
 | **Purpose** | The single "where are we right now?" document. It holds the current phase, milestone/task/decision/risk snapshots, the state-update protocol every agent must follow after each task, and the precise next actions before Phase 1 begins. |
 | **Owner** | Project Manager (role) |
-| **Version** | 1.2.0 |
+| **Version** | 1.3.0 |
 | **Status** | Active |
 | **Dependencies** | DOC-09 (roadmap), DOC-11 (tasks), DOC-14 (decisions), DOC-15 (risks), DOC-18 (manifest), DOC-13 (changelog) |
 | **Last Updated** | 2026-07-31 |
@@ -46,10 +46,10 @@ PROJECT_STATE exists so that any agent can answer in under two minutes: *what ph
 
 | Field | Value |
 |-------|-------|
-| **Phase** | Foundation (Phase 0) — **closed** |
-| **Phase status** | ✅ **Complete & closed** — documentation baseline (DOC-01…16), operating extension (DOC-17…29), and closure layer (DOC-30…38) all delivered; GATE-F1 PASS (DOC-31/37); policy lock in force (DOC-30) |
-| **Next phase** | **Phase 1 — Content production** (MS-02 pilot → MS-03…06) — **eligible to begin** per DOC-31/37/38 |
-| **Blocked items** | OPD-001…005 (technology stack) — deliberately deferred to MS-07; OPD-007 (brand tokens, MS-11); OPD-008 (AI-disclosure, MS-12). Nothing blocks Phase 1 content start except completing the Phase-1 task order (DOC-38 §4) |
+| **Phase** | **Implementation (Execution)** — user-directed transition 2026-08-01 (ADR-010) |
+| **Phase status** | 🟨 **In progress** — platform build underway in small runnable batches (Batch 1: structure + RTL UI + navigation) |
+| **Next phase** | Beta (MS-12) after platform milestones MS-08…MS-11 complete |
+| **Blocked items** | OPD-003/004/005 (hosting/media/payment) — non-blocking for local implementation; platform deployment waits on OPD-003. Nothing blocks local batch development. |
 | **Platform state** | No implementation artifacts exist (see DOC-18) |
 | **Content state** | **P1-A pilot produced** (TASK-103, AGT-002): 28 lessons + 6 module quizzes + STG-01 exam + placement + project/rubric in `content/` — all 28 lessons `In review` (see DOC-22); remaining 128 lessons Not started |
 | **Date** | 2026-07-31 |
@@ -67,7 +67,7 @@ PROJECT_STATE exists so that any agent can answer in under two minutes: *what ph
 | MS-05 | Content Batch 3 — After Effects + Premiere Pro | P1 | 🟦 Not Started |
 | MS-06 | Content Batch 4 — Lightroom + Capstone | P1 | 🟦 Not Started |
 | MS-07 | Technology Stack Decision (ADRs) | P0 | 🟦 Not Started |
-| MS-08 | Platform MVP | P0 | 🟦 Not Started |
+| MS-08 | Platform MVP | P0 | 🟨 In Progress (2026-08-01, ADR-010) — batches B-01+ |
 | MS-09 | Assessment & Certification Engine | P0 | 🟦 Not Started |
 | MS-10 | Admin & Content Management | P1 | 🟦 Not Started |
 | MS-11 | Polish, Accessibility & RTL QA | P1 | 🟦 Not Started |
@@ -117,9 +117,27 @@ PROJECT_STATE exists so that any agent can answer in under two minutes: *what ph
 | 4 | R-G-01 Documentation drift | 16 | Doc lint (TASK-101); independent review (TASK-102) |
 | 5 | R-E-01 Content quality | 15 | Pilot quality bar; rubric anchors; DOC-16 gates |
 
-## 8. What Happens Next — Phase 1 Continuation
+## 8. What Happens Next — Implementation Batches
 
-Phase 1 = content production. **Status:** P1-A pilot content **produced** (TASK-103, 28 lessons `In review`). The next agent must:
+**Status:** Implementation phase active (2026-08-01). The platform is built in small runnable batches (B-01…). Batch plan per DOC-09 priorities:
+
+| Batch | Scope | Status |
+|-------|-------|--------|
+| B-01 | Project structure (`app/`), RTL responsive base UI, navigation shell, DB schema + seed from DOC-03/content | 🟨 In progress |
+| B-02 | User system: register/login/profile/progress (sessions, scrypt) | ⬜ Planned |
+| B-03 | Lesson player linked to `content/` (Markdown) + progress tracking | ⬜ Planned |
+| B-04 | Quiz system (module quizzes from content/quiz files, scoring, attempts) | ⬜ Planned |
+| B-05 | Projects & certificates (rubric grading UI, certificate records) | ⬜ Planned |
+| B-06 | Admin dashboard (content/curriculum/users/analytics) | ⬜ Planned |
+| B-07 | Database consolidation + remaining modules until complete | ⬜ Planned |
+
+The next agent must:
+1. **Read**: AGENTS.md → MASTER_INDEX → PROJECT_STATE → POLICY_LOCK → AGENT_STARTUP_CHECKLIST → DOC-02 (architecture) → DOC-04 (UI blueprint) → DOC-05 (database blueprint) → DOC-06 (design system).
+2. **Continue the current batch** (see `app/README` and SYSTEM_MANIFEST §4 for component status).
+3. **Keep batches runnable**: every batch ends with `npm run build` passing and a smoke test.
+4. **Update state minimally**: one CHG entry per batch + SYSTEM_MANIFEST component status + this document — no new docs.
+5. **Blocked-by-design:** deployment/domain/media pipeline needs OPD-003/004; payment needs OPD-005; brand tokens OPD-007 (use default tokens per DOC-06 roles).
+6. **Scope guard:** no new documentation files; content changes only via DOC-32 scope rules (CCR).
 
 1. **Start at the Phase-1 entry point:** read [PHASE_1_README](PHASE_1_README.md) (DOC-38) and [PHASE_1_SCOPE](PHASE_1_SCOPE.md) (DOC-32).
 2. **Register/confirm agent identity** in [AGENT_REGISTRY](AGENT_REGISTRY.md) and complete startup checklist [DOC-34](AGENT_STARTUP_CHECKLIST.md).
@@ -165,6 +183,7 @@ Phase 1 = content production. **Status:** P1-A pilot content **produced** (TASK-
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.3.0 | 2026-08-01 | AGT-003 | Implementation phase started (ADR-010, CHG-005): phase fields, MS-08 in progress, batch plan B-01…B-07 in §8. |
 | 1.2.0 | 2026-07-31 | AGT-002 | P1-A pilot produced (TASK-103): content state updated (28 lessons In review), task snapshot 42/74, §8 rewritten as Phase-1 continuation (CHG-004). |
 | 1.1.0 | 2026-07-31 | Project Foundation Architect | Foundation closed (GATE-F1 PASS): phase fields updated to Phase-1-eligible; blocked items clarified (OPD-001…005/007/008); OPD-006 resolved; task snapshot 41/74; §8 rewritten as Phase-1 entry (CHG-003). |
 | 1.0.0 | 2026-07-31 | Project Foundation Architect | Initial baseline (DOC-19): foundation complete; snapshots at 2026-07-31; next-actions for Phase 1 defined. |

@@ -7,7 +7,7 @@
 | **Title** | Open Decisions Tracker |
 | **Purpose** | The operational tracker for every open decision (OPD-NNN): what is being decided, what it blocks, who owns it, when it must resolve, and the exact resolution protocol. [DOC-14](14_DECISION_LOG.md) §3 is the authoritative list; this document is the working tracker that keeps decisions moving to resolution. |
 | **Owner** | Lead Architect (role) |
-| **Version** | 1.0.1 |
+| **Version** | 1.0.2 |
 | **Status** | Active |
 | **Dependencies** | DOC-14 (decision authority), DOC-09 (milestone gates), DOC-23 (what OPDs block), DOC-11 (tasks), DOC-13 (changelog) |
 | **Last Updated** | 2026-07-31 |
@@ -72,8 +72,8 @@ flowchart LR
 
 | OPD | Decision | Blocks | Owner | Target | Next action | Status |
 |-----|----------|--------|-------|--------|-------------|--------|
-| OPD-001 | Application language & framework | All platform code (C-04…C-14); MS-08 | Lead Architect | MS-07 | Draft ADR with candidate shortlist (TASK-201) | Open |
-| OPD-002 | Primary database product | SQL/physical schema; MS-08 | Data Architect | MS-07 | Evaluate candidates vs DOC-05 logical model (TASK-202) | Open |
+| OPD-001 | Application language & framework | All platform code (C-04…C-14); MS-08 | Lead Architect | MS-07 | **Resolved** 2026-08-01 by ADR-010 — Next.js 15 + TypeScript (App Router); no further action | Resolved (ADR-010) |
+| OPD-002 | Primary database product | SQL/physical schema; MS-08 | Data Architect | MS-07 | **Resolved** 2026-08-01 by ADR-010 — SQLite (node:sqlite) local-first; Postgres path at OPD-003 | Resolved (ADR-010) |
 | OPD-003 | Hosting / CDN / media delivery | Media pipeline, deployment; MS-08 | Lead Architect | MS-07 | Provider evaluation incl. MENA residency (TASK-203) | Open |
 | OPD-004 | Media transcoding pipeline | Lesson video production; content pipeline | Lead Architect | MS-07 | Combine with OPD-003 evaluation (TASK-203) | Open |
 | OPD-005 | Payment provider & billing | Premium monetization; MS-13 | Project Manager | MS-09 | Regional payment research (TASK-204) | Open |
@@ -113,6 +113,7 @@ flowchart LR
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.2 | 2026-08-01 | AGT-003 (Lead Software Engineer) | OPD-001/002 marked Resolved via ADR-010 (implementation phase kickoff) (CHG-005). |
 | 1.0.1 | 2026-07-31 | Project Foundation Architect | OPD-006 marked Resolved (ADR-009, DOC-35 review model); header/tracker synced (CHG-003). |
 | 1.0.0 | 2026-07-31 | Project Foundation Architect | Initial baseline (DOC-28): lifecycle, tracker for OPD-001…008, resolution protocol. |
 
