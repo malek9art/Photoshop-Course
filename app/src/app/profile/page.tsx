@@ -32,19 +32,27 @@ export default async function ProfilePage() {
         </div>
       </header>
 
-      <Card>
+      <div className="card p-5">
         <div className="flex items-center justify-between">
           <h2 className="font-bold text-neutral-900">تقدمك العام</h2>
           <span className="text-sm font-bold text-primary-700">{percent}%</span>
         </div>
-        <ProgressBar percent={percent} className="mt-3" />
+        <ProgressBar percent={percent} className="mt-3" label="التقدم العام في الدروس المتاحة" />
         <p className="mt-2 text-xs text-neutral-500">
           {overall.c} من {totalLessons.c} درسًا متاحًا مكتملًا
         </p>
-      </Card>
+      </div>
 
       <section aria-label="تقدم المراحل">
         <h2 className="mb-4 text-xl font-bold text-neutral-900">تقدم المراحل</h2>
+        {stages.length === 0 ? (
+          <div className="card flex flex-col items-center gap-3 p-10 text-center">
+            <p className="text-4xl" aria-hidden="true">🧭</p>
+            <p className="text-lg font-bold text-neutral-800">لا توجد مراحل بعد</p>
+            <p className="max-w-sm text-sm text-neutral-500">ستظهر المراحل فور نشر المحتوى.</p>
+            <a href="/catalog" className="btn-primary mt-2">تصفح المكتبة</a>
+          </div>
+        ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {stages.map((stage) => {
             const modules = listModulesWithLessons(stage.id, user.id);
@@ -52,19 +60,20 @@ export default async function ProfilePage() {
             const done = modules.reduce((s, m) => s + m.completed_lessons, 0);
             const p = total > 0 ? Math.round((done / total) * 100) : 0;
             return (
-              <Card key={stage.id}>
+              <div key={stage.id} className="card p-5">
                 <div className="flex items-center justify-between">
                   <Link href={`/catalog/${stage.id}`} className="font-bold text-neutral-900 hover:text-primary-800">
                     {stage.title_ar}
                   </Link>
                   <span className="text-xs font-bold text-primary-700">{p}%</span>
                 </div>
-                <ProgressBar percent={p} className="mt-3" />
+                <ProgressBar percent={p} className="mt-3" label={`تقدم مرحلة ${stage.title_ar}`} />
                 <p className="mt-2 text-xs text-neutral-500">{done} / {total} درسًا مكتملًا</p>
-              </Card>
+              </div>
             );
           })}
         </div>
+        )}
       </section>
     </div>
   );

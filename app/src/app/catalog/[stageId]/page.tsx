@@ -39,6 +39,13 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
         )}
       </header>
 
+      {modules.length === 0 ? (
+        <div className="card flex flex-col items-center gap-3 p-10 text-center">
+          <p className="text-4xl" aria-hidden="true">📭</p>
+          <p className="text-lg font-bold text-neutral-800">لا توجد وحدات في هذه المرحلة بعد</p>
+          <p className="max-w-sm text-sm text-neutral-500">ستُضاف الوحدات فور نشر المحتوى.</p>
+        </div>
+      ) : (
       <div className="space-y-6">
         {modules.map((mod) => {
           const lessons = listLessons(mod.id, user?.id);
@@ -56,24 +63,28 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
 
               {user && (
                 <div className="mt-4 flex items-center gap-3">
-                  <ProgressBar percent={percent} className="max-w-xs" />
+                  <ProgressBar percent={percent} className="max-w-xs" label={`تقدم وحدة ${mod.title_ar}`} />
                   <span className="text-xs text-neutral-500">{percent}% مكتمل</span>
                 </div>
               )}
 
               {quizzes.has(`QUIZ-${mod.id}`) && (
-                <Link href={`/quiz/QUIZ-${mod.id}`} className="mt-4 inline-flex items-center gap-2 rounded-lg border border-accent-300 bg-accent-50 px-4 py-2 text-sm font-semibold text-accent-700 hover:bg-accent-100">
+                <Link href={`/quiz/QUIZ-${mod.id}`} className="mt-4 inline-flex items-center gap-2 rounded-lg border border-accent-300 bg-accent-50 px-4 py-2 text-sm font-semibold text-accent-700 hover:bg-accent-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">
                   <span aria-hidden="true">📝</span> اختبار الوحدة (QUIZ-{mod.id})
                 </Link>
               )}
 
+              {lessons.length === 0 ? (
+                <p className="mt-5 text-sm text-neutral-500">لا توجد دروس في هذه الوحدة بعد.</p>
+              ) : (
               <ol className="mt-5 space-y-2">
                 {lessons.map((lesson) => (
                   <li key={lesson.id}>
                     <Link
                       href={lesson.content_path ? `/learn/${lesson.id}` : "#"}
                       aria-disabled={!lesson.content_path}
-                      className={`flex items-center justify-between gap-3 rounded-lg border border-neutral-200 px-4 py-3 transition-colors ${
+                      tabIndex={lesson.content_path ? 0 : -1}
+                      className={`flex items-center justify-between gap-3 rounded-lg border border-neutral-200 px-4 py-3 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 ${
                         lesson.content_path
                           ? "hover:border-primary-300 hover:bg-primary-50/40"
                           : "cursor-not-allowed opacity-60"
@@ -93,10 +104,12 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
                   </li>
                 ))}
               </ol>
+              )}
             </Card>
           );
         })}
       </div>
+      )}
     </div>
   );
 }

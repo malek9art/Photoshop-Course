@@ -63,7 +63,7 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
         </p>
       )}
 
-      {mine.length > 0 && (
+      {mine.length > 0 ? (
         <section aria-label="تسليماتي">
           <h2 className="mb-3 text-lg font-bold text-neutral-900">تسليماتي</h2>
           <div className="space-y-2">
@@ -73,11 +73,17 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
                   <p className="font-semibold text-neutral-800">{s.title || s.project_code}</p>
                   <p className="text-xs text-neutral-500">{s.project_code} · {new Date(s.created_at + "Z").toLocaleDateString("ar-SA")}</p>
                 </div>
-                <span className="badge badge-amber">{s.status === "passed" ? "مقبول ✓" : "قيد المراجعة"}</span>
+                <span className={`badge ${s.status === "passed" ? "badge-green" : "badge-amber"}`}>{s.status === "passed" ? "مقبول ✓" : "قيد المراجعة"}</span>
               </Card>
             ))}
           </div>
         </section>
+      ) : (
+        <div className="card flex flex-col items-center gap-3 p-10 text-center">
+          <p className="text-4xl" aria-hidden="true">📭</p>
+          <p className="text-lg font-bold text-neutral-800">لا توجد تسليمات بعد</p>
+          <p className="max-w-sm text-sm text-neutral-500">قدّم مشروع المرحلة أدناه لبدء بناء ملف أعمالك.</p>
+        </div>
       )}
 
       {projects.map((p) => {

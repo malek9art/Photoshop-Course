@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.8 |
+| **Version** | 1.0.9 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-07-31 |
@@ -131,7 +131,15 @@ Each entry uses this exact structure:
 - **Affected Documents:** PROJECT_STATE (v1.3.3), SYSTEM_MANIFEST (v1.0.6), this changelog (v1.0.7). New: `app/` routes/libs (see commit).
 - **Version:** DOC-13 1.0.6 → 1.0.7; PROJECT_STATE 1.3.2 → 1.3.3; SYSTEM_MANIFEST 1.0.5 → 1.0.6.
 
-> **Next entry:** `CHG-009` — to be appended by the next agent that modifies the repository.
+### CHG-010 — 2026-08-01
+- **Agent:** AGT-003 (Lead Software Engineer)
+- **Task(s):** Product Refinement Phase — R-01 (core screens)
+- **Description:** Polished the most-used screens per DOC-04 §4 (global states) and DOC-06 §7–§8 (motion + accessibility): **Skeleton loading** for Dashboard/Catalog/Stage/Quiz; **Empty states** with explanation + primary action for catalog, stage modules, projects submissions, certificates, profile stages, and home stages; **Quiz**: result screen with remaining-attempts hint (DOC-08 §5) + aria-live status, skeleton loader; **Lesson**: article semantics, focus rings, disabled lessons removed from tab order; **Accessibility**: focus-visible rings across nav/links/buttons, 44px touch targets (DOC-06 §8), aria-labels on progress bars, reduced-motion-safe spinner (opacity pulse per DOC-06 §7), aria-live feedback; **Visual consistency**: unified empty-state cards, consistent card usage, progress labels.
+- **Reason:** Product Refinement Phase — raise quality of highest-traffic screens without adding features.
+- **Affected Documents:** PROJECT_STATE (v1.3.5), this changelog (v1.0.9). Modified: `app/src/components/{ui,Header,HomeSkeleton,CatalogSkeleton,feedback,QuizPlayer}.tsx`, `app/src/app/{page,catalog/page,catalog/[stageId]/page,learn/[lessonId]/page,projects/page,certificates/page,profile/page}.tsx`, `app/src/lib/a11y.ts`.
+- **Version:** DOC-13 1.0.8 → 1.0.9; PROJECT_STATE 1.3.4 → 1.3.5.
+
+> **Next entry:** `CHG-011` — to be appended by the next agent that modifies the repository.
 
 ---
 
@@ -139,6 +147,7 @@ Each entry uses this exact structure:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.9 | 2026-08-01 | AGT-003 | Refinement R-01 recorded (CHG-010): core screens polish (skeletons, empty states, a11y, reduced-motion). |
 | 1.0.8 | 2026-08-01 | AGT-003 | Batch B-08 recorded (CHG-009): retake enforcement per DOC-08 §5 (quizzes 3×/24h, projects 2×/3d). |
 | 1.0.7 | 2026-08-01 | AGT-003 | Batch B-07 recorded (CHG-008): exams (AT-06), rubric grading (AT-05), public verification (SCR-05), revocation, full cert gating. |
 | 1.0.6 | 2026-08-01 | AGT-003 | Batches B-04…B-06 recorded (CHG-007): quiz system, projects & certificates, admin dashboard. |

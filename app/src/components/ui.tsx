@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { focusRing, touchTarget } from "@/lib/a11y";
 
 /** Small shared UI atoms (DOC-06 components: cards, badges, progress). */
 
@@ -6,11 +7,19 @@ export function Card({ children, className = "" }: { children: React.ReactNode; 
   return <div className={`card p-5 ${className}`}>{children}</div>;
 }
 
-export function ProgressBar({ percent, className = "" }: { percent: number; className?: string }) {
+export function ProgressBar({ percent, className = "", label }: { percent: number; className?: string; label?: string }) {
   const p = Math.max(0, Math.min(100, percent));
   return (
-    <div className={`h-2 w-full overflow-hidden rounded-full bg-neutral-200 ${className}`} role="progressbar" aria-valuenow={p} aria-valuemin={0} aria-valuemax={100} aria-label={`التقدم ${p}%`}>
-      <div className="h-full rounded-full bg-primary-600 transition-all" style={{ width: `${p}%` }} />
+    <div
+      className={`h-2 w-full overflow-hidden rounded-full bg-neutral-200 ${className}`}
+      role="progressbar"
+      aria-valuenow={p}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label={label ?? `التقدم ${p}%`}
+    >
+      {/* DOC-06 §7: pulse (opacity) is reduced-motion safe */}
+      <div className="h-full rounded-full bg-primary-600" style={{ width: `${p}%` }} />
     </div>
   );
 }
@@ -41,18 +50,25 @@ export function LessonStateBadge({ state, status }: { state: string | null; stat
   return <Badge tone="gray">قريبًا</Badge>;
 }
 
-export function EmptyState({ title, hint }: { title: string; hint?: string }) {
+/** Empty state (DOC-04 §4): explains what is missing + primary action. */
+export function EmptyState({ title, hint, action, onAction }: { title: string; hint?: string; action?: string; onAction?: () => void }) {
   return (
-    <div className="card flex flex-col items-center gap-2 p-10 text-center">
+    <div className="card flex flex-col items-center gap-3 p-10 text-center">
+      <p className="text-4xl" aria-hidden="true">📭</p>
       <p className="text-lg font-bold text-neutral-800">{title}</p>
-      {hint ? <p className="text-sm text-neutral-500">{hint}</p> : null}
+      {hint ? <p className="max-w-sm text-sm text-neutral-500">{hint}</p> : null}
+      {action && onAction && (
+        <button type="button" onClick={onAction} className={`btn-primary mt-2 ${touchTarget}`}>
+          {action}
+        </button>
+      )}
     </div>
   );
 }
 
 export function Brand({ className = "" }: { className?: string }) {
   return (
-    <Link href="/" className={`flex items-center gap-2 ${className}`} aria-label="أكاديمية أدوبي الإبداعية — الرئيسية">
+    <Link href="/" className={`flex items-center gap-2 ${focusRing} rounded-lg ${className}`} aria-label="أكاديمية أدوبي الإبداعية — الرئيسية">
       <span className="flex h-9 w-9 items-center justify-center rounded-lg bg-primary-700 text-lg font-black text-white" aria-hidden="true">
         أ
       </span>
@@ -62,3 +78,5 @@ export function Brand({ className = "" }: { className?: string }) {
     </Link>
   );
 }
+
+export { focusRing, touchTarget };

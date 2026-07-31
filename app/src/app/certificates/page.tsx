@@ -21,11 +21,12 @@ export default async function CertificatesPage() {
       </header>
 
       {certs.length === 0 ? (
-        <Card className="p-10 text-center">
+        <div className="card flex flex-col items-center gap-3 p-10 text-center">
           <p className="text-4xl" aria-hidden="true">🎓</p>
-          <p className="mt-3 font-bold text-neutral-800">لا توجد شهادات بعد</p>
-          <p className="mt-1 text-sm text-neutral-500">أكمل مرحلة دراسية كاملة لتحصل على أول شهادة لك.</p>
-        </Card>
+          <p className="text-lg font-bold text-neutral-800">لا توجد شهادات بعد</p>
+          <p className="max-w-sm text-sm text-neutral-500">أكمل مرحلة دراسية كاملة (دروسها واختبارها ومشروعها) لتحصل على أول شهادة لك.</p>
+          <a href="/catalog" className="btn-primary mt-2">تصفح المراحل الدراسية</a>
+        </div>
       ) : (
         <div className="grid gap-4 sm:grid-cols-2">
           {certs.map((c) => (

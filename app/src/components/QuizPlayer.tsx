@@ -84,7 +84,13 @@ export function QuizPlayer({ code }: { code: string }) {
 
   if (error) return <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>;
   if (!meta || items.length === 0) {
-    return <p className="text-sm text-neutral-500">جارٍ تحميل الاختبار…</p>;
+    return (
+      <div className="mx-auto max-w-md space-y-3" aria-busy="true" aria-label="جارٍ تحميل الاختبار">
+        <div className="h-6 w-48 animate-pulse rounded bg-neutral-200" />
+        <div className="h-40 animate-pulse rounded-xl bg-neutral-200" />
+        <div className="h-10 animate-pulse rounded-lg bg-neutral-200" />
+      </div>
+    );
   }
   // DOC-08 §5: block when attempts exhausted or cooldown active (logged-in users).
   if (attemptsLeft === 0 || cooldownUntil) {
@@ -108,17 +114,24 @@ export function QuizPlayer({ code }: { code: string }) {
   }
   if (result) {
     return (
-      <div className="card p-8 text-center">
-        <p className="text-5xl" aria-hidden="true">{result.passed ? "🎉" : "💪"}</p>
-        <h2 className="mt-3 text-2xl font-extrabold text-neutral-900">
-          {result.passed ? "أحسنت! اجتزت الاختبار" : "حاول مرة أخرى"}
-        </h2>
-        <p className="mt-2 text-sm text-neutral-600">
-          نتيجتك: <b>{result.score}%</b> — نسبة النجاح المطلوبة {meta.config.passPct}%
-        </p>
-        <button type="button" onClick={() => router.push("/catalog")} className="btn-primary mt-6">
-          العودة إلى المكتبة
-        </button>
+      <div className="mx-auto max-w-2xl">
+        <div className="card p-8 text-center" role="status" aria-live="polite">
+          <p className="text-5xl" aria-hidden="true">{result.passed ? "🎉" : "💪"}</p>
+          <h2 className="mt-3 text-2xl font-extrabold text-neutral-900">
+            {result.passed ? "أحسنت! اجتزت الاختبار" : "حاول مرة أخرى"}
+          </h2>
+          <p className="mt-2 text-sm text-neutral-600">
+            نتيجتك: <b>{result.score}%</b> — نسبة النجاح المطلوبة {meta.config.passPct}%
+            {attemptsLeft !== null && attemptsLeft > 0 && !result.passed && (
+              <span className="mt-1 block text-xs text-neutral-500">
+                لديك {attemptsLeft} محاولة متبقية (بعد فترة التهدئة 24 ساعة — DOC-08 §5).
+              </span>
+            )}
+          </p>
+          <button type="button" onClick={() => router.push("/catalog")} className="btn-primary mt-6">
+            العودة إلى المكتبة
+          </button>
+        </div>
       </div>
     );
   }

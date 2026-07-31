@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Card, ProgressBar, Badge, DifficultyBadge } from "@/components/ui";
+import { ProgressBar, Badge, DifficultyBadge, EmptyState } from "@/components/ui";
 import { listStages } from "@/lib/data";
 import { getCurrentUser } from "@/lib/auth";
 import { all } from "@/lib/db";
@@ -13,6 +13,8 @@ export default async function HomePage() {
   // Continue-learning: most recent incomplete lesson for logged-in users.
   let nextLesson: { id: string; title_ar: string; module_title_ar: string; stage_title_ar: string } | null = null;
   let overallPercent = 0;
+  let totalDone = 0;
+  let totalAvailable = 0;
   if (user) {
     nextLesson =
       all<{ id: string; title_ar: string; module_title_ar: string; stage_title_ar: string }>(
@@ -28,12 +30,12 @@ export default async function HomePage() {
          ORDER BY l.id LIMIT 1`,
         user.id
       )[0] ?? null;
-    const total = (all("SELECT COUNT(*) AS c FROM lessons WHERE content_path IS NOT NULL")[0] as any).c as number;
-    const done = (all(
+    totalAvailable = (all("SELECT COUNT(*) AS c FROM lessons WHERE content_path IS NOT NULL")[0] as any).c as number;
+    totalDone = (all(
       "SELECT COUNT(*) AS c FROM progress WHERE user_id = ? AND target_type='lesson' AND state='completed'",
       user.id
     )[0] as any).c as number;
-    overallPercent = total > 0 ? Math.round((done / total) * 100) : 0;
+    overallPercent = totalAvailable > 0 ? Math.round((totalDone / totalAvailable) * 100) : 0;
   }
 
   return (
@@ -66,7 +68,7 @@ export default async function HomePage() {
       {user && (
         <section aria-label="واصل التعلم">
           <h2 className="mb-4 text-xl font-bold text-neutral-900">واصل التعلم</h2>
-          <Card className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
+          <div className="card flex flex-col gap-4 p-5 md:flex-row md:items-center md:justify-between">
             <div>
               {nextLesson ? (
                 <>
@@ -82,6 +84,7 @@ export default async function HomePage() {
                 <>
                   <p className="text-lg font-bold text-neutral-900">أكملت كل الدروس المتاحة 🎉</p>
                   <p className="mt-1 text-sm text-neutral-500">دروس جديدة قادمة عند نشر المحتوى القادم.</p>
+                  <Link href="/catalog" className="btn-outline mt-3">تصفح المكتبة</Link>
                 </>
               )}
             </div>
@@ -90,9 +93,10 @@ export default async function HomePage() {
                 <span>تقدمك العام</span>
                 <span>{overallPercent}%</span>
               </div>
-              <ProgressBar percent={overallPercent} />
+              <ProgressBar percent={overallPercent} label="التقدم العام في الدروس المتاحة" />
+              <p className="mt-1 text-xs text-neutral-500">{totalDone} من {totalAvailable} درسًا مكتملًا</p>
             </div>
-          </Card>
+          </div>
         </section>
       )}
 
@@ -104,24 +108,28 @@ export default async function HomePage() {
             عرض الكل ←
           </Link>
         </div>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stages.map((stage) => (
-            <Link key={stage.id} href={`/catalog/${stage.id}`} className="card group p-5 transition-shadow hover:shadow-md">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-bold text-primary-700">{stage.id}</span>
-                <DifficultyBadge level={stage.difficulty} />
-              </div>
-              <h3 className="mt-2 font-bold text-neutral-900 group-hover:text-primary-800">{stage.title_ar}</h3>
-              <p className="mt-1 text-xs text-neutral-500">
-                {stage.module_count} وحدات · {stage.lesson_count} دروس
-              </p>
-              <div className="mt-4 flex items-center justify-between text-xs text-neutral-500">
-                <span>{stage.effort_hours ?? "—"} ساعات تقديرية</span>
-                <span aria-hidden="true">←</span>
-              </div>
-            </Link>
-          ))}
-        </div>
+        {stages.length === 0 ? (
+          <EmptyState title="لا توجد مراحل بعد" hint="ستظهر المراحل الدراسية فور نشر المحتوى." />
+        ) : (
+          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {stages.map((stage) => (
+              <Link key={stage.id} href={`/catalog/${stage.id}`} className="card group p-5 transition-shadow hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-primary-700">{stage.id}</span>
+                  <DifficultyBadge level={stage.difficulty} />
+                </div>
+                <h3 className="mt-2 font-bold text-neutral-900 group-hover:text-primary-800">{stage.title_ar}</h3>
+                <p className="mt-1 text-xs text-neutral-500">
+                  {stage.module_count} وحدات · {stage.lesson_count} دروس
+                </p>
+                <div className="mt-4 flex items-center justify-between text-xs text-neutral-500">
+                  <span>{stage.effort_hours ?? "—"} ساعات تقديرية</span>
+                  <span aria-hidden="true">←</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
     </div>
   );

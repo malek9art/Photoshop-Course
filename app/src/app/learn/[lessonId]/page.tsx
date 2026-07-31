@@ -29,9 +29,9 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
       {/* Lesson body */}
       <article>
         <nav className="mb-4 text-sm text-neutral-500" aria-label="مسار التنقل">
-          <Link href="/catalog" className="hover:text-primary-700">المكتبة</Link>
+          <Link href="/catalog" className="hover:text-primary-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">المكتبة</Link>
           {" / "}
-          <Link href={`/catalog/${lesson.stage_id}`} className="hover:text-primary-700">{lesson.stage_title_ar}</Link>
+          <Link href={`/catalog/${lesson.stage_id}`} className="hover:text-primary-700 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600">{lesson.stage_title_ar}</Link>
           {" / "}
           <span className="text-neutral-700">{lesson.module_title_ar}</span>
         </nav>
@@ -45,16 +45,18 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
           <h1 className="mt-2 text-2xl font-extrabold leading-relaxed text-neutral-900">{doc.titleAr}</h1>
         </header>
 
-        <Card className="p-6 md:p-8">
-          <Markdown>{doc.markdown}</Markdown>
-        </Card>
+        <div className="card p-6 md:p-8">
+          <article className="prose-ar" dir="rtl" lang="ar">
+            <Markdown>{doc.markdown}</Markdown>
+          </article>
+        </div>
 
         {/* Lesson actions */}
         <div className="mt-6 flex flex-wrap items-center justify-between gap-3">
           {prev?.content_path ? (
             <Link href={`/learn/${prev.id}`} className="btn-outline">→ الدرس السابق</Link>
-          ) : <span />}
-          <div className="flex items-center gap-3">
+          ) : <span aria-hidden="true" />}
+          <div className="flex flex-wrap items-center gap-3">
             {user ? (
               <CompleteLessonButton lessonId={lessonId} alreadyCompleted={completed} />
             ) : (
@@ -69,7 +71,7 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
 
       {/* Module sidebar */}
       <aside className="lg:sticky lg:top-24 lg:self-start">
-        <Card className="p-4">
+        <div className="card p-4">
           <h2 className="mb-3 text-sm font-bold text-neutral-900">دروس الوحدة</h2>
           <ol className="space-y-1.5">
             {moduleLessons.map((l, i) => (
@@ -78,7 +80,8 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
                   href={l.content_path ? `/learn/${l.id}` : "#"}
                   aria-current={l.id === lessonId ? "page" : undefined}
                   aria-disabled={!l.content_path}
-                  className={`flex items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm ${
+                  tabIndex={l.content_path ? 0 : -1}
+                  className={`flex min-h-[40px] items-center justify-between gap-2 rounded-lg px-3 py-2 text-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 ${
                     l.id === lessonId
                       ? "bg-primary-700 font-semibold text-white"
                       : l.content_path
@@ -95,7 +98,7 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
               </li>
             ))}
           </ol>
-        </Card>
+        </div>
       </aside>
     </div>
   );

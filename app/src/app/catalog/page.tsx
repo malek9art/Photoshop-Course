@@ -17,6 +17,13 @@ export default function CatalogPage() {
         </p>
       </header>
 
+      {stages.length === 0 ? (
+        <div className="card flex flex-col items-center gap-3 p-10 text-center">
+          <p className="text-4xl" aria-hidden="true">📚</p>
+          <p className="text-lg font-bold text-neutral-800">لا توجد مراحل بعد</p>
+          <p className="max-w-sm text-sm text-neutral-500">ستظهر المراحل الدراسية فور نشر المحتوى.</p>
+        </div>
+      ) : (
       <div className="grid gap-4 md:grid-cols-2">
         {stages.map((stage) => (
           <Card key={stage.id} className="flex flex-col">
@@ -37,6 +44,7 @@ export default function CatalogPage() {
           </Card>
         ))}
       </div>
+      )}
     </div>
   );
 }
