@@ -7,7 +7,7 @@
 | **Title** | System Manifest |
 | **Purpose** | The authoritative, live registry of the implementation state of every system component, subsystem, and repository artifact. DOC-02 describes the *designed* system; this manifest records *what actually exists* and its maturity. It is the first place a platform agent checks before touching any subsystem. |
 | **Owner** | Lead Architect (role) |
-| **Version** | 1.0.3 |
+| **Version** | 1.0.4 |
 | **Status** | Active |
 | **Dependencies** | DOC-02 (component/subsystem definitions), DOC-05 (entities), DOC-09 (roadmap), DOC-11 (tasks), DOC-25 (versioning) |
 | **Last Updated** | 2026-07-31 |
@@ -62,9 +62,9 @@ Maturity levels are recorded per row in the **Maturity** column: `Design → Spe
 | C-02 | Admin Console | 🟦 Planned | Design | MS-10 (TASK-213…215) | None built |
 | C-03 | Public Verification Page | 🟦 Planned | Design | MS-09 (TASK-212) | None built |
 | C-04 | API Gateway / BFF | 🟨 In progress | Prototype | B-01 (route handlers) | Next.js route handlers (ADR-010) |
-| C-05 | Auth & Session Service | 🟦 Planned | Design | MS-08 (TASK-205) | Requires OPD-001 |
-| C-06 | Catalog & Curriculum Module | 🟦 Planned | Design | MS-08 (TASK-206) | Requires OPD-001/002 |
-| C-07 | Learning Engine | 🟦 Planned | Design | MS-08 (TASK-207) | Requires OPD-001/002/003 |
+| C-05 | Auth & Session Service | 🟩 Implemented (v0.1) | Prototype | B-02 (register/login/logout/sessions) | scrypt + DB sessions (ADR-010) |
+| C-06 | Catalog & Curriculum Module | 🟩 Implemented (v0.1) | Prototype | B-01 (stages/modules/lessons seeded from DOC-03) | Derived DB; content = SSOT |
+| C-07 | Learning Engine | 🟩 Implemented (v0.1) | Prototype | B-03 (lesson player renders content/ Markdown) | react-markdown + progress (ADR-010) |
 | C-08 | Assessment Module | 🟦 Planned | Design | MS-08/09 (TASK-208, 211) | Requires OPD-001/002 |
 | C-09 | Certification Module | 🟦 Planned | Design | MS-09 (TASK-212) | Requires C-08 |
 | C-10 | Progress & Analytics Module | 🟦 Planned | Design | MS-08/10 (TASK-209, 215) | Requires OPD-002 |
@@ -123,6 +123,7 @@ Maturity levels are recorded per row in the **Maturity** column: `Design → Spe
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.4 | 2026-08-01 | AGT-003 | Components C-01, C-04…C-07 Implemented (v0.1) after batches B-01…B-03 (CHG-006). |
 | 1.0.3 | 2026-08-01 | AGT-003 | Implementation phase: overall status In progress; C-01/C-04 In progress (B-01) (CHG-005). |
 | 1.0.2 | 2026-07-31 | AGT-002 | Artifact manifest: `content/` created with P1-A pilot (28 lessons In review); completed handovers include HDO-004 (CHG-004). |
 | 1.0.1 | 2026-07-31 | Project Foundation Architect | Artifact manifest extended: closure docs DOC-30…38, HDO-003; overall status updated (CHG-003). |

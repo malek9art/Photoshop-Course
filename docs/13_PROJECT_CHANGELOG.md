@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.4 |
+| **Version** | 1.0.5 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-07-31 |
@@ -107,7 +107,15 @@ Each entry uses this exact structure:
 - **Affected Documents:** DOC-13 (v1.0.4), DOC-14 (v1.0.2), DOC-28 (v1.0.2), DOC-26 (v1.0.2), PROJECT_STATE (v1.3.0), SYSTEM_MANIFEST (v1.0.3). New: `app/` (platform source).
 - **Version:** DOC-14/26/28 1.0.1 → 1.0.2; DOC-13 1.0.3 → 1.0.4; PROJECT_STATE 1.2.0 → 1.3.0; SYSTEM_MANIFEST 1.0.2 → 1.0.3.
 
-> **Next entry:** `CHG-006` — to be appended by the next agent that modifies the repository.
+### CHG-006 — 2026-08-01
+- **Agent:** AGT-003 (Lead Software Engineer)
+- **Task(s):** Implementation Batch 1 (B-01) + auth (B-02) + lesson player (B-03) — first runnable platform slice
+- **Description:** Created the real platform in `app/` per ADR-010: Next.js 15 (App Router, TypeScript, Tailwind 3) with RTL Arabic-first shell; DB via node:sqlite (users, sessions, stages, modules, lessons, enrollments, progress — DOC-05 subset); seed derives 8 stages/33 modules/156 lessons from docs/03 blueprint and maps 28 P1-A lessons to `content/` files; BFF route handlers (auth register/login/logout/me, progress with module/stage rollup); pages: home (continue learning + progress), catalog, stage detail, lesson player (react-markdown renders the P1-A lesson packages), login/register/profile. Build passes (`npm run build`), smoke-tested end-to-end (register→session→progress→profile). Demo users student@academy.ar / admin@academy.ar (local only).
+- **Reason:** User directive: implement the platform gradually in small runnable batches; this batch delivers structure, RTL responsive UI, navigation, user system, and the lesson player linked to existing content.
+- **Affected Documents:** PROJECT_STATE (v1.3.1), SYSTEM_MANIFEST (v1.0.4), this changelog (v1.0.5). New: `app/` source tree.
+- **Version:** DOC-13 1.0.4 → 1.0.5; PROJECT_STATE 1.3.0 → 1.3.1; SYSTEM_MANIFEST 1.0.3 → 1.0.4.
+
+> **Next entry:** `CHG-007` — to be appended by the next agent that modifies the repository.
 
 ---
 
@@ -115,6 +123,7 @@ Each entry uses this exact structure:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.5 | 2026-08-01 | AGT-003 | Batch B-01/B-02/B-03 recorded (CHG-006): first runnable platform slice (structure, RTL UI, navigation, auth, lesson player). |
 | 1.0.4 | 2026-08-01 | AGT-003 | Implementation phase kickoff recorded (CHG-005): ADR-010, OPD-001/002 resolved, `app/` created. |
 | 1.0.3 | 2026-07-31 | AGT-002 | P1-A pilot content recorded (CHG-004): 28 lessons + assessments; registries/state updated. |
 | 1.0.2 | 2026-07-31 | Project Foundation Architect | Foundation closure recorded (CHG-003): DOC-30…38, ADR-009, GATE-F1 PASS. |

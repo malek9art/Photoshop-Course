@@ -1,0 +1,20 @@
+# dependencies
+node_modules/
+
+# next.js
+.next/
+out/
+next-env.d.ts
+
+# local database (derived data — see DOC-05; regenerate via seed)
+data/
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# misc
+.DS_Store
+*.log
+.env*.local
+tsconfig.tsbuildinfo
