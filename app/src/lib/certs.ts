@@ -62,13 +62,19 @@ export function listCertificates(userId: string): CertRow[] {
   );
 }
 
-/** Auto-issue a certificate when a stage reaches 100% lesson completion (proxy gate). */
+/**
+ * Auto-issue a stage certificate per DOC-08 §7.1 eligibility:
+ *  - all stage lessons completed (progress)
+ *  - stage exam passed (AT-06, exam_attempts)
+ *  - stage project passed by rubric (AT-05, submissions status = passed)
+ * Idempotent (skips if certificate already issued).
+ */
 export function maybeIssueStageCert(userId: string, stageId: string): void {
   const certCode = stageCertCode(stageId);
   if (!certCode) return;
   if (get("SELECT id FROM certificates WHERE user_id = ? AND cert_code = ?", userId, certCode)) return;
 
-  const stage = get<{ title_ar: string }>("SELECT title_ar FROM stages WHERE id = ?", stageId);
+  // 1) Lessons 100%
   const total = (get(
     "SELECT COUNT(*) AS c FROM lessons l JOIN modules m ON m.id = l.module_id WHERE m.stage_id = ?",
     stageId
@@ -81,14 +87,33 @@ export function maybeIssueStageCert(userId: string, stageId: string): void {
     userId,
     stageId
   ) as any).c as number;
-  if (total > 0 && done >= total) {
-    run(
-      "INSERT INTO certificates (id, user_id, cert_code, title_ar, serial, status, issued_by) VALUES (?, ?, ?, ?, ?, 'active', 'auto')",
-      "c-" + Math.random().toString(36).slice(2, 12),
-      userId,
-      certCode,
-      stage?.title_ar ?? certTitle(certCode),
-      nextSerial()
-    );
-  }
+  if (total === 0 || done < total) return;
+
+  // 2) Stage exam passed (AT-06)
+  const examCode = `${stageId}-EXAM`;
+  const examPassed = get<{ c: number }>(
+    "SELECT COUNT(*) AS c FROM exam_attempts WHERE user_id = ? AND exam_code = ? AND passed = 1",
+    userId,
+    examCode
+  )?.c ?? 0;
+  if (examPassed === 0) return;
+
+  // 3) Stage project passed by rubric (AT-05)
+  const projectCode = `${stageId}-PROJECT`;
+  const projectPassed = get<{ c: number }>(
+    "SELECT COUNT(*) AS c FROM submissions WHERE user_id = ? AND project_code = ? AND status = 'passed'",
+    userId,
+    projectCode
+  )?.c ?? 0;
+  if (projectPassed === 0) return;
+
+  const stage = get<{ title_ar: string }>("SELECT title_ar FROM stages WHERE id = ?", stageId);
+  run(
+    "INSERT INTO certificates (id, user_id, cert_code, title_ar, serial, status, issued_by) VALUES (?, ?, ?, ?, ?, 'active', 'auto')",
+    "c-" + Math.random().toString(36).slice(2, 12),
+    userId,
+    certCode,
+    stage?.title_ar ?? certTitle(certCode),
+    nextSerial()
+  );
 }

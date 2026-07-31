@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.6 |
+| **Version** | 1.0.7 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-07-31 |
@@ -123,7 +123,15 @@ Each entry uses this exact structure:
 - **Affected Documents:** PROJECT_STATE (v1.3.2), SYSTEM_MANIFEST (v1.0.5), this changelog (v1.0.6). New: `app/` routes/libs.
 - **Version:** DOC-13 1.0.5 → 1.0.6; PROJECT_STATE 1.3.1 → 1.3.2; SYSTEM_MANIFEST 1.0.4 → 1.0.5.
 
-> **Next entry:** `CHG-008` — to be appended by the next agent that modifies the repository.
+### CHG-008 — 2026-08-01
+- **Agent:** AGT-003 (Lead Software Engineer)
+- **Task(s):** Implementation Batch B-07 (final batch of the platform core)
+- **Description:** **Exams (AT-06):** parser for `content/` STG-*-EXAM.md (30 items, config per header: pass ≥75%, 2 attempts, 7-day cooldown — DOC-08 §4/§5); `/api/exam/[code]` GET (items without answers + attempt state) + POST (enforce attempts/cooldown 403/429, grade, record `exam_attempts`, re-evaluate cert on pass); `/exam/[code]` player (one-question-per-view, review screen, DOC-04 SCR-12). **Rubric grading (AT-05):** parser for STG-*-PROJECT.md rubric (4 criteria, 1–4 scale); `/admin/projects` grading UI (GradeForm) + `/api/admin/grade-submission` (records `grades`, verdict avg ≥ 3.0 & no criterion = 1 — DOC-08 §6.3; status passed/returned). **Certificates (DOC-08 §7):** full gating in `maybeIssueStageCert` (lessons 100% + exam passed + project passed); revocation with reason (SCR-25) via `/api/admin/revoke-certificate` + admin UI; **public verification page (SCR-05)**: `/verify` + `/verify/[serial]` (valid/revoked/not-found, holder, title, serial, issue date, authority — bilingual RTL); verify link on certificate cards (SCR-15). DB: `exam_attempts` + `grades` tables + `certificates.revoked_reason` (additive migration).
+- **Reason:** Complete the platform core per batch plan (B-07) and the execution priorities (tests → projects/certificates → admin → database), keeping everything doc-driven (DOC-03 §15, DOC-04 SCR-05/12/25, DOC-08 §4–§8).
+- **Affected Documents:** PROJECT_STATE (v1.3.3), SYSTEM_MANIFEST (v1.0.6), this changelog (v1.0.7). New: `app/` routes/libs (see commit).
+- **Version:** DOC-13 1.0.6 → 1.0.7; PROJECT_STATE 1.3.2 → 1.3.3; SYSTEM_MANIFEST 1.0.5 → 1.0.6.
+
+> **Next entry:** `CHG-009` — to be appended by the next agent that modifies the repository.
 
 ---
 
@@ -131,6 +139,7 @@ Each entry uses this exact structure:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.7 | 2026-08-01 | AGT-003 | Batch B-07 recorded (CHG-008): exams (AT-06), rubric grading (AT-05), public verification (SCR-05), revocation, full cert gating. |
 | 1.0.6 | 2026-08-01 | AGT-003 | Batches B-04…B-06 recorded (CHG-007): quiz system, projects & certificates, admin dashboard. |
 | 1.0.5 | 2026-08-01 | AGT-003 | Batch B-01/B-02/B-03 recorded (CHG-006): first runnable platform slice (structure, RTL UI, navigation, auth, lesson player). |
 | 1.0.4 | 2026-08-01 | AGT-003 | Implementation phase kickoff recorded (CHG-005): ADR-010, OPD-001/002 resolved, `app/` created. |

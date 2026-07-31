@@ -7,7 +7,7 @@
 | **Title** | System Manifest |
 | **Purpose** | The authoritative, live registry of the implementation state of every system component, subsystem, and repository artifact. DOC-02 describes the *designed* system; this manifest records *what actually exists* and its maturity. It is the first place a platform agent checks before touching any subsystem. |
 | **Owner** | Lead Architect (role) |
-| **Version** | 1.0.5 |
+| **Version** | 1.0.6 |
 | **Status** | Active |
 | **Dependencies** | DOC-02 (component/subsystem definitions), DOC-05 (entities), DOC-09 (roadmap), DOC-11 (tasks), DOC-25 (versioning) |
 | **Last Updated** | 2026-07-31 |
@@ -65,8 +65,8 @@ Maturity levels are recorded per row in the **Maturity** column: `Design → Spe
 | C-05 | Auth & Session Service | 🟩 Implemented (v0.1) | Prototype | B-02 (register/login/logout/sessions) | scrypt + DB sessions (ADR-010) |
 | C-06 | Catalog & Curriculum Module | 🟩 Implemented (v0.1) | Prototype | B-01 (stages/modules/lessons seeded from DOC-03) | Derived DB; content = SSOT |
 | C-07 | Learning Engine | 🟩 Implemented (v0.1) | Prototype | B-03 (lesson player renders content/ Markdown) | react-markdown + progress (ADR-010) |
-| C-08 | Assessment Module | 🟩 Implemented (v0.2) | Prototype | B-04 (quiz engine: parsing, grading, attempts) | /api/quiz + QuizPlayer (ADR-010) |
-| C-09 | Certification Module | 🟩 Implemented (v0.1) | Prototype | B-05 (issuance, serials ACA-YYYY-NNNNN, auto on stage 100%) | certs.ts + /certificates (ADR-010) |
+| C-08 | Assessment Module | 🟩 Implemented (v0.3) | Prototype | B-04 (quiz) + B-07 (exams AT-06: attempts, cooldown, grading) | /api/quiz + /api/exam (ADR-010) |
+| C-09 | Certification Module | 🟩 Implemented (v0.2) | Prototype | B-05 (issuance, serials) + B-07 (full gating DOC-08 §7.1, revocation, public verify SCR-05) | certs.ts + /certificates + /verify (ADR-010) |
 | C-10 | Progress & Analytics Module | 🟦 Planned | Design | MS-08/10 (TASK-209, 215) | Requires OPD-002 |
 | C-11 | User & Access Module | 🟦 Planned | Design | MS-08 (TASK-205) | Requires OPD-001 |
 | C-12 | Content Management Module | 🟦 Planned | Design | MS-10 (TASK-214) | Requires OPD-002 |
@@ -123,6 +123,7 @@ Maturity levels are recorded per row in the **Maturity** column: `Design → Spe
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.6 | 2026-08-01 | AGT-003 | C-08 v0.3 (exams AT-06) and C-09 v0.2 (full gating, revocation, /verify) after batch B-07 (CHG-008). |
 | 1.0.5 | 2026-08-01 | AGT-003 | Components C-08 (quiz), C-09 (certificates), C-10/C-11 partial Implemented after batches B-04…B-06 (CHG-007). |
 | 1.0.4 | 2026-08-01 | AGT-003 | Components C-01, C-04…C-07 Implemented (v0.1) after batches B-01…B-03 (CHG-006). |
 | 1.0.3 | 2026-08-01 | AGT-003 | Implementation phase: overall status In progress; C-01/C-04 In progress (B-01) (CHG-005). |

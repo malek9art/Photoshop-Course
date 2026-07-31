@@ -4,6 +4,7 @@ import { Card, ProgressBar, DifficultyBadge, LessonStateBadge } from "@/componen
 import { getStage, listModulesWithLessons, listLessons } from "@/lib/data";
 import { getCurrentUser } from "@/lib/auth";
 import { buildQuizPathMap } from "@/lib/quiz";
+import { buildExamPathMap } from "@/lib/exam";
 
 export const dynamic = "force-dynamic";
 
@@ -15,6 +16,7 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
 
   const modules = listModulesWithLessons(stageId, user?.id);
   const quizzes = buildQuizPathMap();
+  const exams = buildExamPathMap();
 
   return (
     <div className="space-y-8">
@@ -30,6 +32,11 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
         <p className="mt-3 text-sm text-neutral-600">
           {stage.module_count} وحدات · {stage.lesson_count} دروس · {stage.effort_hours ?? "—"} ساعات تقديرية
         </p>
+        {exams.has(`${stage.id}-EXAM`) && (
+          <Link href={`/exam/${stage.id}-EXAM`} className="btn-outline mt-4">
+            📋 اختبار المرحلة (AT-06) — {stage.id}-EXAM
+          </Link>
+        )}
       </header>
 
       <div className="space-y-6">

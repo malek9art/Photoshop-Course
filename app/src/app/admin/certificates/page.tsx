@@ -15,7 +15,7 @@ export default async function AdminCertsPage() {
   getDb();
   const users = all<{ id: string; email: string; name: string }>("SELECT id, email, name FROM users ORDER BY name");
   const certs = all<{
-    id: string; user_id: string; cert_code: string; title_ar: string; serial: string; status: string; issued_at: string;
+    id: string; user_id: string; cert_code: string; title_ar: string; serial: string; status: string; issued_at: string; revoked_reason: string | null;
   }>("SELECT * FROM certificates ORDER BY issued_at DESC LIMIT 50");
 
   return (
@@ -59,11 +59,12 @@ export default async function AdminCertsPage() {
                 <th className="px-4 py-2 font-bold text-neutral-700">النوع</th>
                 <th className="px-4 py-2 font-bold text-neutral-700">التاريخ</th>
                 <th className="px-4 py-2 font-bold text-neutral-700">الحالة</th>
+                <th className="px-4 py-2 font-bold text-neutral-700">إجراءات</th>
               </tr>
             </thead>
             <tbody>
               {certs.length === 0 && (
-                <tr><td colSpan={5} className="px-4 py-4 text-center text-neutral-500">لا شهادات بعد</td></tr>
+                <tr><td colSpan={6} className="px-4 py-4 text-center text-neutral-500">لا شهادات بعد</td></tr>
               )}
               {certs.map((c) => (
                 <tr key={c.id} className="border-t border-neutral-200">
@@ -72,7 +73,18 @@ export default async function AdminCertsPage() {
                   <td className="px-4 py-2 text-neutral-700">{c.cert_code}</td>
                   <td className="px-4 py-2 text-neutral-500">{new Date(c.issued_at + "Z").toLocaleDateString("ar-SA")}</td>
                   <td className="px-4 py-2">
-                    <span className={`badge ${c.status === "active" ? "badge-green" : "badge-amber"}`}>{c.status === "active" ? "سارية" : "ملغاة"}</span>
+                    <span className={`badge ${c.status === "active" ? "badge-green" : "badge-amber"}`}>
+                      {c.status === "active" ? "سارية" : `ملغاة${c.revoked_reason ? `: ${c.revoked_reason}` : ""}`}
+                    </span>
+                  </td>
+                  <td className="px-4 py-2">
+                    {c.status === "active" && (
+                      <form method="post" action="/api/admin/revoke-certificate" className="flex items-center gap-2">
+                        <input type="hidden" name="cert_id" value={c.id} />
+                        <input name="reason" required placeholder="سبب الإلغاء (مسجَّل)" className="input max-w-[160px] py-1.5 text-xs" />
+                        <button type="submit" className="btn-outline text-xs text-red-700 hover:bg-red-50">إلغاء</button>
+                      </form>
+                    )}
                   </td>
                 </tr>
               ))}

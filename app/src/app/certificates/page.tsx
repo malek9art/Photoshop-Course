@@ -1,5 +1,6 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
-import { Card, ProgressBar } from "@/components/ui";
+import { Card } from "@/components/ui";
 import { getCurrentUser } from "@/lib/auth";
 import { listCertificates } from "@/lib/certs";
 
@@ -46,7 +47,13 @@ export default async function CertificatesPage() {
                   <dd className="font-semibold text-primary-700">{c.status === "active" ? "سارية" : "ملغاة"}</dd>
                 </div>
               </dl>
-              <p className="mt-4 text-[10px] text-neutral-400">وثيقة رسمية من أكاديمية أدوبي الإبداعية — يُتحقق منها عبر الرقم التسلسلي.</p>
+              <Link
+                href={`/verify/${c.serial}`}
+                className="btn-outline mt-4 w-full justify-center text-xs"
+              >
+                🔍 صفحة التحقق العامة (SCR-05)
+              </Link>
+              <p className="mt-3 text-[10px] text-neutral-400">وثيقة رسمية من أكاديمية أدوبي الإبداعية — يُتحقق منها عبر الرقم التسلسلي.</p>
             </Card>
           ))}
         </div>

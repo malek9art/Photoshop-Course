@@ -112,7 +112,36 @@ CREATE TABLE IF NOT EXISTS submissions (
   updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
 );
 CREATE INDEX IF NOT EXISTS idx_submissions_user ON submissions(user_id);
+
+CREATE TABLE IF NOT EXISTS exam_attempts (     -- ENT-ATTEMPT (DOC-05) for AT-06
+  id           TEXT PRIMARY KEY,
+  user_id      TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  exam_code    TEXT NOT NULL,                  -- STG-01-EXAM
+  score_pct    INTEGER NOT NULL,
+  passed       INTEGER NOT NULL,
+  answers_json TEXT NOT NULL,
+  created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_exam_attempts_user ON exam_attempts(user_id);
+
+CREATE TABLE IF NOT EXISTS grades (            -- ENT-GRADE (DOC-05) for AT-05 rubric grading
+  id             TEXT PRIMARY KEY,
+  submission_id  TEXT NOT NULL REFERENCES submissions(id) ON DELETE CASCADE,
+  rubric_version TEXT NOT NULL DEFAULT '1.0.0',
+  per_criterion  TEXT NOT NULL,                -- JSON: [{criterion, score}]
+  score_avg      REAL NOT NULL,
+  passed         INTEGER NOT NULL,
+  feedback       TEXT,
+  graded_by      TEXT NOT NULL,
+  graded_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_grades_submission ON grades(submission_id);
 `;
+
+// Lightweight additive migration (idempotent) for columns added after first creation.
+const ADD_COLUMNS: Array<[string, string, string]> = [
+  ["certificates", "revoked_reason", "TEXT"], // DOC-08 §7.3: revocation with reason (audited)
+];
 
 export function getDb(): DatabaseSync {
   if (db) return db;
@@ -121,6 +150,12 @@ export function getDb(): DatabaseSync {
   db.exec("PRAGMA journal_mode = WAL;");
   db.exec("PRAGMA foreign_keys = ON;");
   db.exec(SCHEMA);
+  for (const [table, col, type] of ADD_COLUMNS) {
+    const cols = db.prepare(`PRAGMA table_info(${table})`).all() as Array<{ name: string }>;
+    if (!cols.some((c) => c.name === col)) {
+      db.exec(`ALTER TABLE ${table} ADD COLUMN ${col} ${type}`);
+    }
+  }
   return db;
 }
 
