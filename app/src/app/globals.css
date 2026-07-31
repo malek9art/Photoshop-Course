@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ===== DOC-06 design tokens (interim values; OPD-007) ===== */
+:root {
+  --color-primary-600: #0d9488;
+  --color-primary-700: #0f766e;
+  --color-primary-800: #115e59;
+  --color-accent-500: #f59e0b;
+  --color-neutral-900: #1c1917;
+}
+
+@layer base {
+  html {
+    /* RTL-first (ADR-003 / DOC-06 §9): logical direction handled by dir="rtl" on <html> */
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-neutral-50 text-neutral-800 antialiased;
+    font-feature-settings: "kern";
+  }
+  /* Arabic line-height (DOC-06 §4.2): taller for Arabic script */
+  h1, h2, h3, h4, h5, h6 {
+    @apply text-neutral-900;
+    line-height: 1.6;
+  }
+  p {
+    line-height: 1.9;
+  }
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-primary-600;
+  }
+}
+
+@layer components {
+  .container-app {
+    @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  }
+  .card {
+    @apply rounded-xl border border-neutral-200 bg-white shadow-sm;
+  }
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors focus-visible:outline-2 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-primary-700 text-white hover:bg-primary-800;
+  }
+  .btn-outline {
+    @apply btn border border-neutral-300 bg-white text-neutral-700 hover:bg-neutral-100;
+  }
+  .btn-ghost {
+    @apply btn text-neutral-600 hover:bg-neutral-100;
+  }
+  .input {
+    @apply w-full rounded-lg border border-neutral-300 bg-white px-3 py-2.5 text-sm text-neutral-800 placeholder:text-neutral-400 focus:border-primary-600 focus:outline-none;
+  }
+  .label {
+    @apply mb-1.5 block text-sm font-medium text-neutral-700;
+  }
+  .badge {
+    @apply inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-semibold;
+  }
+  .badge-green {
+    @apply badge bg-primary-100 text-primary-800;
+  }
+  .badge-amber {
+    @apply badge bg-accent-100 text-accent-700;
+  }
+  .badge-gray {
+    @apply badge bg-neutral-100 text-neutral-600;
+  }
+  .prose-ar {
+    @apply text-neutral-800;
+  }
+  .prose-ar h1, .prose-ar h2, .prose-ar h3 {
+    @apply mt-6 mb-2 font-bold text-neutral-900;
+  }
+  .prose-ar h2 {
+    @apply border-b border-neutral-200 pb-1 text-xl;
+  }
+  .prose-ar h3 {
+    @apply text-lg;
+  }
+  .prose-ar p {
+    @apply my-3;
+  }
+  .prose-ar ul, .prose-ar ol {
+    @apply my-3 space-y-1 pr-5;
+  }
+  .prose-ar ul { @apply list-disc; }
+  .prose-ar ol { @apply list-decimal; }
+  .prose-ar table {
+    @apply my-4 w-full overflow-hidden rounded-lg border border-neutral-200 text-sm;
+  }
+  .prose-ar th {
+    @apply bg-neutral-100 px-3 py-2 text-right font-bold text-neutral-800;
+  }
+  .prose-ar td {
+    @apply border-t border-neutral-200 px-3 py-2 align-top;
+  }
+  .prose-ar blockquote {
+    @apply my-4 border-r-4 border-primary-200 bg-primary-50/50 px-4 py-2 text-neutral-700;
+  }
+  .prose-ar code {
+    @apply rounded bg-neutral-100 px-1.5 py-0.5 text-sm text-primary-800;
+  }
+  .prose-ar a {
+    @apply text-primary-700 underline underline-offset-2 hover:text-primary-800;
+  }
+  .prose-ar hr {
+    @apply my-6 border-neutral-200;
+  }
+}
