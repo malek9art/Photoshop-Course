@@ -2,13 +2,19 @@ import Link from "next/link";
 import { Brand } from "./ui";
 import type { User } from "@/lib/auth";
 
-const NAV = [
-  { href: "/", label: "الرئيسية" },
-  { href: "/catalog", label: "المكتبة" },
-  { href: "/profile", label: "تقدمي" },
-];
+function buildNav(user: User | null) {
+  const items = [
+    { href: "/", label: "الرئيسية" },
+    { href: "/catalog", label: "المكتبة" },
+    { href: "/certificates", label: "شهاداتي" },
+    { href: "/projects", label: "المشاريع" },
+  ];
+  if (user?.role === "admin") items.push({ href: "/admin", label: "الإدارة" });
+  return items;
+}
 
 export async function Header({ user }: { user: User | null }) {
+  const NAV = buildNav(user);
   return (
     <header className="sticky top-0 z-40 border-b border-neutral-200 bg-white/95 backdrop-blur">
       <div className="container-app flex h-16 items-center justify-between gap-4">
@@ -52,15 +58,17 @@ export async function Header({ user }: { user: User | null }) {
 }
 
 /** Mobile bottom navigation (DOC-04 §12): max 5 items, RTL. */
-export function BottomNav() {
+export function BottomNav({ isAdmin = false }: { isAdmin?: boolean }) {
   const items = [
     { href: "/", label: "الرئيسية", icon: "🏠" },
     { href: "/catalog", label: "المكتبة", icon: "📚" },
-    { href: "/profile", label: "حسابي", icon: "👤" },
+    { href: "/certificates", label: "شهاداتي", icon: "🎓" },
+    { href: "/projects", label: "المشاريع", icon: "🛠️" },
+    ...(isAdmin ? [{ href: "/admin", label: "الإدارة", icon: "📊" }] : []),
   ];
   return (
     <nav className="fixed inset-x-0 bottom-0 z-40 border-t border-neutral-200 bg-white pb-[env(safe-area-inset-bottom)] md:hidden" aria-label="التنقل السفلي">
-      <div className="grid grid-cols-3">
+      <div className="grid" style={{ gridTemplateColumns: `repeat(${items.length}, minmax(0, 1fr))` }}>
         {items.map((item) => (
           <Link key={item.href} href={item.href} className="flex flex-col items-center gap-0.5 py-2.5 text-xs font-medium text-neutral-600 hover:text-primary-800">
             <span aria-hidden="true" className="text-lg">{item.icon}</span>

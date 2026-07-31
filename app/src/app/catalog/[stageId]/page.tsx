@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { Card, ProgressBar, DifficultyBadge, LessonStateBadge } from "@/components/ui";
 import { getStage, listModulesWithLessons, listLessons } from "@/lib/data";
 import { getCurrentUser } from "@/lib/auth";
+import { buildQuizPathMap } from "@/lib/quiz";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
   if (!stage) notFound();
 
   const modules = listModulesWithLessons(stageId, user?.id);
+  const quizzes = buildQuizPathMap();
 
   return (
     <div className="space-y-8">
@@ -50,6 +52,12 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
                   <ProgressBar percent={percent} className="max-w-xs" />
                   <span className="text-xs text-neutral-500">{percent}% مكتمل</span>
                 </div>
+              )}
+
+              {quizzes.has(`QUIZ-${mod.id}`) && (
+                <Link href={`/quiz/QUIZ-${mod.id}`} className="mt-4 inline-flex items-center gap-2 rounded-lg border border-accent-300 bg-accent-50 px-4 py-2 text-sm font-semibold text-accent-700 hover:bg-accent-100">
+                  <span aria-hidden="true">📝</span> اختبار الوحدة (QUIZ-{mod.id})
+                </Link>
               )}
 
               <ol className="mt-5 space-y-2">

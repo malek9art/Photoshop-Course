@@ -7,7 +7,7 @@
 | **Title** | Project State |
 | **Purpose** | The single "where are we right now?" document. It holds the current phase, milestone/task/decision/risk snapshots, the state-update protocol every agent must follow after each task, and the precise next actions before Phase 1 begins. |
 | **Owner** | Project Manager (role) |
-| **Version** | 1.3.1 |
+| **Version** | 1.3.2 |
 | **Status** | Active |
 | **Dependencies** | DOC-09 (roadmap), DOC-11 (tasks), DOC-14 (decisions), DOC-15 (risks), DOC-18 (manifest), DOC-13 (changelog) |
 | **Last Updated** | 2026-07-31 |
@@ -126,9 +126,10 @@ PROJECT_STATE exists so that any agent can answer in under two minutes: *what ph
 | B-01 | Project structure (`app/`), RTL responsive base UI, navigation shell, DB schema + seed from DOC-03/content | ✅ Done (2026-08-01) |
 | B-02 | User system: register/login/profile/progress (sessions, scrypt) | ✅ Done (2026-08-01) |
 | B-03 | Lesson player linked to `content/` (Markdown) + progress tracking | ✅ Done (2026-08-01) |
-| B-04 | Quiz system (module quizzes from content/quiz files, scoring, attempts) | ⬜ Planned |
-| B-05 | Projects & certificates (rubric grading UI, certificate records) | ⬜ Planned |
-| B-06 | Admin dashboard (content/curriculum/users/analytics) | ⬜ Planned |
+| B-04 | Quiz system (module quizzes from content/quiz files, scoring, attempts) | ✅ Done (2026-08-01) |
+| B-05 | Projects & certificates (rubric grading UI, certificate records) | ✅ Done (2026-08-01) — submissions + issuance live; rubric grading UI pending B-08 |
+| B-06 | Admin dashboard (content/curriculum/users/analytics) | ✅ Done (2026-08-01) — stats/users/attempts/submissions/certificate issuance |
+| B-07 | Database consolidation + remaining modules until complete | 🟨 In progress (schema B-01…B-06 consolidated; remaining: exams/AT-06, rubric grading, verification page, public certificate verify) |
 | B-07 | Database consolidation + remaining modules until complete | ⬜ Planned |
 
 The next agent must:
@@ -183,6 +184,7 @@ The next agent must:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.3.2 | 2026-08-01 | AGT-003 | Batches B-04…B-06 completed (CHG-007): quiz system, projects & certificates, admin dashboard. B-07 in progress. |
 | 1.3.1 | 2026-08-01 | AGT-003 | Batches B-01…B-03 completed (CHG-006): first runnable slice — structure, RTL UI, navigation, auth, lesson player. |
 | 1.3.0 | 2026-08-01 | AGT-003 | Implementation phase started (ADR-010, CHG-005): phase fields, MS-08 in progress, batch plan B-01…B-07 in §8. |
 | 1.2.0 | 2026-07-31 | AGT-002 | P1-A pilot produced (TASK-103): content state updated (28 lessons In review), task snapshot 42/74, §8 rewritten as Phase-1 continuation (CHG-004). |

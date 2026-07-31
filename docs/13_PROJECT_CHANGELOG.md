@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.5 |
+| **Version** | 1.0.6 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-07-31 |
@@ -115,7 +115,15 @@ Each entry uses this exact structure:
 - **Affected Documents:** PROJECT_STATE (v1.3.1), SYSTEM_MANIFEST (v1.0.4), this changelog (v1.0.5). New: `app/` source tree.
 - **Version:** DOC-13 1.0.4 → 1.0.5; PROJECT_STATE 1.3.0 → 1.3.1; SYSTEM_MANIFEST 1.0.3 → 1.0.4.
 
-> **Next entry:** `CHG-007` — to be appended by the next agent that modifies the repository.
+### CHG-007 — 2026-08-01
+- **Agent:** AGT-003 (Lead Software Engineer)
+- **Task(s):** Implementation Batches B-04 (quiz system), B-05 (projects & certificates), B-06 (admin dashboard)
+- **Description:** **B-04 Quiz system:** parser for the `content/` QUIZ-MOD-*.md packages (item format per DOC-07 §5), API `/api/quiz/[code]` (GET draws 8 items without answers; POST grades, returns explanations, records `quiz_attempts`), player UI `/quiz/[code]` (one-question-per-view, instant feedback, final score vs pass 70%), module quiz links on stage pages. **B-05 Projects & certificates:** `certificates` + `submissions` tables; `/certificates` (serials ACA-YYYY-NNNNN per DOC-08 §7.2), auto-issue on 100% stage completion (proxy gate; refined when exams land), audited admin issuance `/admin/certificates` + API; `/projects` lists STG-*-PROJECT briefs from `content/` and accepts submissions via `/api/projects`. **B-06 Admin dashboard:** `/admin` (role-gated): stats (users/lessons/attempts/submissions/certificates), users table, quiz attempts, submissions. Navigation extended (شهاداتي/المشاريع/الإدارة) incl. mobile bottom nav. `npm run build` passes; end-to-end smoke-tested (quiz grading, admin issuance, auto-certificate, submission, progress rollup).
+- **Reason:** Continue platform implementation in small runnable batches per user directive (priorities 6–8 of the execution list).
+- **Affected Documents:** PROJECT_STATE (v1.3.2), SYSTEM_MANIFEST (v1.0.5), this changelog (v1.0.6). New: `app/` routes/libs.
+- **Version:** DOC-13 1.0.5 → 1.0.6; PROJECT_STATE 1.3.1 → 1.3.2; SYSTEM_MANIFEST 1.0.4 → 1.0.5.
+
+> **Next entry:** `CHG-008` — to be appended by the next agent that modifies the repository.
 
 ---
 
@@ -123,6 +131,7 @@ Each entry uses this exact structure:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.0.6 | 2026-08-01 | AGT-003 | Batches B-04…B-06 recorded (CHG-007): quiz system, projects & certificates, admin dashboard. |
 | 1.0.5 | 2026-08-01 | AGT-003 | Batch B-01/B-02/B-03 recorded (CHG-006): first runnable platform slice (structure, RTL UI, navigation, auth, lesson player). |
 | 1.0.4 | 2026-08-01 | AGT-003 | Implementation phase kickoff recorded (CHG-005): ADR-010, OPD-001/002 resolved, `app/` created. |
 | 1.0.3 | 2026-07-31 | AGT-002 | P1-A pilot content recorded (CHG-004): 28 lessons + assessments; registries/state updated. |

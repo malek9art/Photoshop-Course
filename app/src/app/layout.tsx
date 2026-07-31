@@ -30,7 +30,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="min-h-screen pb-20 md:pb-0">
         <Header user={user} />
         <main className="container-app py-6 md:py-10">{children}</main>
-        <BottomNav />
+        <BottomNav isAdmin={user?.role === "admin"} />
       </body>
     </html>
   );

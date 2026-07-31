@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 import { get, run } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
+import { maybeIssueStageCert } from "@/lib/certs";
 
 export const runtime = "nodejs";
 
@@ -92,5 +93,8 @@ function recomputeModule(userId: string, moduleId: string) {
       stagePercent >= 100 ? "completed" : stagePercent > 0 ? "in_progress" : "not_started",
       stagePercent
     );
+
+    // Auto-issue the stage certificate when 100% lessons completed (DOC-08 §7; proxy gate until exams land).
+    maybeIssueStageCert(userId, stage.stage_id);
   }
 }

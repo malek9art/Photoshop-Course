@@ -87,6 +87,31 @@ CREATE TABLE IF NOT EXISTS progress (
   UNIQUE(user_id, target_type, target_id)
 );
 CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id);
+
+CREATE TABLE IF NOT EXISTS certificates (
+  id         TEXT PRIMARY KEY,
+  user_id    TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  cert_code  TEXT NOT NULL,               -- CERT-01..08 (DOC-03 §16)
+  title_ar   TEXT NOT NULL,
+  serial     TEXT NOT NULL UNIQUE,        -- ACA-YYYY-NNNNN (DOC-08 §7.2)
+  status     TEXT NOT NULL DEFAULT 'active',   -- active | revoked
+  issued_by  TEXT NOT NULL DEFAULT 'auto',
+  issued_at  TEXT NOT NULL DEFAULT (datetime('now')),
+  revoked_at TEXT
+);
+CREATE INDEX IF NOT EXISTS idx_certs_user ON certificates(user_id);
+
+CREATE TABLE IF NOT EXISTS submissions (
+  id           TEXT PRIMARY KEY,
+  user_id      TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  project_code TEXT NOT NULL,             -- STG-01-PROJECT (DOC-03 §16/AT-05)
+  title        TEXT NOT NULL,
+  note         TEXT,
+  status       TEXT NOT NULL DEFAULT 'submitted',  -- submitted | in_review | passed | returned
+  created_at   TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_submissions_user ON submissions(user_id);
 `;
 
 export function getDb(): DatabaseSync {
