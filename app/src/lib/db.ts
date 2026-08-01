@@ -20,7 +20,7 @@ export function getDb(): Pool {
   globalForDb.acaPool = new Pool({
     connectionString,
     ssl,
-    max: Number(process.env.DATABASE_POOL_MAX ?? 10),
+    max: Number(process.env.DATABASE_POOL_MAX ?? 5),
     idleTimeoutMillis: Number(process.env.DATABASE_POOL_IDLE_TIMEOUT_MS ?? 30_000),
     connectionTimeoutMillis: Number(process.env.DATABASE_CONNECT_TIMEOUT_MS ?? 10_000),
   });

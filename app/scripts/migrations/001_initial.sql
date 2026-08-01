@@ -1,7 +1,7 @@
 -- Adobe Creative Academy: PostgreSQL initial schema
--- The table/column names, foreign keys, unique constraints, and indexes mirror
--- the pre-existing SQLite schema. All timestamps remain TEXT to preserve the
--- application's current serialization contract.
+-- The table/column names, foreign keys, unique constraints, and indexes preserve
+-- the application's existing data model. All timestamps remain TEXT to preserve
+-- the current serialization contract.
 
 CREATE TABLE IF NOT EXISTS users (
   id            TEXT PRIMARY KEY,
