@@ -23,20 +23,20 @@ export async function POST(req: NextRequest) {
   if (password.length < 8) {
     return NextResponse.redirect(new URL("/register?error=short", req.url));
   }
-  if (get("SELECT id FROM users WHERE email = ?", email)) {
+  if (await get("SELECT id FROM users WHERE email = $1", email)) {
     return NextResponse.redirect(new URL("/register?error=taken", req.url));
   }
 
   const userId = "u-" + randomBytes(8).toString("hex");
-  run(
-    "INSERT INTO users (id, email, name, password_hash, role) VALUES (?, ?, ?, ?, 'student')",
+  await run(
+    "INSERT INTO users (id, email, name, password_hash, role) VALUES ($1, $2, $3, $4, 'student')",
     userId,
     email,
     name || email.split("@")[0],
     hashPassword(password)
   );
 
-  const token = createSession(userId);
+  const token = await createSession(userId);
   await setSessionCookie(token);
   return NextResponse.redirect(new URL(next, req.url));
 }

@@ -97,16 +97,16 @@ function parseBlueprint(): { stages: any[]; modules: ModRow[] } {
   return { stages, modules };
 }
 
-export function seed(): { stages: number; modules: number; lessons: number } {
-  const db = getDb();
+export async function seed(): Promise<{ stages: number; modules: number; lessons: number }> {
+  getDb();
   const { stages, modules } = parseBlueprint();
   const lessonPaths = buildLessonPathMap();
 
-  transaction(() => {
+  await transaction(async () => {
     for (const [i, s] of stages.entries()) {
-      run(
+      await run(
         `INSERT INTO stages (id, title_ar, title_en, difficulty, effort_hours, position)
-         VALUES (?, ?, ?, ?, ?, ?)
+         VALUES ($1, $2, $3, $4, $5, $6)
          ON CONFLICT(id) DO UPDATE SET title_ar=excluded.title_ar, difficulty=excluded.difficulty, effort_hours=excluded.effort_hours`,
         s.id,
         STAGE_AR[s.id] ?? s.titleEn,
@@ -118,9 +118,9 @@ export function seed(): { stages: number; modules: number; lessons: number } {
     }
     for (const mod of modules) {
       const stageId = mod.mod.slice(0, 6).replace("MOD", "STG"); // MOD-0101 -> STG-01
-      run(
+      await run(
         `INSERT INTO modules (id, stage_id, title_ar, title_en, difficulty, position)
-         VALUES (?, ?, ?, ?, ?, ?)
+         VALUES ($1, $2, $3, $4, $5, $6)
          ON CONFLICT(id) DO UPDATE SET title_ar=excluded.title_ar, title_en=excluded.title_en, difficulty=excluded.difficulty`,
         mod.mod,
         stageId,
@@ -132,9 +132,9 @@ export function seed(): { stages: number; modules: number; lessons: number } {
       for (const [j, l] of mod.lessons.entries()) {
         const contentPath = lessonPaths.get(l.code) ?? null;
         const status = contentPath ? "in_review" : "not_started";
-        run(
+        await run(
           `INSERT INTO lessons (id, module_id, title_ar, title_en, position, content_path, duration_min, status)
-           VALUES (?, ?, ?, ?, ?, ?, NULL, ?)
+           VALUES ($1, $2, $3, $4, $5, $6, NULL, $7)
            ON CONFLICT(id) DO UPDATE SET content_path=excluded.content_path, status=excluded.status, title_ar=excluded.title_ar`,
           l.code,
           mod.mod,
@@ -149,9 +149,9 @@ export function seed(): { stages: number; modules: number; lessons: number } {
   }); // end transaction
 
   // demo users (local testing only)
-  if (!get("SELECT id FROM users WHERE email = ?", "admin@academy.ar")) {
-    run(
-      "INSERT INTO users (id, email, name, password_hash, role) VALUES (?, ?, ?, ?, ?)",
+  if (!await get("SELECT id FROM users WHERE email = $1", "admin@academy.ar")) {
+    await run(
+      "INSERT INTO users (id, email, name, password_hash, role) VALUES ($1, $2, $3, $4, $5)",
       "u-admin",
       "admin@academy.ar",
       "مدير الأكاديمية",
@@ -159,9 +159,9 @@ export function seed(): { stages: number; modules: number; lessons: number } {
       "admin"
     );
   }
-  if (!get("SELECT id FROM users WHERE email = ?", "student@academy.ar")) {
-    run(
-      "INSERT INTO users (id, email, name, password_hash, role) VALUES (?, ?, ?, ?, ?)",
+  if (!await get("SELECT id FROM users WHERE email = $1", "student@academy.ar")) {
+    await run(
+    await   "INSERT INTO users (id, email, name, password_hash, role) VALUES ($1, $2, $3, $4, $5)",
       "u-student",
       "student@academy.ar",
       "طالب تجريبي",
@@ -170,6 +170,6 @@ export function seed(): { stages: number; modules: number; lessons: number } {
     );
   }
 
-  const count = (t: string) => (get(`SELECT COUNT(*) AS c FROM ${t}`) as any).c as number;
-  return { stages: count("stages"), modules: count("modules"), lessons: count("lessons") };
+  const count = async (t: string) => (await get<{ c: number }>(`SELECT COUNT(*)::int AS c FROM ${t}`))?.c ?? 0;
+  return { stages: await count("stages"), modules: await count("modules"), lessons: await count("lessons") };
 }

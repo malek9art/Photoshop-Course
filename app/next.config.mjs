@@ -1,8 +1,15 @@
+import path from "node:path";
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  outputFileTracingRoot: process.cwd().replace(/\/app$/, ''),
-  serverExternalPackages: [],
+  // The application reads versioned content from the repository parent.
+  outputFileTracingRoot: path.join(process.cwd(), ".."),
+  outputFileTracingIncludes: {
+    "/*": ["../content/**/*"],
+  },
+  // Keep node-postgres in the Node.js server bundle on Vercel.
+  serverExternalPackages: ["pg"],
 };
 
 export default nextConfig;

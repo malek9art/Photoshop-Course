@@ -1,8 +1,7 @@
 /**
- * Auth — session-based authentication (ADR-010).
- * - Password hashing: node:crypto scrypt (no external deps).
- * - Sessions: random token stored hashed (sha256) in DB; HttpOnly cookie.
- * Mirrors DOC-05 ENT-USER / ENT-SESSION (subset).
+ * Session-based authentication.
+ * Passwords use node:crypto scrypt; session tokens are stored only as SHA-256
+ * hashes and delivered through an HttpOnly, same-site cookie.
  */
 import { randomBytes, scryptSync, timingSafeEqual, createHash } from "node:crypto";
 import { cookies } from "next/headers";
@@ -21,7 +20,6 @@ export type User = {
   created_at: string;
 };
 
-// ---------- passwords ----------
 export function hashPassword(password: string): string {
   const salt = randomBytes(16).toString("hex");
   const hash = scryptSync(password, salt, 64).toString("hex");
@@ -36,20 +34,16 @@ export function verifyPassword(password: string, stored: string): boolean {
   return candidate.length === expected.length && timingSafeEqual(candidate, expected);
 }
 
-// ---------- sessions ----------
 function sha256(value: string): string {
   return createHash("sha256").update(value).digest("hex");
 }
 
-export function createSession(userId: string): string {
+export async function createSession(userId: string): Promise<string> {
   const token = randomBytes(32).toString("base64url");
   const expiresAt = new Date(Date.now() + SESSION_MS).toISOString();
-  run(
-    "INSERT INTO sessions (id, user_id, token_hash, expires_at) VALUES (?, ?, ?, ?)",
-    randomBytes(16).toString("hex"),
-    userId,
-    sha256(token),
-    expiresAt
+  await run(
+    "INSERT INTO sessions (id, user_id, token_hash, expires_at) VALUES ($1, $2, $3, $4)",
+    randomBytes(16).toString("hex"), userId, sha256(token), expiresAt
   );
   return token;
 }
@@ -58,17 +52,13 @@ export async function getCurrentUser(): Promise<User | null> {
   const store = await cookies();
   const token = store.get(SESSION_COOKIE)?.value;
   if (!token) return null;
-  const row = get<{ user_id: string; expires_at: string }>(
-    "SELECT user_id, expires_at FROM sessions WHERE token_hash = ?",
-    sha256(token)
+  const row = await get<{ user_id: string; expires_at: string }>(
+    "SELECT user_id, expires_at FROM sessions WHERE token_hash = $1", sha256(token)
   );
-  if (!row) return null;
-  if (new Date(row.expires_at).getTime() < Date.now()) return null;
-  const user = get<User>(
-    "SELECT id, email, name, role, locale, created_at FROM users WHERE id = ?",
-    row.user_id
-  );
-  return user ?? null;
+  if (!row || new Date(row.expires_at).getTime() < Date.now()) return null;
+  return (await get<User>(
+    "SELECT id, email, name, role, locale, created_at FROM users WHERE id = $1", row.user_id
+  )) ?? null;
 }
 
 export async function setSessionCookie(token: string): Promise<void> {
@@ -85,9 +75,7 @@ export async function setSessionCookie(token: string): Promise<void> {
 export async function destroySession(): Promise<void> {
   const store = await cookies();
   const token = store.get(SESSION_COOKIE)?.value;
-  if (token) {
-    run("DELETE FROM sessions WHERE token_hash = ?", sha256(token));
-  }
+  if (token) await run("DELETE FROM sessions WHERE token_hash = $1", sha256(token));
   store.delete(SESSION_COOKIE);
 }
 
@@ -95,10 +83,6 @@ export function publicUser(u: User) {
   return { id: u.id, email: u.email, name: u.name, role: u.role, locale: u.locale };
 }
 
-/**
- * Validate a post-auth redirect target: same-site relative paths only
- * (blocks open redirects like `next=https://evil.tld` or `//evil.tld`).
- */
 export function safeNextPath(value: string | null | undefined, fallback = "/profile"): string {
   const v = (value ?? "").trim();
   if (!v.startsWith("/") || v.startsWith("//") || v.includes("://") || v.includes("\\")) return fallback;

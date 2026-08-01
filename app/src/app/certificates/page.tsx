@@ -9,7 +9,7 @@ export const dynamic = "force-dynamic";
 export default async function CertificatesPage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/certificates");
-  const certs = listCertificates(user.id);
+  const certs = await listCertificates(user.id);
 
   return (
     <div className="space-y-6">

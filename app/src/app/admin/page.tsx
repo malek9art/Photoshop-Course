@@ -1,22 +1,18 @@
 import { redirect } from "next/navigation";
 import { Card } from "@/components/ui";
 import { getCurrentUser } from "@/lib/auth";
-import { getDb, all } from "@/lib/db";
+import { all } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
 type Stats = { users: number; lessons: number; published: number; attempts: number; submissions: number; certificates: number };
 
-function loadStats(): Stats {
-  const q = (sql: string) => (all(sql)[0] as any)?.c as number;
-  return {
-    users: q("SELECT COUNT(*) AS c FROM users"),
-    lessons: q("SELECT COUNT(*) AS c FROM lessons"),
-    published: q("SELECT COUNT(*) AS c FROM lessons WHERE status='published'"),
-    attempts: q("SELECT COUNT(*) AS c FROM quiz_attempts"),
-    submissions: q("SELECT COUNT(*) AS c FROM submissions"),
-    certificates: q("SELECT COUNT(*) AS c FROM certificates"),
-  };
+async function loadStats(): Promise<Stats> {
+  const q = async (sql: string) => (await all<{ c: number }>(sql))[0]?.c ?? 0;
+  const [users, lessons, published, attempts, submissions, certificates] = await Promise.all([
+    q("SELECT COUNT(*)::int AS c FROM users"), q("SELECT COUNT(*)::int AS c FROM lessons"), q("SELECT COUNT(*)::int AS c FROM lessons WHERE status='published'"), q("SELECT COUNT(*)::int AS c FROM quiz_attempts"), q("SELECT COUNT(*)::int AS c FROM submissions"), q("SELECT COUNT(*)::int AS c FROM certificates"),
+  ]);
+  return { users, lessons, published, attempts, submissions, certificates };
 }
 
 export default async function AdminPage() {
@@ -24,15 +20,14 @@ export default async function AdminPage() {
   if (!user) redirect("/login?next=/admin");
   if (user.role !== "admin") redirect("/");
 
-  getDb(); // ensure schema
-  const stats = loadStats();
-  const users = all<{ id: string; email: string; name: string; role: string; created_at: string }>(
+  const stats = await loadStats();
+  const users = await all<{ id: string; email: string; name: string; role: string; created_at: string }>(
     "SELECT id, email, name, role, created_at FROM users ORDER BY created_at DESC LIMIT 20"
   );
-  const attempts = all<{ id: string; user_id: string; quiz_code: string; score_pct: number; passed: number; created_at: string }>(
+  const attempts = await all<{ id: string; user_id: string; quiz_code: string; score_pct: number; passed: number; created_at: string }>(
     "SELECT * FROM quiz_attempts ORDER BY created_at DESC LIMIT 20"
   );
-  const submissions = all<{ id: string; user_id: string; project_code: string; title: string; status: string; created_at: string }>(
+  const submissions = await all<{ id: string; user_id: string; project_code: string; title: string; status: string; created_at: string }>(
     "SELECT * FROM submissions ORDER BY created_at DESC LIMIT 20"
   );
 

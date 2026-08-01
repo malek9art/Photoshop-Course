@@ -1,9 +1,8 @@
 import { redirect } from "next/navigation";
 import { Card } from "@/components/ui";
 import { getCurrentUser } from "@/lib/auth";
-import { getDb, all, run } from "@/lib/db";
-import { listCertificates, nextSerial, certTitle } from "@/lib/certs";
-import { randomBytes } from "node:crypto";
+import { all } from "@/lib/db";
+import { certTitle } from "@/lib/certs";
 
 export const dynamic = "force-dynamic";
 
@@ -12,9 +11,8 @@ export default async function AdminCertsPage() {
   if (!user) redirect("/login?next=/admin/certificates");
   if (user.role !== "admin") redirect("/");
 
-  getDb();
-  const users = all<{ id: string; email: string; name: string }>("SELECT id, email, name FROM users ORDER BY name");
-  const certs = all<{
+  const users = await all<{ id: string; email: string; name: string }>("SELECT id, email, name FROM users ORDER BY name");
+  const certs = await all<{
     id: string; user_id: string; cert_code: string; title_ar: string; serial: string; status: string; issued_at: string; revoked_reason: string | null;
   }>("SELECT * FROM certificates ORDER BY issued_at DESC LIMIT 50");
 

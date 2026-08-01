@@ -1,6 +1,6 @@
 # Adobe Creative Academy — Platform (`app/`)
 
-Implementation phase (ADR-010). Next.js 15 + TypeScript + Tailwind 3 + SQLite (`node:sqlite`), Arabic-first RTL.
+Implementation phase (ADR-010). Next.js 15 + TypeScript + Tailwind 3 + PostgreSQL (`pg`), Arabic-first RTL.
 
 ## Run
 
@@ -42,4 +42,4 @@ npm run dev       # http://localhost:3000
 ## Notes
 
 - DB is derived data (regenerate with `npm run seed`); `content/` remains the SSOT.
-- `data/academy.db` is gitignored.
+- Set `DATABASE_URL` and run `npm run migrate` before `npm run seed`.

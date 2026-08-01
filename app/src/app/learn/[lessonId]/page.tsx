@@ -12,17 +12,17 @@ export const dynamic = "force-dynamic";
 export default async function LessonPage({ params }: { params: Promise<{ lessonId: string }> }) {
   const { lessonId } = await params;
   const user = await getCurrentUser();
-  const lesson = getLesson(lessonId);
+  const lesson = await getLesson(lessonId);
   if (!lesson) notFound();
 
   const doc = lesson.content_path ? loadLessonFile(lesson.content_path) : null;
   if (!doc) notFound();
 
-  const moduleLessons = listLessons(lesson.module_id, user?.id);
+  const moduleLessons = await listLessons(lesson.module_id, user?.id);
   const idx = moduleLessons.findIndex((l) => l.id === lessonId);
   const prev = idx > 0 ? moduleLessons[idx - 1] : null;
   const next = idx >= 0 && idx < moduleLessons.length - 1 ? moduleLessons[idx + 1] : null;
-  const completed = user ? getLessonProgress(user.id, lessonId) === "completed" : false;
+  const completed = user ? await getLessonProgress(user.id, lessonId) === "completed" : false;
 
   return (
     <div className="grid gap-6 lg:grid-cols-[1fr_300px]">
@@ -40,7 +40,7 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
           <div className="flex items-center gap-2 text-xs text-neutral-500">
             <span className="font-bold text-primary-700">{lesson.id}</span>
             <span>·</span>
-            <LessonStateBadge state={user ? getLessonProgress(user.id, lesson.id) : null} status={lesson.status} />
+            <LessonStateBadge state={user ? (moduleLessons.find((l) => l.id === lesson.id)?.state ?? null) : null} status={lesson.status} />
           </div>
           <h1 className="mt-2 text-2xl font-extrabold leading-relaxed text-neutral-900">{doc.titleAr}</h1>
         </header>
