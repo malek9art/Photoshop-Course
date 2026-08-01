@@ -7,10 +7,10 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.9 |
+| **Version** | 1.0.15 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
-| **Last Updated** | 2026-07-31 |
+| **Last Updated** | 2026-08-01 |
 | **Review Cadence** | Continuous; verified at milestone boundaries |
 
 ## Table of Contents
@@ -139,35 +139,60 @@ Each entry uses this exact structure:
 - **Affected Documents:** PROJECT_STATE (v1.3.5), this changelog (v1.0.9). Modified: `app/src/components/{ui,Header,HomeSkeleton,CatalogSkeleton,feedback,QuizPlayer}.tsx`, `app/src/app/{page,catalog/page,catalog/[stageId]/page,learn/[lessonId]/page,projects/page,certificates/page,profile/page}.tsx`, `app/src/lib/a11y.ts`.
 - **Version:** DOC-13 1.0.8 → 1.0.9; PROJECT_STATE 1.3.4 → 1.3.5.
 
-> **Next entry:** `CHG-011` — to be appended by the next agent that modifies the repository.
+### CHG-011 — 2026-08-01
+- **Agent:** AGT-003 (Content Producer & Lead Software Engineer)
+- **Task(s):** Phase 3 Content Production Scale-Up — STG-02 MOD-0203 (Compositing & Effects) initial lessons (LES-020301, LES-020302)
+- **Description:** Produced first two lessons of MOD-0203 adhering strictly to DOC-07 §3 comprehensive anatomy (metadata, introduction, industry usage, core concepts, step-by-step, examples, best practices, mistakes, expert tips, keyboard shortcuts, exercise, challenge, quiz, homework, resources, mastery criteria) under `content/stg-02-photoshop/mod-0203-compositing/`. Updated LESSONS_INDEX status to `In review`.
+- **Reason:** Phase 3 content production scale-up following Curriculum Blueprint (DOC-03) and Content Standards (DOC-07).
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content files `content/stg-02-photoshop/mod-0203-compositing/LES-020301.md`, `content/stg-02-photoshop/mod-0203-compositing/LES-020302.md`.
+- **Version:** DOC-22 1.0.1 → 1.0.2; DOC-13 1.0.9 → 1.0.10.
 
----
+### CHG-012 — 2026-08-01
+- **Agent:** AGT-003 (Phase 3 Content Producer)
+- **Task(s):** Phase 3 Content Production Scale-Up — STG-02 MOD-0203 (Compositing & Effects) completion (lessons LES-020303 to LES-020306 + module quiz QUIZ-MOD-0203)
+- **Description:** Completed the remaining lessons for Module 0203 (LES-020303 Smart Objects, LES-020304 Smart Filters, LES-020305 Realistic Shadows & Lighting, LES-020306 Scene Compositing) and produced the module quiz (`QUIZ-MOD-0203`) with a 16-item pool adhering strictly to DOC-07 §5 and DOC-08 standards. Updated LESSONS_INDEX status to `In review`.
+- **Reason:** Phase 3 content production scale-up following Curriculum Blueprint (DOC-03) and Content Standards (DOC-07).
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content files under `content/stg-02-photoshop/mod-0203-compositing/`.
+- **Version:** DOC-22 1.0.2 → 1.0.3; DOC-13 1.0.10 → 1.0.11.
 
-## Revision History
+### CHG-013 — 2026-08-01
+- **Agent:** AGT-003 (Phase 3 Content Producer)
+- **Task(s):** Phase 3 Content Production Scale-Up — STG-02 MOD-0204 (Design & Production) initial lesson (LES-020401)
+- **Description:** Produced LES-020401 (Social Media Design Kits) adhering strictly to DOC-03 curriculum blueprint and DOC-07/08 standards. Updated LESSONS_INDEX status to `In review`.
+- **Reason:** Phase 3 content production scale-up following Curriculum Blueprint (DOC-03) and Content Standards (DOC-07).
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content file `content/stg-02-photoshop/mod-0204-design-production/LES-020401.md`.
+- **Version:** DOC-22 1.0.3 → 1.0.4; DOC-13 1.0.11 → 1.0.12.
 
-| Version | Date | Author | Summary of Changes |
-|---------|------|--------|--------------------|
-| 1.0.9 | 2026-08-01 | AGT-003 | Refinement R-01 recorded (CHG-010): core screens polish (skeletons, empty states, a11y, reduced-motion). |
-| 1.0.8 | 2026-08-01 | AGT-003 | Batch B-08 recorded (CHG-009): retake enforcement per DOC-08 §5 (quizzes 3×/24h, projects 2×/3d). |
-| 1.0.7 | 2026-08-01 | AGT-003 | Batch B-07 recorded (CHG-008): exams (AT-06), rubric grading (AT-05), public verification (SCR-05), revocation, full cert gating. |
-| 1.0.6 | 2026-08-01 | AGT-003 | Batches B-04…B-06 recorded (CHG-007): quiz system, projects & certificates, admin dashboard. |
-| 1.0.5 | 2026-08-01 | AGT-003 | Batch B-01/B-02/B-03 recorded (CHG-006): first runnable platform slice (structure, RTL UI, navigation, auth, lesson player). |
-| 1.0.4 | 2026-08-01 | AGT-003 | Implementation phase kickoff recorded (CHG-005): ADR-010, OPD-001/002 resolved, `app/` created. |
-| 1.0.3 | 2026-07-31 | AGT-002 | P1-A pilot content recorded (CHG-004): 28 lessons + assessments; registries/state updated. |
-| 1.0.2 | 2026-07-31 | Project Foundation Architect | Foundation closure recorded (CHG-003): DOC-30…38, ADR-009, GATE-F1 PASS. |
-| 1.0.1 | 2026-07-31 | Project Foundation Architect | Operating-docs extension recorded (CHG-002). |
-| 1.0.0 | 2026-07-31 | Project Foundation Architect | Initial baseline (DOC-13): policy + first entry CHG-001. |
+### CHG-014 — 2026-08-01
+- **Agent:** AGT-003 (Phase 3 Content Producer)
+- **Task(s):** Phase 3 Content Production Scale-Up — STG-02 MOD-0204 (Design & Production) completion (lessons LES-020402 through LES-020406 + module quiz QUIZ-MOD-0204)
+- **Description:** Completed the remaining lessons for Module 0204 (LES-020402 Poster Design, LES-020403 Mockups, LES-020404 Actions & Automation, LES-020405 Batch Processing, LES-020406 Full Brand Kit Production) and produced the module quiz (`QUIZ-MOD-0204`) with a 16-item pool adhering strictly to DOC-07 §5 and DOC-08 standards. Updated LESSONS_INDEX status to `In review`.
+- **Reason:** Phase 3 content production scale-up following Curriculum Blueprint (DOC-03) and Content Standards (DOC-07).
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content files under `content/stg-02-photoshop/mod-0204-design-production/`.
+- **Version:** DOC-22 1.0.4 → 1.0.5; DOC-13 1.0.12 → 1.0.13.
 
-## Notes
+### CHG-015 — 2026-08-01
+- **Agent:** AGT-003 (Phase 3 Content Producer)
+- **Task(s):** Phase 3 Content Production Scale-Up — STG-02 MOD-0205 (Professional Practice) completion (lessons LES-020501 through LES-020504 + module quiz QUIZ-MOD-0205)
+- **Description:** Completed Module 0205 (LES-020501 Client Workflow, LES-020502 File Handoff, LES-020503 Photoshop ↔ Illustrator Integration, LES-020504 Capstone Project: Visual Campaign) and produced the module quiz (`QUIZ-MOD-0205`) with a 16-item pool adhering strictly to DOC-07 §5 and DOC-08 standards. Updated LESSONS_INDEX status to `In review`. This completes all modules of STG-02 (Photoshop Mastery).
+- **Reason:** Phase 3 content production scale-up following Curriculum Blueprint (DOC-03) and Content Standards (DOC-07).
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content files under `content/stg-02-photoshop/mod-0205-professional-practice/`.
+- **Version:** DOC-22 1.0.5 → 1.0.6; DOC-13 1.0.13 → 1.0.14.
 
-- This document is the *policy* and the *log*; entries accumulate at the end of §5.
-- The changelog is checked as part of every verification (DOC-16 §Documentation Review): "is there a CHG entry for every changed file?"
+### CHG-016 — 2026-08-01
+- **Agent:** AGT-003 (Phase 3 Content Producer)
+- **Task(s):** Phase 3 Content Production Scale-Up — STG-03 MOD-0301 (Illustrator Fundamentals) completion (lessons LES-030101 through LES-030106 + module quiz QUIZ-MOD-0301)
+- **Description:** Completed Module 0301 (LES-030101 Vector Basics, LES-030102 Pen Tool Mastery, LES-030103 Shapes & Paths, LES-030104 Color & Gradients, LES-030105 Artboards, LES-030106 Work Organization) and produced the module quiz (`QUIZ-MOD-0301`) with a 16-item pool adhering strictly to DOC-07 §5 and DOC-08 standards. Updated LESSONS_INDEX status to `In review`.
+- **Reason:** Phase 3 content production scale-up following Curriculum Blueprint (DOC-03) and Content Standards (DOC-07).
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content files under `content/stg-03-illustrator/mod-0301-illustrator-fundamentals/`.
+- **Version:** DOC-22 1.0.6 → 1.0.7; DOC-13 1.0.14 → 1.0.15.
 
-## Cross References
+### CHG-017 — 2026-08-01
+- **Agent:** AGT-003 (Phase 3 Content Producer)
+- **Task(s):** Phase 3 Content Production Scale-Up — STG-03 MOD-0302 (Drawing & Typography) completion (lessons LES-030201 through LES-030206 + module quiz QUIZ-MOD-0302)
+- **Description:** Completed Module 0302 (LES-030201 Drawing Tools & Brushes, LES-030202 Advanced Typography, LES-030203 Type on Path, LES-030204 Styles & Symbols, LES-030205 Arabic Calligraphy & Type, LES-030206 Typographic Poster Project) and produced the module quiz (`QUIZ-MOD-0302`) with a 16-item pool adhering strictly to DOC-07 §5 and DOC-08 standards. Updated LESSONS_INDEX status to `In review`.
+- **Reason:** Phase 3 content production scale-up following Curriculum Blueprint (DOC-03) and Content Standards (DOC-07).
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content files under `content/stg-03-illustrator/mod-0302-drawing-typography/`.
+- **Version:** DOC-22 1.0.7 → 1.0.8; DOC-13 1.0.15 → 1.0.16.
 
-| Reference | Relationship |
-|-----------|--------------|
-| [DOC-10 Agent Rules](10_AGENT_RULES.md) | R-05 documentation duty |
-| [DOC-11 Task Management](11_TASK_MANAGEMENT.md) | Task ↔ changelog linkage |
-| [DOC-12 Agent Handover](12_AGENT_HANDOVER.md) | Handovers reference CHG entries |
-| [DOC-14 Decision Log](14_DECISION_LOG.md) | ADRs recorded alongside CHG entries |
+> **Next entry:** `CHG-018` — to be appended by the next agent that modifies the repository.
