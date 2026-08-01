@@ -1,5 +1,4 @@
-import Link from "next/link";
-import { Card, DifficultyBadge } from "@/components/ui";
+import { CatalogBrowser } from "@/components/CatalogBrowser";
 import { listStages } from "@/lib/data";
 
 export const dynamic = "force-dynamic";
@@ -8,43 +7,40 @@ export const metadata = { title: "المكتبة الدراسية" };
 
 export default async function CatalogPage() {
   const stages = await listStages();
+  const totalModules = stages.reduce((s, x) => s + (x.module_count ?? 0), 0);
+  const totalLessons = stages.reduce((s, x) => s + (x.lesson_count ?? 0), 0);
+  const totalHours = stages.reduce((s, x) => s + (x.effort_hours ?? 0), 0);
+
   return (
-    <div className="space-y-6">
-      <header>
-        <h1 className="text-2xl font-extrabold text-neutral-900">المكتبة الدراسية</h1>
-        <p className="mt-1 text-sm text-neutral-500">
-          ثماني مراحل متدرجة تغطي منظومة أدوبي الإبداعية — أكمل كل مرحلة للحصول على شهادتها.
-        </p>
+    <div className="stack-lg">
+      <header className="relative overflow-hidden rounded-3xl border border-hairline bg-surface px-6 py-10 md:px-10 md:py-14">
+        <div aria-hidden="true" className="absolute inset-0 -z-0">
+          <div className="absolute inset-0 bg-grid-fade bg-grid opacity-40 mask-fade-b" />
+          <div className="absolute -left-20 -top-24 h-64 w-64 rounded-full bg-accent-500/10 blur-3xl" />
+        </div>
+        <div className="relative max-w-2xl">
+          <p className="eyebrow">المنهج الكامل</p>
+          <h1 className="mt-3 text-4xl font-black tracking-tighter text-neutral-900">المكتبة الدراسية</h1>
+          <p className="mt-4 text-base leading-loose text-neutral-500">
+            مراحل متدرّجة تغطي منظومة أدوبي الإبداعية — أكمل كل مرحلة للحصول على شهادتها المعتمدة.
+          </p>
+          <dl className="mt-8 flex flex-wrap gap-x-10 gap-y-4">
+            {[
+              { label: "مرحلة", value: stages.length },
+              { label: "وحدة", value: totalModules },
+              { label: "درس", value: totalLessons },
+              { label: "ساعة", value: totalHours },
+            ].map((s) => (
+              <div key={s.label}>
+                <dt className="text-xs font-medium text-neutral-500">{s.label}</dt>
+                <dd className="text-2xl font-black tracking-tighter text-neutral-900">{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
       </header>
 
-      {stages.length === 0 ? (
-        <div className="card flex flex-col items-center gap-3 p-10 text-center">
-          <p className="text-4xl" aria-hidden="true">📚</p>
-          <p className="text-lg font-bold text-neutral-800">لا توجد مراحل بعد</p>
-          <p className="max-w-sm text-sm text-neutral-500">ستظهر المراحل الدراسية فور نشر المحتوى.</p>
-        </div>
-      ) : (
-      <div className="grid gap-4 md:grid-cols-2">
-        {stages.map((stage) => (
-          <Card key={stage.id} className="flex flex-col">
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-bold text-primary-700">{stage.id}</span>
-              <DifficultyBadge level={stage.difficulty} />
-            </div>
-            <h2 className="mt-2 text-lg font-bold text-neutral-900">{stage.title_ar}</h2>
-            <p className="text-xs text-neutral-500">{stage.title_en}</p>
-            <div className="mt-3 flex flex-wrap gap-2 text-xs text-neutral-600">
-              <span className="badge-gray">{stage.module_count} وحدات</span>
-              <span className="badge-gray">{stage.lesson_count} دروس</span>
-              <span className="badge-gray">{stage.effort_hours ?? "—"} ساعات</span>
-            </div>
-            <Link href={`/catalog/${stage.id}`} className="btn-outline mt-4 self-start">
-              استعراض المرحلة ←
-            </Link>
-          </Card>
-        ))}
-      </div>
-      )}
+      <CatalogBrowser stages={stages} />
     </div>
   );
 }

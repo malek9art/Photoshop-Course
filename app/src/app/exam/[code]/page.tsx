@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { ExamPlayer } from "@/components/ExamPlayer";
 import { loadExam } from "@/lib/exam";
 import { getCurrentUser } from "@/lib/auth";
+import { LockIcon } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
 
@@ -15,16 +16,21 @@ export default async function ExamPage({ params }: { params: Promise<{ code: str
   const user = await getCurrentUser();
   if (!user) {
     return (
-      <div className="card mx-auto max-w-md p-8 text-center">
-        <p className="text-4xl" aria-hidden="true">🔐</p>
-        <h1 className="mt-3 text-lg font-bold text-neutral-900">تسجيل الدخول مطلوب</h1>
-        <p className="mt-2 text-sm text-neutral-600">
+      <div className="card mx-auto max-w-md animate-fade-up p-8 text-center md:p-10">
+        <span
+          className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 ring-1 ring-primary-500/20"
+          aria-hidden="true"
+        >
+          <LockIcon className="h-7 w-7" />
+        </span>
+        <h1 className="mt-5 text-xl font-bold tracking-tight text-neutral-900">تسجيل الدخول مطلوب</h1>
+        <p className="mt-2 text-sm leading-relaxed text-neutral-500">
           اختبار المرحلة ({exam.code}) تسجَّل محاولاته ونتيجته رسميًا — سجّل الدخول لتبدأ.
         </p>
-        <Link href={`/login?next=/exam/${exam.code}`} className="btn-primary mt-6 w-full">
+        <Link href={`/login?next=/exam/${exam.code}`} className="btn-primary mt-7 w-full justify-center">
           تسجيل الدخول
         </Link>
-        <Link href={`/register?next=/exam/${exam.code}`} className="btn-outline mt-2 w-full">
+        <Link href={`/register?next=/exam/${exam.code}`} className="btn-outline mt-2.5 w-full justify-center">
           إنشاء حساب جديد
         </Link>
       </div>
