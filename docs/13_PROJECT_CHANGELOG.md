@@ -227,4 +227,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-06-lightroom/mod-0601-photo-foundations/`, `mod-0602-library-develop/`, `mod-0603-advanced-workflow/`, `mod-0604-portfolio-export/`.
 - **Version:** DOC-22 1.0.11 → 1.0.12; DOC-13 1.0.19 → 1.0.20.
 
-> **Next entry:** `CHG-022` — to be appended by the next agent that modifies the repository.
+### CHG-022 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-07 (InDesign & Editorial Design) complete — MOD-0701 (LES-070101…070105), MOD-0702 (LES-070201…070204), MOD-0703 (LES-070301…070303), MOD-0704 (LES-070401…070402). **Milestone: 84/84 placeholder lessons replaced (100%).**
+- **Description:** Replaced all 14 placeholder-template lessons of Stage 7 with original, lesson-specific Arabic content per DOC-07 §3. Topics: InDesign interface & document setup, frames & objects, pro Arabic typography, master pages, tables; grid systems & baseline, text flow & threading, long-document structure, interactive PDF; live preflight, packaging & handoff, print specifications (CMYK/Spot, Rich Black, paper, negotiation); digital publishing (Publish Online, EPUB, Liquid Layout), Arabic magazine capstone. Frontmatter corrected per lesson (Adobe InDesign 20.x (2025)). Also fixed stray CJK/Hangul characters in LES-060303 and five STG-02 quiz option markers.
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-07-indesign/mod-0701-indesign-fundamentals/`, `mod-0702-editorial-layout/`, `mod-0703-production-print/`, `mod-0704-publishing-portfolio/`, plus character fixes in `content/stg-06-lightroom/mod-0603-advanced-workflow/LES-060303.md` and five `content/stg-02-photoshop/` lessons.
+- **Version:** DOC-22 1.0.12 → 1.0.13; DOC-13 1.0.20 → 1.0.21.
+
+> **Next entry:** `CHG-023` — to be appended by the next agent that modifies the repository.
