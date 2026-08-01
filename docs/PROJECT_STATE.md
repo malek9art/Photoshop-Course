@@ -51,8 +51,8 @@ PROJECT_STATE exists so that any agent can answer in under two minutes: *what ph
 | **Next phase** | Beta (MS-12) after platform milestones MS-08…MS-11 complete |
 | **Blocked items** | OPD-003/004/005 (hosting/media/payment) — non-blocking for local implementation; platform deployment waits on OPD-003. Nothing blocks local batch development. |
 | **Platform state** | No implementation artifacts exist (see DOC-18) |
-| **Content state** | All 156 lessons across STG-01..STG-08 `In review` (156/156) + all 33 module quizzes complete (29 pre-existing + QUIZ-MOD-0801..0804) + all 7 stage exams STG-02..08 complete (produced 2026-08-01: 30 items each, practical/scenario-based, balanced module coverage per stage, DOC-08 AT-06 compliant — ≥75% pass, 2 attempts / 7-day cooldown, answer keys diversified across all four option letters, platform-parser `app/src/lib/exam.ts` verified 8/8 incl. STG-01). Remaining: STG-02..08 stage projects (7, AT-05) |
-| **Date** | 2026-07-31 |
+| **Content state** | All 156 lessons across STG-01..STG-08 `In review` (156/156) + all 33 module quizzes complete (29 pre-existing + QUIZ-MOD-0801..0804) + all 7 stage exams STG-02..08 complete (produced 2026-08-01: 30 items each, practical/scenario-based, balanced module coverage per stage, DOC-08 AT-06 compliant — ≥75% pass, 2 attempts / 7-day cooldown, answer keys diversified across all four option letters, platform-parser `app/src/lib/exam.ts` verified 8/8 incl. STG-01) + **all 8 stage projects complete** (STG-01..STG-08, AT-05, 4-criteria rubrics per DOC-08 §6, parser-verified via `app/src/lib/rubric.ts` 8/8). Content production Phase 4B closed (100%). |
+| **Date** | 2026-08-01 |
 
 ## 4. Current Phase & Milestone Snapshot
 
@@ -185,6 +185,7 @@ The next agent must:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.3.15 | 2026-08-01 | AGT-003 | Phase 4B completion: produced all 7 remaining stage projects (STG-02..STG-08-PROJECT.md) as AT-05 gateways with 4-criteria × 4-level rubrics matching `app/src/lib/rubric.ts`; verified 7/7 via parser (now 8/8 total); updated PROJECT_STATE Content state to 100% complete; appended CHG-027. |
 | 1.3.14 | 2026-08-01 | AGT-003 | Phase 4B handoff doc added (CHG-026): `docs/PHASE4B_HANDOFF.md` — scope, AT-05 spec, rubric parser constraints, closure procedure for the 7 remaining stage projects. |
 | 1.3.13 | 2026-08-01 | AGT-003 | All stage exams completed (CHG-025): STG-02..08 stage exams produced (30 items each, DOC-08 AT-06, parser-verified); LES-080303/080304/080305 header/typo fixes. Remaining: 7 stage projects. |
 | 1.3.12 | 2026-08-01 | AGT-003 | MOD-0302 completed (CHG-017): lessons LES-030201…06 and QUIZ-MOD-0302 produced. |
