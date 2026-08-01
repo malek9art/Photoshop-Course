@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { get } from "@/lib/db";
-import { verifyPassword, createSession, setSessionCookie, type User } from "@/lib/auth";
+import { verifyPassword, createSession, setSessionCookie, safeNextPath, type User } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -12,7 +12,7 @@ export async function POST(req: NextRequest) {
   const form = await req.formData();
   const email = clean(form.get("email") as string).toLowerCase();
   const password = clean(form.get("password") as string);
-  const next = (form.get("next") as string) || "/profile";
+  const next = safeNextPath(form.get("next") as string);
 
   const user = get<User>(
     "SELECT id, email, name, role, locale, created_at FROM users WHERE email = ?",

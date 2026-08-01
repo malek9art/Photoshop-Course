@@ -27,7 +27,10 @@ export function ExamPlayer({ code }: { code: string }) {
     if (startedRef.current) return;
     startedRef.current = true;
     fetch(`/api/exam/${code}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("not-found"))))
+      .then((r) => {
+        if (r.status === 401) router.replace(`/login?next=/exam/${code}`);
+        return r.ok ? r.json() : Promise.reject(new Error("not-found"));
+      })
       .then((d) => {
         setTitle(d.title);
         setConfig(d.config);
@@ -36,7 +39,7 @@ export function ExamPlayer({ code }: { code: string }) {
         setCooldownUntil(d.cooldownUntil ?? null);
       })
       .catch(() => setError("تعذر تحميل الاختبار."));
-  }, [code]);
+  }, [code, router]);
 
   async function submit() {
     if (busy) return;
@@ -49,7 +52,8 @@ export function ExamPlayer({ code }: { code: string }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        if (res.status === 429) setError("فترة التهدئة سارية — عد لاحقًا.");
+        if (res.status === 401) router.push(`/login?next=/exam/${code}`);
+        else if (res.status === 429) setError("فترة التهدئة سارية — عد لاحقًا (7 أيام — DOC-08 §5).");
         else if (res.status === 403) setError("استنفدت محاولاتك لهذا الاختبار.");
         else setError(data.error ?? "حدث خطأ.");
         return;
@@ -62,7 +66,15 @@ export function ExamPlayer({ code }: { code: string }) {
   }
 
   if (error) return <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>;
-  if (!config || items.length === 0) return <p className="text-sm text-neutral-500">جارٍ تحميل الاختبار…</p>;
+  if (!config || items.length === 0) {
+    return (
+      <div className="mx-auto max-w-md space-y-3" aria-busy="true" aria-label="جارٍ تحميل الاختبار">
+        <div className="h-6 w-56 animate-pulse rounded bg-neutral-200" />
+        <div className="h-40 animate-pulse rounded-xl bg-neutral-200" />
+        <div className="h-10 animate-pulse rounded-lg bg-neutral-200" />
+      </div>
+    );
+  }
 
   if (result) {
     const correctCount = result.results.filter((r) => r.correct).length;

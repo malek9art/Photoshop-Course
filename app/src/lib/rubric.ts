@@ -10,7 +10,11 @@ import { CONTENT_DIR } from "./content";
 export type RubricCriterion = { name: string; d4: string; d3: string; d2: string; d1: string };
 export type RubricDoc = { code: string; title: string; criteria: RubricCriterion[] };
 
+// Cache: content tree is static per process.
+let projectPathMapCache: Map<string, string> | null = null;
+
 export function buildProjectPathMap(): Map<string, string> {
+  if (projectPathMapCache) return projectPathMapCache;
   const map = new Map<string, string>();
   if (!fs.existsSync(CONTENT_DIR)) return map;
   const walk = (dir: string) => {
@@ -23,6 +27,7 @@ export function buildProjectPathMap(): Map<string, string> {
     }
   };
   walk(CONTENT_DIR);
+  projectPathMapCache = map;
   return map;
 }
 

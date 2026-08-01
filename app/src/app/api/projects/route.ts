@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 import { getCurrentUser } from "@/lib/auth";
 import { all, run } from "@/lib/db";
+import { buildProjectPathMap, stageFromProjectCode } from "@/lib/rubric";
 
 export const runtime = "nodejs";
 
@@ -21,6 +22,11 @@ export async function POST(req: NextRequest) {
 
   if (!projectCode || !title) {
     return NextResponse.json({ error: "missing" }, { status: 400 });
+  }
+
+  // Only real stage projects (present in content/) may receive submissions.
+  if (!stageFromProjectCode(projectCode) || !buildProjectPathMap().has(projectCode)) {
+    return NextResponse.json({ error: "unknown-project" }, { status: 400 });
   }
 
   // DOC-08 §5: enforce 2 submissions max + 3-day cooldown per (user, project).

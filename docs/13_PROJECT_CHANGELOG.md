@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.15 |
+| **Version** | 1.0.25 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-08-01 |
@@ -195,4 +195,76 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content files under `content/stg-03-illustrator/mod-0302-drawing-typography/`.
 - **Version:** DOC-22 1.0.7 → 1.0.8; DOC-13 1.0.15 → 1.0.16.
 
-> **Next entry:** `CHG-018` — to be appended by the next agent that modifies the repository.
+### CHG-018 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-03 MOD-0303 (LES-030301…030305) + MOD-0304 (LES-030401…030406)
+- **Description:** Phase 4 QA (QA-03) detected 84 placeholder-template lessons (identical generic body across lessons of MOD-0303→MOD-0704). Replaced the first 11 with original, lesson-specific Arabic content per DOC-07 §3 (learning goals, theory, guided practice, real-world example, best practices, common mistakes, portfolio challenge, mini assignment, checkpoint quiz, creative insight, official Adobe resources). Frontmatter metadata corrected per lesson (appVersion, duration, prerequisites, objectives).
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings; placeholders are no longer acceptable for release.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-03-illustrator/mod-0303-logo-brand/` and `content/stg-03-illustrator/mod-0304-advanced-vector/`.
+- **Version:** DOC-22 1.0.8 → 1.0.9; DOC-13 1.0.16 → 1.0.17.
+
+### CHG-019 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-04 (After Effects & Motion Design) complete — MOD-0401 (LES-040101…040106), MOD-0402 (LES-040201…040206), MOD-0403 (LES-040301…040306), MOD-0404 (LES-040401…040406)
+- **Description:** Replaced all 24 placeholder-template lessons of Stage 4 with original, lesson-specific Arabic content per DOC-07 §3 (learning goals, theory, guided practice, real-world example, best practices, common mistakes, portfolio challenge, mini assignment, checkpoint quiz, creative insight, official Adobe resources). Topics: timeline & keyframes, easing, layer transform, precomps, logo animation; shape layers, text animators, masks & track mattes, effects, follow-through/stagger, title sequence; motion design process, lower thirds (MOGRT), honest infographics, expressions basics, professional production, animated ad capstone; keying/Keylight, tracking & camera tracker, roto & cleanup, video color correction (Lumetri/Scopes/LUT), rendering & codecs, composite-scene capstone. Frontmatter metadata corrected per lesson (appVersion Adobe After Effects 25.x (2025), duration, prerequisites, objectives).
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings; placeholders are no longer acceptable for release.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-04-after-effects/mod-0401-motion-fundamentals/`, `mod-0402-animation-effects/`, `mod-0403-motion-graphics/`, `mod-0404-vfx-compositing/`.
+- **Version:** DOC-22 1.0.9 → 1.0.10; DOC-13 1.0.17 → 1.0.18.
+
+### CHG-020 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-05 (Premiere Pro & Video Editing) complete — MOD-0501 (LES-050101…050104), MOD-0502 (LES-050201…050206), MOD-0503 (LES-050301…050304), MOD-0504 (LES-050401…050404)
+- **Description:** Replaced all 18 placeholder-template lessons of Stage 5 with original, lesson-specific Arabic content per DOC-07 §3. Topics: video fundamentals (frame rates, resolutions, scan), project & sequence setup, media import/logging, footage assembly project; the art of the cut, editing tools (Ripple/Roll/Slip/Slide, 3-point edits), multicam production, audio basics, narrative transitions, vertical social video; Lumetri color workflows, Essential Sound mixing, titles & MOGRT graphics, full-edit project; export & codecs (Media Encoder queues, bitrate policy), thumbnails & metadata, publishing for regional platforms, complete-story capstone. Frontmatter corrected per lesson (Adobe Premiere Pro 25.x (2025)).
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-05-premiere/mod-0501-video-foundations/`, `mod-0502-editing/`, `mod-0503-color-audio/`, `mod-0504-delivery/`.
+- **Version:** DOC-22 1.0.10 → 1.0.11; DOC-13 1.0.18 → 1.0.19.
+
+### CHG-021 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-06 (Lightroom & Photography) complete — MOD-0601 (LES-060101…060104), MOD-0602 (LES-060201…060206), MOD-0603 (LES-060301…060304), MOD-0604 (LES-060401…060403)
+- **Description:** Replaced all 17 placeholder-template lessons of Stage 6 with original, lesson-specific Arabic content per DOC-07 §3. Topics: exposure triangle, camera basics, raw & file formats, photographic composition; catalog & management, culling & rating, Develop module, corrections & AI masking, presets, full image workflow project; HDR & panorama merge, advanced masks, batch & sync, Lightroom↔Photoshop bridge; export for web & print, portfolio building, photo-series capstone. Frontmatter corrected per lesson (Adobe Lightroom Classic 14.x (2025)).
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-06-lightroom/mod-0601-photo-foundations/`, `mod-0602-library-develop/`, `mod-0603-advanced-workflow/`, `mod-0604-portfolio-export/`.
+- **Version:** DOC-22 1.0.11 → 1.0.12; DOC-13 1.0.19 → 1.0.20.
+
+### CHG-022 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-07 (InDesign & Editorial Design) complete — MOD-0701 (LES-070101…070105), MOD-0702 (LES-070201…070204), MOD-0703 (LES-070301…070303), MOD-0704 (LES-070401…070402). **Milestone: 84/84 placeholder lessons replaced (100%).**
+- **Description:** Replaced all 14 placeholder-template lessons of Stage 7 with original, lesson-specific Arabic content per DOC-07 §3. Topics: InDesign interface & document setup, frames & objects, pro Arabic typography, master pages, tables; grid systems & baseline, text flow & threading, long-document structure, interactive PDF; live preflight, packaging & handoff, print specifications (CMYK/Spot, Rich Black, paper, negotiation); digital publishing (Publish Online, EPUB, Liquid Layout), Arabic magazine capstone. Frontmatter corrected per lesson (Adobe InDesign 20.x (2025)). Also fixed stray CJK/Hangul characters in LES-060303 and five STG-02 quiz option markers.
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-07-indesign/mod-0701-indesign-fundamentals/`, `mod-0702-editorial-layout/`, `mod-0703-production-print/`, `mod-0704-publishing-portfolio/`, plus character fixes in `content/stg-06-lightroom/mod-0603-advanced-workflow/LES-060303.md` and five `content/stg-02-photoshop/` lessons.
+- **Version:** DOC-22 1.0.12 → 1.0.13; DOC-13 1.0.20 → 1.0.21.
+
+### CHG-023 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B content completion: production of the 9 lessons missing from the filesystem (allowed by DOC-03 / LESSONS_INDEX but never authored).
+- **Description:** Produced 9 original lessons per DOC-07 §3: MOD-0205 Photoshop Professional Practice (LES-020501 سير العمل مع العملاء، LES-020502 تسليم الملفات، LES-020503 التكامل مع إليستريتور، LES-020504 مشروع ختامي: حملة بصرية — Adobe Photoshop 26.x (2025)); MOD-0801 (LES-080103 القوالب والمكونات، LES-080104 فريق العمل والتعاون); MOD-0802 (LES-080202 الموجز الإبداعي، LES-080203 التسعير والعقود، LES-080204 التسويق الشخصي — Adobe Creative Cloud 2025). Alignment verified with existing QUIZ-MOD-0205 references (LES-020501–020504). All lessons validated (12-section DOC-07 §3 structure) and scanned for stray/lost characters. **Milestone: 156/156 lesson files on disk matching LESSONS_INDEX — zero missing, zero placeholders.**
+- **Reason:** User-approved Phase 4B content completion: the 9 lessons were registered `In review` but their files never existed on disk.
+- **Affected Documents:** `docs/LESSONS_INDEX.md` (Version 1.0.1 → 1.0.14 with §4/§7/Totals refresh), `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content under `content/stg-02-photoshop/mod-0205-professional-practice/`, `content/stg-08-integrated-studio/mod-0801-cross-app/`, `content/stg-08-integrated-studio/mod-0802-professional-practice/`.
+- **Version:** DOC-22 1.0.13 → 1.0.14; DOC-13 1.0.21 → 1.0.22.
+
+### CHG-024 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B content completion: production of the 4 missing STG-08 module quizzes (AT-04 gates).
+- **Description:** Produced QUIZ-MOD-0801 (Cross-App Workflows), QUIZ-MOD-0802 (Professional Practice), QUIZ-MOD-0803 (Capstone Projects), QUIZ-MOD-0804 (Graduation & Final Assessment) — each a 16-item question pool (8 drawn per attempt) in Format B (`### السؤال N (LES-XXXXXX)`) fully aligned with each module's lesson set, with difficulty spread (Q1–6 recall, Q7–12 application, Q13–16 professional judgment), a posted ✅ answer marker, and Arabic `*التفسير:*` explanation per item per DOC-08 §1 (assessment is feedback). Passing config 70% / 3 attempts per 24h per DOC-08 §4–§5. All four verified through the platform parser (`app/src/lib/quiz.ts`, Format B): 16 items each, zero malformed items.
+- **Reason:** User-approved Phase 4B content completion; STG-08 modules were the only modules lacking AT-04 quiz gates (29 of 33 module quizzes pre-existed).
+- **Affected Documents:** `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, and new content files `content/stg-08-integrated-studio/mod-0801-cross-app/QUIZ-MOD-0801.md`, `mod-0802-professional-practice/QUIZ-MOD-0802.md`, `mod-0803-capstone-project/QUIZ-MOD-0803.md`, `mod-0804-graduation/QUIZ-MOD-0804.md`.
+- **Version:** DOC-22 unchanged (1.0.14 — quizzes are not LES-registry rows); DOC-13 1.0.22 → 1.0.23.
+
+### CHG-026 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B handoff documentation.
+- **Description:** Added `docs/PHASE4B_HANDOFF.md` — an official handoff document for the next agent/session covering: full project status (156/156 lessons, 33/33 module quizzes, 7/7 stage exams), the exact remaining scope (7 stage projects AT-05), the mandatory file spec per STG-0X-PROJECT.md (sections, config lines, difficulty codes), the critical `app/src/lib/rubric.ts` parser constraints (rubric table format, 4 criteria, pass rule avg ≥ 3.0 and no criterion = 1), a ready parser-verification script, and closure procedures (PROJECT_STATE update, next changelog number CHG-027, git/report conventions). Also queued the version-history row 1.3.14 in `docs/PROJECT_STATE.md`.
+- **Reason:** User requested clear handoff for a new conversation before merging Phase 4B work to `main`.
+- **Affected Documents:** `docs/PHASE4B_HANDOFF.md` (new), `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`.
+- **Version:** DOC-22 unchanged (1.0.14); DOC-13 1.0.24 → 1.0.25.
+
+### CHG-025 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B content completion: production of all 7 remaining stage exams (AT-06 gates).
+- **Description:** Produced STG-02..08 stage exams, one per stage directory (`STG-02-EXAM.md` … `STG-08-EXAM.md`), each holding exactly **30 practical/scenario-based items** — no rote memorization — with balanced coverage of every module in its stage (STG-02: 7/6/6/6/5 across five modules; STG-03..08: 8/8/7/7 across four modules) and questions aligned to the actually-produced lessons (verified against lesson concept maps). Full DOC-08 AT-06 compliance: ≥75% pass threshold, 2 attempts with 7-day cooldown, 60–90 min duration, solution-internal key table + answer rule (≥23/30 = 76.7%) per DOC-08 §3.1. Answer keys diversified across all four option letters (أ/ب/ج/د, 6–9 per letter per exam) instead of the predictable أ/ب-only pattern. Language-quality pass: STG-05-EXAM fully rewritten; STG-03/04-EXAM polished (removed garbled distractor phrases). All 8 exams (incl. pre-existing STG-01) verified through the platform parser (`app/src/lib/exam.ts::loadExam`): 30 items × 4 options × 1 ✅ each, zero malformed items, config parsed correctly (pass 75 / attempts 2 / cooldown 7 / duration 60–90). **Content fixes:** `LES-080303.md` header corrected `# LES-030303` → `# LES-080303` (internal metadata was already correct); stray Latin letter typo fixed in `LES-080304.md`; `الأربعة الساعة` → `الأربعة السابقة` typo fixed in `LES-080305.md`.
+- **Reason:** User-approved Phase 4B content completion; stage exams were the only missing AT-06 assessment gates after quizzes (CHG-024).
+- **Affected Documents:** `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, and content files `content/stg-02-photoshop/STG-02-EXAM.md`, `content/stg-03-illustrator/STG-03-EXAM.md`, `content/stg-04-after-effects/STG-04-EXAM.md`, `content/stg-05-premiere/STG-05-EXAM.md`, `content/stg-06-lightroom/STG-06-EXAM.md`, `content/stg-07-indesign/STG-07-EXAM.md`, `content/stg-08-integrated-studio/STG-08-EXAM.md`, plus fixes in `content/stg-08-integrated-studio/mod-0803-capstone-project/LES-080303.md`, `LES-080304.md`, `LES-080305.md`.
+- **Version:** DOC-22 unchanged (1.0.14 — exams are not LES-registry rows); DOC-13 1.0.23 → 1.0.24.
+
+> **Next entry:** `CHG-027` — to be appended by the next agent that modifies the repository.

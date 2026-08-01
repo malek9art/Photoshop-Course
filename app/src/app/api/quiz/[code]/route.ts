@@ -2,14 +2,20 @@
  * Quiz BFF routes (C-08 assessment module).
  * DOC-08 §5 (module quiz AT-04): 3 graded attempts, 24 h between attempts,
  * best graded score recorded; DOC-07 §5.3: pool >= 2x drawn (16/8) refreshes per attempt.
+ *
  * GET  /api/quiz/[code]  -> { meta, items (8 random, answers stripped), attempt state }
- * POST /api/quiz/[code]  -> enforce attempts/cooldown, grade, record attempt, best score
+ * POST /api/quiz/[code]  -> two modes:
+ *   - { itemIds:[id], answers:[i] }            formative per-question feedback
+ *                                              (NOT recorded, does NOT consume an attempt)
+ *   - { itemIds:[...all], answers:[...], finalize: true }
+ *                                              end-of-attempt grading: enforces attempts
+ *                                              & cooldown, records ONE attempt, returns score.
  */
 import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 import { loadQuiz } from "@/lib/quiz";
 import { getCurrentUser } from "@/lib/auth";
-import { getDb, get, all, run } from "@/lib/db";
+import { all, run } from "@/lib/db";
 
 export const runtime = "nodejs";
 
@@ -17,20 +23,6 @@ const DRAWN_COUNT = 8; // DOC-07 §5.3
 const MAX_ATTEMPTS = 3; // DOC-08 §5 (AT-04)
 const COOLDOWN_HOURS = 24; // DOC-08 §5 (AT-04)
 const COOLDOWN_MS = COOLDOWN_HOURS * 60 * 60 * 1000;
-
-function ensureSchema() {
-  getDb().exec(
-    `CREATE TABLE IF NOT EXISTS quiz_attempts (
-      id TEXT PRIMARY KEY,
-      user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-      quiz_code TEXT NOT NULL,
-      score_pct INTEGER NOT NULL,
-      passed INTEGER NOT NULL,
-      answers_json TEXT NOT NULL,
-      created_at TEXT NOT NULL DEFAULT (datetime('now'))
-    )`
-  );
-}
 
 function shuffle<T>(arr: T[]): T[] {
   const a = [...arr];
@@ -66,7 +58,6 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ cod
     return NextResponse.json({ error: "not-found" }, { status: 404 });
   }
   const user = await getCurrentUser();
-  ensureSchema();
   const drawn = shuffle(quiz.items).slice(0, DRAWN_COUNT);
   return NextResponse.json({
     code: quiz.code,
@@ -86,8 +77,41 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ cod
   if (!quiz || quiz.items.length === 0) {
     return NextResponse.json({ error: "not-found" }, { status: 404 });
   }
-  ensureSchema();
 
+  let body: { itemIds?: number[]; answers?: number[]; finalize?: boolean };
+  try {
+    body = await req.json();
+  } catch {
+    return NextResponse.json({ error: "bad-json" }, { status: 400 });
+  }
+  if (!Array.isArray(body.itemIds) || body.itemIds.length === 0) {
+    return NextResponse.json({ error: "missing-fields" }, { status: 400 });
+  }
+
+  const byId = new Map(quiz.items.map((it) => [it.id, it]));
+  const grade = (ids: number[], answers: number[]) =>
+    ids
+      .map((id, i) => {
+        const item = byId.get(id);
+        if (!item) return null;
+        const chosen = answers[i];
+        return {
+          id,
+          correct: item.answerIndex === chosen,
+          chosen: chosen ?? -1,
+          answerIndex: item.answerIndex,
+          explanation: item.explanation,
+        };
+      })
+      .filter((r): r is NonNullable<typeof r> => r !== null);
+
+  // ---------- formative feedback mode (no attempt consumed) ----------
+  if (body.finalize !== true) {
+    const results = grade(body.itemIds, body.answers ?? []);
+    return NextResponse.json({ results });
+  }
+
+  // ---------- final grading mode (consumes one attempt) ----------
   // DOC-08 §5: 3 graded attempts, 24 h between attempts
   const state = attemptState(user.id, code);
   if (state.attemptsLeft <= 0) {
@@ -97,29 +121,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ cod
     return NextResponse.json({ error: "cooldown", cooldownUntil: state.cooldownUntil }, { status: 429 });
   }
 
-  let body: { itemIds?: number[]; answers?: number[] };
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "bad-json" }, { status: 400 });
-  }
-
-  const byId = new Map(quiz.items.map((it) => [it.id, it]));
-  const results = (body.itemIds ?? []).map((id, i) => {
-    const item = byId.get(id);
-    if (!item) return null;
-    const chosen = (body.answers ?? [])[i];
-    const correct = item.answerIndex === chosen;
-    return {
-      id,
-      correct,
-      chosen: chosen ?? -1,
-      answerIndex: item.answerIndex,
-      explanation: item.explanation,
-    };
-  });
-  const graded = results.filter((r): r is NonNullable<typeof r> => r !== null);
-  const score = graded.length > 0 ? Math.round((graded.filter((r) => r.correct).length / graded.length) * 100) : 0;
+  const results = grade(body.itemIds, body.answers ?? []);
+  const score = results.length > 0 ? Math.round((results.filter((r) => r.correct).length / results.length) * 100) : 0;
   const passed = score >= quiz.config.passPct;
 
   run(
@@ -133,5 +136,5 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ cod
   );
 
   const after = attemptState(user.id, code);
-  return NextResponse.json({ score, passed, passPct: quiz.config.passPct, results: graded, attemptsLeft: after.attemptsLeft, bestScore: after.bestScore });
+  return NextResponse.json({ score, passed, passPct: quiz.config.passPct, results, attemptsLeft: after.attemptsLeft, bestScore: after.bestScore });
 }

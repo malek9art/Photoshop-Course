@@ -7,6 +7,12 @@ type QuizMeta = { code: string; title: string; config: { passPct: number; attemp
 type QuizItem = { id: number; question: string; options: string[] };
 type GradeResult = { id: number; correct: boolean; chosen: number; answerIndex: number; explanation: string };
 
+/**
+ * Module quiz player (AT-04, DOC-08 §5).
+ * Per-question POSTs are formative feedback only (free, unlimited).
+ * ONE graded attempt is consumed when the player finalizes the quiz
+ * (all questions answered) — mirrors the documented "3 attempts / 24 h" rule.
+ */
 export function QuizPlayer({ code }: { code: string }) {
   const router = useRouter();
   const [meta, setMeta] = useState<QuizMeta | null>(null);
@@ -23,13 +29,15 @@ export function QuizPlayer({ code }: { code: string }) {
   const [cooldownUntil, setCooldownUntil] = useState<string | null>(null);
   const [bestScore, setBestScore] = useState<number | null>(null);
   const startedRef = useRef(false);
-  const lastGradeRef = useRef<{ score: number; passed: boolean } | null>(null);
 
   useEffect(() => {
     if (startedRef.current) return;
     startedRef.current = true;
     fetch(`/api/quiz/${code}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("not-found"))))
+      .then((r) => {
+        if (r.status === 401) router.replace(`/login?next=/quiz/${code}`);
+        return r.ok ? r.json() : Promise.reject(new Error("not-found"));
+      })
       .then((data) => {
         setMeta({ code: data.code, title: data.title, config: data.config });
         setItems(data.items);
@@ -39,8 +47,9 @@ export function QuizPlayer({ code }: { code: string }) {
         setBestScore(data.bestScore ?? null);
       })
       .catch(() => setError("تعذر تحميل الاختبار. تأكد من وجود ملف الاختبار."));
-  }, [code]);
+  }, [code, router]);
 
+  /** Formative per-question feedback — never consumes an attempt. */
   async function submitAnswer() {
     if (chosen === null || busy) return;
     setBusy(true);
@@ -48,21 +57,20 @@ export function QuizPlayer({ code }: { code: string }) {
       const res = await fetch(`/api/quiz/${code}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ itemIds, answers: [...answers, chosen] }),
+        body: JSON.stringify({ itemIds: [items[idx].id], answers: [chosen] }),
       });
-      const data = await res.json();
-      if (!res.ok) {
-        if (res.status === 429) setError("فترة التهدئة سارية بين المحاولات (24 ساعة — DOC-08 §5).");
-        else if (res.status === 403) setError("استنفدت محاولاتك الثلاث لهذا الاختبار (DOC-08 §5).");
-        else setError(data.error ?? "حدث خطأ أثناء التصحيح.");
+      if (res.status === 401) {
+        router.push(`/login?next=/quiz/${code}`);
         return;
       }
-      lastGradeRef.current = { score: data.score, passed: data.passed };
+      const data = await res.json();
+      if (!res.ok) {
+        setError("حدث خطأ أثناء التصحيح — أعد المحاولة.");
+        return;
+      }
       const last = data.results[data.results.length - 1];
       setFeedback(last);
       setAnswers((prev) => [...prev, chosen]);
-      setAttemptsLeft(data.attemptsLeft ?? attemptsLeft);
-      setBestScore(data.bestScore ?? bestScore);
     } finally {
       setBusy(false);
     }
@@ -76,10 +84,31 @@ export function QuizPlayer({ code }: { code: string }) {
     }
   }
 
-  function finish() {
-    const grade = lastGradeRef.current ?? { score: 0, passed: false };
-    setResult(grade);
-    router.refresh();
+  /** End of attempt: ONE graded submission for the whole quiz (DOC-08 §5). */
+  async function finish() {
+    if (busy) return;
+    setBusy(true);
+    try {
+      const res = await fetch(`/api/quiz/${code}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ itemIds, answers, finalize: true }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        if (res.status === 401) router.push(`/login?next=/quiz/${code}`);
+        else if (res.status === 429) setError("فترة التهدئة سارية بين المحاولات (24 ساعة — DOC-08 §5).");
+        else if (res.status === 403) setError("استنفدت محاولاتك الثلاث لهذا الاختبار (DOC-08 §5).");
+        else setError(data.error ?? "حدث خطأ أثناء التصحيح.");
+        return;
+      }
+      setResult({ score: data.score, passed: data.passed });
+      setAttemptsLeft(data.attemptsLeft ?? attemptsLeft);
+      setBestScore(data.bestScore ?? bestScore);
+      router.refresh();
+    } finally {
+      setBusy(false);
+    }
   }
 
   if (error) return <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>;
@@ -194,7 +223,7 @@ export function QuizPlayer({ code }: { code: string }) {
         </fieldset>
 
         {feedback && (
-          <div className={`mt-4 rounded-lg px-4 py-3 text-sm ${feedback.correct ? "bg-primary-50 text-primary-800" : "bg-amber-50 text-amber-800"}`}>
+          <div className={`mt-4 rounded-lg px-4 py-3 text-sm ${feedback.correct ? "bg-primary-50 text-primary-800" : "bg-amber-50 text-amber-800"}`} aria-live="polite">
             <p className="font-bold">{feedback.correct ? "إجابة صحيحة ✓" : `الإجابة الصحيحة: ${["أ", "ب", "ج", "د", "ه"][feedback.answerIndex] ?? ""}`}</p>
             {feedback.explanation && <p className="mt-1 leading-relaxed">{feedback.explanation}</p>}
           </div>
@@ -208,7 +237,9 @@ export function QuizPlayer({ code }: { code: string }) {
           ) : idx + 1 < items.length ? (
             <button type="button" onClick={next} className="btn-primary w-full">السؤال التالي ←</button>
           ) : (
-            <button type="button" onClick={finish} className="btn-primary w-full">عرض النتيجة</button>
+            <button type="button" onClick={finish} disabled={busy} className="btn-primary w-full">
+              {busy ? "جارٍ اعتماد النتيجة…" : "عرض النتيجة"}
+            </button>
           )}
         </div>
       </div>

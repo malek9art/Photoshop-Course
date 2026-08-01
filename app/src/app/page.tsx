@@ -52,7 +52,7 @@ export default async function HomePage() {
             خطوة بخطوة، وبإيقاع يناسبك.
           </p>
           <div className="mt-6 flex flex-wrap gap-3">
-            <Link href="/catalog" className="btn bg-accent-500 text-white hover:bg-accent-600">
+            <Link href="/catalog" className="btn bg-accent-500 text-neutral-900 hover:bg-accent-600">
               تصفح المراحل الدراسية
             </Link>
             {!user && (
