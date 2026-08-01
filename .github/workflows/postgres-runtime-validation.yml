@@ -18,7 +18,6 @@ jobs:
       SESSION_SECRET: ${{ secrets.SESSION_SECRET }}
       DATABASE_SSL: "true"
       DATABASE_SSL_REJECT_UNAUTHORIZED: "false"
-      NODE_ENV: production
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
