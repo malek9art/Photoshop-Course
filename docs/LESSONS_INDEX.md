@@ -60,7 +60,7 @@ Each transition records: date, task ID, agent, reviewer (for review states).
 
 ## 4. Master Lesson Index
 
-*All 156 lessons from DOC-03. Status as of 2026-07-31: 28 P1-A lessons `In review` (TASK-103, AGT-002); remaining 128 `Not started`.*
+*All 156 lessons from DOC-03. Phase 4B progress (2026-08-01): P1-A (28) + STG-02 (25) + STG-03 MOD-0301/0302 (12) `In review`; MOD-0303 & MOD-0304 (11) placeholder lessons replaced with original content and set `In review` (TASK-201, AGT-003); remaining placeholders under replacement.*
 
 | Lesson | Module | Status | Production task / notes |
 |--------|--------|--------|-------------------------|
@@ -120,17 +120,17 @@ Each transition records: date, task ID, agent, reviewer (for review states).
 | LES-030204 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
 | LES-030205 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
 | LES-030206 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
-| LES-030301 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
-| LES-030302 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
-| LES-030303 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
-| LES-030304 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
-| LES-030305 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
-| LES-030401 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
-| LES-030402 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
-| LES-030403 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
-| LES-030404 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
-| LES-030405 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
-| LES-030406 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
+| LES-030301 | MOD-0303 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030302 | MOD-0303 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030303 | MOD-0303 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030304 | MOD-0303 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030305 | MOD-0303 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030401 | MOD-0304 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030402 | MOD-0304 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030403 | MOD-0304 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030404 | MOD-0304 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030405 | MOD-0304 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-030406 | MOD-0304 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
 | LES-040101 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |
 | LES-040102 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |
 | LES-040103 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |

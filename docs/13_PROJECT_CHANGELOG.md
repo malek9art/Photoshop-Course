@@ -195,4 +195,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, new content files under `content/stg-03-illustrator/mod-0302-drawing-typography/`.
 - **Version:** DOC-22 1.0.7 → 1.0.8; DOC-13 1.0.15 → 1.0.16.
 
-> **Next entry:** `CHG-018` — to be appended by the next agent that modifies the repository.
+### CHG-018 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-03 MOD-0303 (LES-030301…030305) + MOD-0304 (LES-030401…030406)
+- **Description:** Phase 4 QA (QA-03) detected 84 placeholder-template lessons (identical generic body across lessons of MOD-0303→MOD-0704). Replaced the first 11 with original, lesson-specific Arabic content per DOC-07 §3 (learning goals, theory, guided practice, real-world example, best practices, common mistakes, portfolio challenge, mini assignment, checkpoint quiz, creative insight, official Adobe resources). Frontmatter metadata corrected per lesson (appVersion, duration, prerequisites, objectives).
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings; placeholders are no longer acceptable for release.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-03-illustrator/mod-0303-logo-brand/` and `content/stg-03-illustrator/mod-0304-advanced-vector/`.
+- **Version:** DOC-22 1.0.8 → 1.0.9; DOC-13 1.0.16 → 1.0.17.
+
+> **Next entry:** `CHG-019` — to be appended by the next agent that modifies the repository.
