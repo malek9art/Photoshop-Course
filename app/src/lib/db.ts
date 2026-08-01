@@ -124,6 +124,17 @@ CREATE TABLE IF NOT EXISTS exam_attempts (     -- ENT-ATTEMPT (DOC-05) for AT-06
 );
 CREATE INDEX IF NOT EXISTS idx_exam_attempts_user ON exam_attempts(user_id);
 
+CREATE TABLE IF NOT EXISTS quiz_attempts (     -- ENT-ATTEMPT (DOC-05) for AT-04 module quizzes
+  id           TEXT PRIMARY KEY,
+  user_id      TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  quiz_code    TEXT NOT NULL,                      -- QUIZ-MOD-0101
+  score_pct    INTEGER NOT NULL,
+  passed       INTEGER NOT NULL,
+  answers_json TEXT NOT NULL,
+  created_at   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+CREATE INDEX IF NOT EXISTS idx_quiz_attempts_user ON quiz_attempts(user_id);
+
 CREATE TABLE IF NOT EXISTS grades (            -- ENT-GRADE (DOC-05) for AT-05 rubric grading
   id             TEXT PRIMARY KEY,
   submission_id  TEXT NOT NULL REFERENCES submissions(id) ON DELETE CASCADE,

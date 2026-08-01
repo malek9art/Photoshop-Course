@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { NextRequest, NextResponse } from "next/server";
 import { randomBytes } from "node:crypto";
 import { get, run } from "@/lib/db";
-import { hashPassword, verifyPassword, createSession, setSessionCookie } from "@/lib/auth";
+import { hashPassword, createSession, setSessionCookie, safeNextPath } from "@/lib/auth";
 
 export const runtime = "nodejs";
 
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   const email = clean(form.get("email") as string).toLowerCase();
   const password = clean(form.get("password") as string);
   const name = clean(form.get("name") as string);
-  const next = (form.get("next") as string) || "/profile";
+  const next = safeNextPath(form.get("next") as string);
 
   if (!email || !password || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
     return NextResponse.redirect(new URL("/register?error=invalid", req.url));

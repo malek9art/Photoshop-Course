@@ -1,6 +1,6 @@
-# QUIZ-MOD-mod — اختبار الوحدة (mod-0402-animation-effects)
+# QUIZ-MOD-0401 — اختبار الوحدة (mod-0401-motion-fundamentals)
 
-> **Document ID:** QUIZ-MOD-mod · **Status:** Active · **Module:** mod-0402-animation-effects · **Standard:** DOC-07 §5 & DOC-08 §3–§5
+> **Document ID:** QUIZ-MOD-0401 · **Status:** Active · **Module:** mod-0401-motion-fundamentals · **Standard:** DOC-07 §5 & DOC-08 §3–§5
 
 ## 1. التكوين والتعليمات
 
@@ -10,7 +10,7 @@
 | **Drawn per Attempt** | 8 questions (randomized) |
 | **Passing Threshold** | 70% |
 | **Max Attempts** | 3 attempts per 24h |
-| **Target Module** | mod-0402-animation-effects |
+| **Target Module** | mod-0401-motion-fundamentals |
 
 ---
 

@@ -27,7 +27,10 @@ export function ExamPlayer({ code }: { code: string }) {
     if (startedRef.current) return;
     startedRef.current = true;
     fetch(`/api/exam/${code}`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error("not-found"))))
+      .then((r) => {
+        if (r.status === 401) router.replace(`/login?next=/exam/${code}`);
+        return r.ok ? r.json() : Promise.reject(new Error("not-found"));
+      })
       .then((d) => {
         setTitle(d.title);
         setConfig(d.config);
@@ -36,7 +39,7 @@ export function ExamPlayer({ code }: { code: string }) {
         setCooldownUntil(d.cooldownUntil ?? null);
       })
       .catch(() => setError("تعذر تحميل الاختبار."));
-  }, [code]);
+  }, [code, router]);
 
   async function submit() {
     if (busy) return;
@@ -49,7 +52,8 @@ export function ExamPlayer({ code }: { code: string }) {
       });
       const data = await res.json();
       if (!res.ok) {
-        if (res.status === 429) setError("فترة التهدئة سارية — عد لاحقًا.");
+        if (res.status === 401) router.push(`/login?next=/exam/${code}`);
+        else if (res.status === 429) setError("فترة التهدئة سارية — عد لاحقًا (7 أيام — DOC-08 §5).");
         else if (res.status === 403) setError("استنفدت محاولاتك لهذا الاختبار.");
         else setError(data.error ?? "حدث خطأ.");
         return;

@@ -94,3 +94,13 @@ export async function destroySession(): Promise<void> {
 export function publicUser(u: User) {
   return { id: u.id, email: u.email, name: u.name, role: u.role, locale: u.locale };
 }
+
+/**
+ * Validate a post-auth redirect target: same-site relative paths only
+ * (blocks open redirects like `next=https://evil.tld` or `//evil.tld`).
+ */
+export function safeNextPath(value: string | null | undefined, fallback = "/profile"): string {
+  const v = (value ?? "").trim();
+  if (!v.startsWith("/") || v.startsWith("//") || v.includes("://") || v.includes("\\")) return fallback;
+  return v.slice(0, 200);
+}

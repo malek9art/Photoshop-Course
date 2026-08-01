@@ -1,6 +1,6 @@
-# QUIZ-MOD-mod — اختبار الوحدة (mod-0404-vfx-compositing)
+# QUIZ-MOD-0702 — اختبار الوحدة (mod-0702-editorial-layout)
 
-> **Document ID:** QUIZ-MOD-mod · **Status:** Active · **Module:** mod-0404-vfx-compositing · **Standard:** DOC-07 §5 & DOC-08 §3–§5
+> **Document ID:** QUIZ-MOD-0702 · **Status:** Active · **Module:** mod-0702-editorial-layout · **Standard:** DOC-07 §5 & DOC-08 §3–§5
 
 ## 1. التكوين والتعليمات
 
@@ -10,7 +10,7 @@
 | **Drawn per Attempt** | 8 questions (randomized) |
 | **Passing Threshold** | 70% |
 | **Max Attempts** | 3 attempts per 24h |
-| **Target Module** | mod-0404-vfx-compositing |
+| **Target Module** | mod-0702-editorial-layout |
 
 ---
 

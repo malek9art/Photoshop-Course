@@ -1,6 +1,6 @@
-# QUIZ-MOD-mod — اختبار الوحدة (mod-0604-portfolio-export)
+# QUIZ-MOD-0402 — اختبار الوحدة (mod-0402-animation-effects)
 
-> **Document ID:** QUIZ-MOD-mod · **Status:** Active · **Module:** mod-0604-portfolio-export · **Standard:** DOC-07 §5 & DOC-08 §3–§5
+> **Document ID:** QUIZ-MOD-0402 · **Status:** Active · **Module:** mod-0402-animation-effects · **Standard:** DOC-07 §5 & DOC-08 §3–§5
 
 ## 1. التكوين والتعليمات
 
@@ -10,7 +10,7 @@
 | **Drawn per Attempt** | 8 questions (randomized) |
 | **Passing Threshold** | 70% |
 | **Max Attempts** | 3 attempts per 24h |
-| **Target Module** | mod-0604-portfolio-export |
+| **Target Module** | mod-0402-animation-effects |
 
 ---
 
