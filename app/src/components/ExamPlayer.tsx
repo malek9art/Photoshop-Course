@@ -2,6 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { Alert, ProgressRing } from "./ui";
+import { SuccessCheck, Skeleton } from "./feedback";
+import { ClockIcon, ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, AlertIcon, ExamIcon } from "./icons";
 
 type ExamConfig = { passPct: number; attempts: number; cooldownDays: number; durationMin: number };
 type ExamItem = { id: number; question: string; options: string[] };
@@ -65,13 +68,25 @@ export function ExamPlayer({ code }: { code: string }) {
     }
   }
 
-  if (error) return <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>;
+  if (error)
+    return (
+      <div className="mx-auto max-w-2xl animate-shake">
+        <Alert tone="danger" role="alert" title="تعذّر إتمام العملية">
+          {error}
+        </Alert>
+      </div>
+    );
   if (!config || items.length === 0) {
     return (
-      <div className="mx-auto max-w-md space-y-3" aria-busy="true" aria-label="جارٍ تحميل الاختبار">
-        <div className="h-6 w-56 animate-pulse rounded bg-neutral-200" />
-        <div className="h-40 animate-pulse rounded-xl bg-neutral-200" />
-        <div className="h-10 animate-pulse rounded-lg bg-neutral-200" />
+      <div className="mx-auto max-w-2xl space-y-4" aria-busy="true" aria-label="جارٍ تحميل الاختبار">
+        <Skeleton className="h-7 w-64" />
+        <Skeleton className="h-2 w-full" />
+        <div className="card space-y-3 p-6">
+          <Skeleton className="h-6 w-4/5" />
+          {[0, 1, 2, 3].map((i) => (
+            <Skeleton key={i} className="h-14 w-full" />
+          ))}
+        </div>
       </div>
     );
   }
@@ -80,33 +95,68 @@ export function ExamPlayer({ code }: { code: string }) {
     const correctCount = result.results.filter((r) => r.correct).length;
     return (
       <div className="mx-auto max-w-2xl">
-        <div className="card p-8 text-center">
-          <p className="text-5xl" aria-hidden="true">{result.passed ? "🎉" : "📚"}</p>
-          <h2 className="mt-3 text-2xl font-extrabold text-neutral-900">
-            {result.passed ? "أحسنت! اجتزت اختبار المرحلة" : "لم تجتز الاختبار هذه المرة"}
-          </h2>
-          <p className="mt-2 text-sm text-neutral-600">
-            نتيجتك: <b>{result.score}%</b> · النجاح من {config.passPct}% · {correctCount}/{result.results.length} إجابة صحيحة
-          </p>
-          {!result.passed && (
-            <p className="mt-2 text-xs text-neutral-500">
-              راجع دروس المرحلة ثم أعد المحاولة بعد فترة التهدئة (7 أيام — DOC-08 §5).
+        <div className="card relative overflow-hidden p-8 text-center md:p-12">
+          <span
+            aria-hidden="true"
+            className={`absolute inset-x-0 top-0 h-1 bg-gradient-to-l ${
+              result.passed ? "from-success-500 to-primary-500" : "from-warning-500 to-accent-500"
+            }`}
+          />
+          <div className="flex flex-col items-center gap-5" role="status" aria-live="polite">
+            {result.passed ? (
+              <SuccessCheck className="h-20 w-20" />
+            ) : (
+              <span className="flex h-20 w-20 animate-scale-in items-center justify-center rounded-full bg-warning-50 text-warning-600">
+                <AlertIcon className="h-9 w-9" />
+              </span>
+            )}
+            <h2 className="text-2xl font-black tracking-tighter text-neutral-900">
+              {result.passed ? "أحسنت! اجتزت اختبار المرحلة" : "لم تجتز الاختبار هذه المرة"}
+            </h2>
+            <ProgressRing percent={result.score} size={128} stroke={10} label="نتيجتك">
+              <span className="text-3xl font-black tracking-tighter text-neutral-900">{result.score}%</span>
+              <span className="mt-0.5 text-2xs font-semibold text-neutral-500">نتيجتك</span>
+            </ProgressRing>
+            <p className="text-sm text-neutral-500">
+              النجاح من {config.passPct}% · {correctCount}/{result.results.length} إجابة صحيحة
             </p>
-          )}
-          <button type="button" onClick={() => router.push("/catalog")} className="btn-primary mt-6">
-            العودة إلى المكتبة
-          </button>
+            {!result.passed && (
+              <p className="text-xs text-neutral-500">
+                راجع دروس المرحلة ثم أعد المحاولة بعد فترة التهدئة (7 أيام — DOC-08 §5).
+              </p>
+            )}
+            <button type="button" onClick={() => router.push("/catalog")} className="btn-primary btn-lg mt-2">
+              العودة إلى المكتبة
+              <ArrowLeftIcon className="h-4 w-4" />
+            </button>
+          </div>
         </div>
 
-        <div className="card mt-6 p-6">
-          <h3 className="mb-3 font-bold text-neutral-900">مراجعة إجاباتك</h3>
-          <ul className="space-y-3">
+        <div className="card mt-6 p-6 md:p-8">
+          <h3 className="mb-4 text-base font-bold text-neutral-900">مراجعة إجاباتك</h3>
+          <ul className="space-y-2.5">
             {result.results.map((r) => (
-              <li key={r.id} className={`rounded-lg border px-4 py-3 text-sm ${r.correct ? "border-primary-200 bg-primary-50/50" : "border-red-200 bg-red-50/50"}`}>
-                <span className="font-bold">{r.id}. </span>
-                <span className="font-semibold text-neutral-800">{items.find((i) => i.id === r.id)?.question}</span>
-                <span className="mt-1 block text-xs text-neutral-600">
-                  {r.correct ? "✓ إجابة صحيحة" : `الإجابة الصحيحة: ${LETTERS[r.answerIndex] ?? ""}`}
+              <li
+                key={r.id}
+                className={`flex items-start gap-3 rounded-2xl border px-4 py-3.5 text-sm transition-shadow hover:shadow-xs ${
+                  r.correct ? "border-success-500/25 bg-success-50/60" : "border-danger-500/25 bg-danger-50/60"
+                }`}
+              >
+                <span
+                  aria-hidden="true"
+                  className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-white ${
+                    r.correct ? "bg-success-500" : "bg-danger-500"
+                  }`}
+                >
+                  {r.correct ? <CheckCircleIcon className="h-4 w-4" /> : <AlertIcon className="h-4 w-4" />}
+                </span>
+                <span className="min-w-0">
+                  <span className="block font-semibold leading-relaxed text-neutral-800">
+                    {items.find((i) => i.id === r.id)?.question}
+                  </span>
+                  <span className="mt-1 block text-xs text-neutral-500">
+                    {r.correct ? "إجابة صحيحة" : `الإجابة الصحيحة: ${LETTERS[r.answerIndex] ?? ""}`}
+                  </span>
                 </span>
               </li>
             ))}
@@ -118,9 +168,11 @@ export function ExamPlayer({ code }: { code: string }) {
 
   if (attemptsLeft === 0 || cooldownUntil) {
     return (
-      <div className="card mx-auto max-w-md p-8 text-center">
-        <p className="text-4xl" aria-hidden="true">⏳</p>
-        <h2 className="mt-3 text-lg font-bold text-neutral-900">الاختبار غير متاح حاليًا</h2>
+      <div className="card mx-auto max-w-md animate-fade-up p-8 text-center">
+        <span className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-warning-50 text-warning-600 ring-1 ring-warning-500/20" aria-hidden="true">
+          <ClockIcon className="h-7 w-7" />
+        </span>
+        <h2 className="mt-4 text-lg font-bold text-neutral-900">الاختبار غير متاح حاليًا</h2>
         {cooldownUntil ? (
           <p className="mt-2 text-sm text-neutral-600">
             فترة التهدئة سارية حتى {new Date(cooldownUntil).toLocaleDateString("ar-SA")} — أعد المحاولة بعدها (DOC-08 §5).
@@ -136,39 +188,116 @@ export function ExamPlayer({ code }: { code: string }) {
   const item = items[idx];
   return (
     <div className="mx-auto max-w-2xl">
-      <header className="mb-6">
-        <h1 className="text-xl font-extrabold text-neutral-900">{title}</h1>
-        <p className="mt-1 text-xs text-neutral-500">
-          السؤال {idx + 1} من {items.length} · النجاح من {config.passPct}% · المحاولات المتبقية: {attemptsLeft ?? "—"}
-        </p>
-        <div className="mt-3 flex gap-1" aria-hidden="true">
+      <header className="sticky top-[4.25rem] z-30 -mx-1 mb-6 rounded-2xl border border-hairline bg-canvas/85 p-4 backdrop-blur-xl md:top-[5rem]">
+        <div className="flex items-start justify-between gap-3">
+          <div className="min-w-0">
+            <h1 className="flex items-center gap-2 text-lg font-bold tracking-tight text-neutral-900">
+              <ExamIcon className="h-5 w-5 shrink-0 text-primary-600" />
+              <span className="truncate">{title}</span>
+            </h1>
+            <p className="mt-1 text-xs text-neutral-500">
+              السؤال {idx + 1} من {items.length} · النجاح من {config.passPct}% · المحاولات المتبقية:{" "}
+              {attemptsLeft ?? "—"}
+            </p>
+          </div>
+          <span className="shrink-0 rounded-xl bg-surface-muted px-3 py-1.5 text-xs font-bold text-neutral-700 ring-1 ring-hairline">
+            {answers.filter((a) => a !== undefined).length}/{items.length}
+          </span>
+        </div>
+        {/* Question navigator — jump to any answered/unanswered question */}
+        <div className="mt-3 flex flex-wrap gap-1" role="group" aria-label="التنقل بين الأسئلة">
           {items.map((_, i) => (
-            <span key={i} className={`h-1.5 flex-1 rounded-full ${answers[i] !== undefined ? "bg-primary-600" : i === idx ? "bg-accent-500" : "bg-neutral-200"}`} />
+            <button
+              key={i}
+              type="button"
+              onClick={() => setIdx(i)}
+              aria-label={`السؤال ${i + 1}${answers[i] !== undefined ? " — تمت الإجابة" : ""}`}
+              aria-current={i === idx ? "true" : undefined}
+              className={`h-7 min-w-[1.75rem] rounded-lg px-1 text-2xs font-bold transition-all duration-fast focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 ${
+                i === idx
+                  ? "bg-accent-500 text-neutral-950"
+                  : answers[i] !== undefined
+                    ? "bg-primary-100 text-primary-700 hover:bg-primary-200"
+                    : "bg-neutral-100 text-neutral-500 hover:bg-neutral-200"
+              }`}
+            >
+              {i + 1}
+            </button>
           ))}
         </div>
       </header>
 
-      <div className="card p-6">
-        <h2 className="text-lg font-bold leading-relaxed text-neutral-900">{item.question}</h2>
-        <fieldset className="mt-5 space-y-3">
+      <div key={idx} className="card animate-fade-up p-6 md:p-8">
+        <h2 className="text-lg font-bold leading-loose text-neutral-900">{item.question}</h2>
+        <fieldset className="mt-6 space-y-2.5">
           <legend className="sr-only">الخيارات</legend>
           {item.options.map((opt, i) => {
             const selected = answers[idx] === i;
             return (
-              <label key={i} className={`flex cursor-pointer items-start gap-3 rounded-lg border px-4 py-3 transition-colors ${selected ? "border-primary-500 bg-primary-50" : "border-neutral-200 hover:border-primary-300"}`}>
-                <input type="radio" name="answer" checked={selected} onChange={() => setAnswers((prev) => { const n = [...prev]; n[idx] = i; return n; })} className="mt-1 accent-primary-700" />
-                <span className="text-sm leading-relaxed text-neutral-800"><span className="font-bold">{LETTERS[i] ?? i + 1})</span> {opt}</span>
+              <label
+                key={i}
+                className={`group flex cursor-pointer items-start gap-3 rounded-2xl border px-4 py-3.5 transition-all duration-fast ease-smooth has-[:focus-visible]:ring-4 has-[:focus-visible]:ring-primary-500/15 ${
+                  selected
+                    ? "border-primary-500 bg-primary-50 shadow-sm"
+                    : "border-hairline hover:-translate-y-px hover:border-primary-400 hover:bg-surface-muted"
+                }`}
+              >
+                <input
+                  type="radio"
+                  name="answer"
+                  checked={selected}
+                  onChange={() =>
+                    setAnswers((prev) => {
+                      const n = [...prev];
+                      n[idx] = i;
+                      return n;
+                    })
+                  }
+                  className="sr-only"
+                />
+                <span
+                  aria-hidden="true"
+                  className={`mt-0.5 flex h-7 w-7 shrink-0 items-center justify-center rounded-xl text-xs font-bold transition-colors ${
+                    selected
+                      ? "bg-primary-600 text-white"
+                      : "bg-surface-muted text-neutral-500 ring-1 ring-hairline group-hover:bg-primary-100 group-hover:text-primary-700"
+                  }`}
+                >
+                  {LETTERS[i] ?? i + 1}
+                </span>
+                <span className="pt-0.5 text-sm leading-loose text-neutral-800">{opt}</span>
               </label>
             );
           })}
         </fieldset>
 
-        <div className="mt-6 flex justify-between gap-3">
-          <button type="button" onClick={() => setIdx(Math.max(0, idx - 1))} disabled={idx === 0} className="btn-outline">السابق</button>
+        <div className="mt-7 flex items-center justify-between gap-3">
+          <button
+            type="button"
+            onClick={() => setIdx(Math.max(0, idx - 1))}
+            disabled={idx === 0}
+            className="btn-outline group"
+          >
+            <ArrowRightIcon className="h-4 w-4 transition-transform duration-base group-hover:translate-x-0.5" />
+            السابق
+          </button>
           {idx + 1 < items.length ? (
-            <button type="button" onClick={() => setIdx(idx + 1)} disabled={answers[idx] === undefined} className="btn-primary">التالي ←</button>
+            <button
+              type="button"
+              onClick={() => setIdx(idx + 1)}
+              disabled={answers[idx] === undefined}
+              className="btn-primary group"
+            >
+              التالي
+              <ArrowLeftIcon className="h-4 w-4 transition-transform duration-base group-hover:-translate-x-0.5" />
+            </button>
           ) : (
-            <button type="button" onClick={submit} disabled={busy || answers.filter((a) => a !== undefined).length < items.length} className="btn-primary">
+            <button
+              type="button"
+              onClick={submit}
+              disabled={busy || answers.filter((a) => a !== undefined).length < items.length}
+              className="btn-primary"
+            >
               {busy ? "جارٍ التصحيح…" : "إنهاء الاختبار وتسليمه"}
             </button>
           )}
