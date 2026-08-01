@@ -235,4 +235,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-07-indesign/mod-0701-indesign-fundamentals/`, `mod-0702-editorial-layout/`, `mod-0703-production-print/`, `mod-0704-publishing-portfolio/`, plus character fixes in `content/stg-06-lightroom/mod-0603-advanced-workflow/LES-060303.md` and five `content/stg-02-photoshop/` lessons.
 - **Version:** DOC-22 1.0.12 → 1.0.13; DOC-13 1.0.20 → 1.0.21.
 
-> **Next entry:** `CHG-023` — to be appended by the next agent that modifies the repository.
+### CHG-023 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B content completion: production of the 9 lessons missing from the filesystem (allowed by DOC-03 / LESSONS_INDEX but never authored).
+- **Description:** Produced 9 original lessons per DOC-07 §3: MOD-0205 Photoshop Professional Practice (LES-020501 سير العمل مع العملاء، LES-020502 تسليم الملفات، LES-020503 التكامل مع إليستريتور، LES-020504 مشروع ختامي: حملة بصرية — Adobe Photoshop 26.x (2025)); MOD-0801 (LES-080103 القوالب والمكونات، LES-080104 فريق العمل والتعاون); MOD-0802 (LES-080202 الموجز الإبداعي، LES-080203 التسعير والعقود، LES-080204 التسويق الشخصي — Adobe Creative Cloud 2025). Alignment verified with existing QUIZ-MOD-0205 references (LES-020501–020504). All lessons validated (12-section DOC-07 §3 structure) and scanned for stray/lost characters. **Milestone: 156/156 lesson files on disk matching LESSONS_INDEX — zero missing, zero placeholders.**
+- **Reason:** User-approved Phase 4B content completion: the 9 lessons were registered `In review` but their files never existed on disk.
+- **Affected Documents:** `docs/LESSONS_INDEX.md` (Version 1.0.1 → 1.0.14 with §4/§7/Totals refresh), `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content under `content/stg-02-photoshop/mod-0205-professional-practice/`, `content/stg-08-integrated-studio/mod-0801-cross-app/`, `content/stg-08-integrated-studio/mod-0802-professional-practice/`.
+- **Version:** DOC-22 1.0.13 → 1.0.14; DOC-13 1.0.21 → 1.0.22.
+
+> **Next entry:** `CHG-024` — to be appended by the next agent that modifies the repository.
