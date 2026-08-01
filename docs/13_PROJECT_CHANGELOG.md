@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.24 |
+| **Version** | 1.0.25 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-08-01 |
@@ -251,6 +251,14 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, and new content files `content/stg-08-integrated-studio/mod-0801-cross-app/QUIZ-MOD-0801.md`, `mod-0802-professional-practice/QUIZ-MOD-0802.md`, `mod-0803-capstone-project/QUIZ-MOD-0803.md`, `mod-0804-graduation/QUIZ-MOD-0804.md`.
 - **Version:** DOC-22 unchanged (1.0.14 — quizzes are not LES-registry rows); DOC-13 1.0.22 → 1.0.23.
 
+### CHG-026 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B handoff documentation.
+- **Description:** Added `docs/PHASE4B_HANDOFF.md` — an official handoff document for the next agent/session covering: full project status (156/156 lessons, 33/33 module quizzes, 7/7 stage exams), the exact remaining scope (7 stage projects AT-05), the mandatory file spec per STG-0X-PROJECT.md (sections, config lines, difficulty codes), the critical `app/src/lib/rubric.ts` parser constraints (rubric table format, 4 criteria, pass rule avg ≥ 3.0 and no criterion = 1), a ready parser-verification script, and closure procedures (PROJECT_STATE update, next changelog number CHG-027, git/report conventions). Also queued the version-history row 1.3.14 in `docs/PROJECT_STATE.md`.
+- **Reason:** User requested clear handoff for a new conversation before merging Phase 4B work to `main`.
+- **Affected Documents:** `docs/PHASE4B_HANDOFF.md` (new), `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`.
+- **Version:** DOC-22 unchanged (1.0.14); DOC-13 1.0.24 → 1.0.25.
+
 ### CHG-025 — 2026-08-01
 - **Agent:** AGT-003 (Phase 4B Content Completion)
 - **Task(s):** TASK-201 — Phase 4B content completion: production of all 7 remaining stage exams (AT-06 gates).
@@ -259,4 +267,4 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, and content files `content/stg-02-photoshop/STG-02-EXAM.md`, `content/stg-03-illustrator/STG-03-EXAM.md`, `content/stg-04-after-effects/STG-04-EXAM.md`, `content/stg-05-premiere/STG-05-EXAM.md`, `content/stg-06-lightroom/STG-06-EXAM.md`, `content/stg-07-indesign/STG-07-EXAM.md`, `content/stg-08-integrated-studio/STG-08-EXAM.md`, plus fixes in `content/stg-08-integrated-studio/mod-0803-capstone-project/LES-080303.md`, `LES-080304.md`, `LES-080305.md`.
 - **Version:** DOC-22 unchanged (1.0.14 — exams are not LES-registry rows); DOC-13 1.0.23 → 1.0.24.
 
-> **Next entry:** `CHG-026` — to be appended by the next agent that modifies the repository.
+> **Next entry:** `CHG-027` — to be appended by the next agent that modifies the repository.

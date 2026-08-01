@@ -185,6 +185,7 @@ The next agent must:
 
 | Version | Date | Author | Summary of Changes |
 |---------|------|--------|--------------------|
+| 1.3.14 | 2026-08-01 | AGT-003 | Phase 4B handoff doc added (CHG-026): `docs/PHASE4B_HANDOFF.md` — scope, AT-05 spec, rubric parser constraints, closure procedure for the 7 remaining stage projects. |
 | 1.3.13 | 2026-08-01 | AGT-003 | All stage exams completed (CHG-025): STG-02..08 stage exams produced (30 items each, DOC-08 AT-06, parser-verified); LES-080303/080304/080305 header/typo fixes. Remaining: 7 stage projects. |
 | 1.3.12 | 2026-08-01 | AGT-003 | MOD-0302 completed (CHG-017): lessons LES-030201…06 and QUIZ-MOD-0302 produced. |
 | 1.3.11 | 2026-08-01 | AGT-003 | MOD-0301 completed (CHG-016): lessons LES-030101…06 and QUIZ-MOD-0301 produced. STG-03 started. |
