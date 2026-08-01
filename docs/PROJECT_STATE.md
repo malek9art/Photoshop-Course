@@ -51,7 +51,7 @@ PROJECT_STATE exists so that any agent can answer in under two minutes: *what ph
 | **Next phase** | Beta (MS-12) after platform milestones MS-08…MS-11 complete |
 | **Blocked items** | OPD-003/004/005 (hosting/media/payment) — non-blocking for local implementation; platform deployment waits on OPD-003. Nothing blocks local batch development. |
 | **Platform state** | No implementation artifacts exist (see DOC-18) |
-| **Content state** | All 156 lessons across STG-01..STG-08 `In review` (156/156). **Phase 4B (2026-08-01)**: 84 placeholder lessons replaced ✅ + 9 missing lessons produced ✅ (MOD-0205 ×4, MOD-0801 ×2, MOD-0802 ×3). Remaining: QUIZ-MOD-0801..0804 (module quizzes), STG-02..08 stage exams (7) and stage projects (7) |
+| **Content state** | All 156 lessons across STG-01..STG-08 `In review` (156/156) + all 33 module quizzes complete (29 pre-existing + QUIZ-MOD-0801..0804 produced 2026-08-01, 16-item pools, DOC-08 AT-04 compliant, parser-verified). Remaining: STG-02..08 stage exams (7) and stage projects (7) |
 | **Date** | 2026-07-31 |
 
 ## 4. Current Phase & Milestone Snapshot

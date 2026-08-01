@@ -243,4 +243,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/LESSONS_INDEX.md` (Version 1.0.1 → 1.0.14 with §4/§7/Totals refresh), `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content under `content/stg-02-photoshop/mod-0205-professional-practice/`, `content/stg-08-integrated-studio/mod-0801-cross-app/`, `content/stg-08-integrated-studio/mod-0802-professional-practice/`.
 - **Version:** DOC-22 1.0.13 → 1.0.14; DOC-13 1.0.21 → 1.0.22.
 
-> **Next entry:** `CHG-024` — to be appended by the next agent that modifies the repository.
+### CHG-024 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B content completion: production of the 4 missing STG-08 module quizzes (AT-04 gates).
+- **Description:** Produced QUIZ-MOD-0801 (Cross-App Workflows), QUIZ-MOD-0802 (Professional Practice), QUIZ-MOD-0803 (Capstone Projects), QUIZ-MOD-0804 (Graduation & Final Assessment) — each a 16-item question pool (8 drawn per attempt) in Format B (`### السؤال N (LES-XXXXXX)`) fully aligned with each module's lesson set, with difficulty spread (Q1–6 recall, Q7–12 application, Q13–16 professional judgment), a posted ✅ answer marker, and Arabic `*التفسير:*` explanation per item per DOC-08 §1 (assessment is feedback). Passing config 70% / 3 attempts per 24h per DOC-08 §4–§5. All four verified through the platform parser (`app/src/lib/quiz.ts`, Format B): 16 items each, zero malformed items.
+- **Reason:** User-approved Phase 4B content completion; STG-08 modules were the only modules lacking AT-04 quiz gates (29 of 33 module quizzes pre-existed).
+- **Affected Documents:** `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, and new content files `content/stg-08-integrated-studio/mod-0801-cross-app/QUIZ-MOD-0801.md`, `mod-0802-professional-practice/QUIZ-MOD-0802.md`, `mod-0803-capstone-project/QUIZ-MOD-0803.md`, `mod-0804-graduation/QUIZ-MOD-0804.md`.
+- **Version:** DOC-22 unchanged (1.0.14 — quizzes are not LES-registry rows); DOC-13 1.0.22 → 1.0.23.
+
+> **Next entry:** `CHG-025` — to be appended by the next agent that modifies the repository.
