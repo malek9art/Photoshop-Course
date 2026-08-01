@@ -2,13 +2,19 @@
 
 import { useEffect, useState } from "react";
 
-/** Skeleton block — DOC-04 §4 Loading (skeleton placeholders, not raw spinners). */
+/** Skeleton block with a premium sheen sweep — DOC-04 §4 Loading. */
 export function Skeleton({ className = "" }: { className?: string }) {
+  return <div aria-hidden="true" className={`shimmer rounded-xl ${className}`} />;
+}
+
+/** Text-line skeleton group (keeps Arabic reading rhythm while loading). */
+export function SkeletonText({ lines = 3, className = "" }: { lines?: number; className?: string }) {
   return (
-    <div
-      aria-hidden="true"
-      className={`animate-pulse rounded-lg bg-neutral-200 ${className}`}
-    />
+    <div aria-hidden="true" className={`space-y-2.5 ${className}`}>
+      {Array.from({ length: lines }).map((_, i) => (
+        <Skeleton key={i} className={`h-3.5 ${i === lines - 1 ? "w-2/3" : "w-full"}`} />
+      ))}
+    </div>
   );
 }
 
@@ -41,6 +47,20 @@ export function LiveRegion({ children, polite = true }: { children: React.ReactN
   return (
     <span className="sr-only" role="status" aria-live={polite ? "polite" : "assertive"}>
       {children}
+    </span>
+  );
+}
+
+/** Success burst — a check that pops once (lesson/quiz completion). */
+export function SuccessCheck({ className = "h-14 w-14" }: { className?: string }) {
+  return (
+    <span
+      aria-hidden="true"
+      className={`inline-flex animate-pop-check items-center justify-center rounded-full bg-success-100 text-success-600 motion-reduce:animate-none ${className}`}
+    >
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round" className="h-1/2 w-1/2">
+        <path d="m5 12.6 4.4 4.4L19 7.4" />
+      </svg>
     </span>
   );
 }
