@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.25 |
+| **Version** | 1.0.26 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-08-01 |
@@ -267,4 +267,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, and content files `content/stg-02-photoshop/STG-02-EXAM.md`, `content/stg-03-illustrator/STG-03-EXAM.md`, `content/stg-04-after-effects/STG-04-EXAM.md`, `content/stg-05-premiere/STG-05-EXAM.md`, `content/stg-06-lightroom/STG-06-EXAM.md`, `content/stg-07-indesign/STG-07-EXAM.md`, `content/stg-08-integrated-studio/STG-08-EXAM.md`, plus fixes in `content/stg-08-integrated-studio/mod-0803-capstone-project/LES-080303.md`, `LES-080304.md`, `LES-080305.md`.
 - **Version:** DOC-22 unchanged (1.0.14 — exams are not LES-registry rows); DOC-13 1.0.23 → 1.0.24.
 
-> **Next entry:** `CHG-027` — to be appended by the next agent that modifies the repository.
+### CHG-027 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B final closure: production of the 7 remaining stage projects (AT-05 gateways)
+- **Description:** Produced `STG-02-PROJECT.md` … `STG-08-PROJECT.md` (one per stage directory) following the exact reference format of `STG-01-PROJECT.md` (title, 2 config lines, 5 sections, 4-criteria rubric table starting with `| المعيار |`, self-review checkboxes, delivery procedures, Revision History). Each project includes 6 deliverables tied to actual LES codes from the stage, difficulty codes per handoff (A1/A2/I1/I2/A3), and success rule (avg ≥ 3.0 & no 1). All 7 rubrics verified via `app/src/lib/rubric.ts` parser (criteria=4, bad=0 for each; now 8/8 total including STG-01). Updated `docs/PROJECT_STATE.md` (Content state to 100% complete + new version row 1.3.15) and this changelog (DOC-13 → 1.0.26). No changes to LESSONS_INDEX (projects are not LES rows).
+- **Reason:** Complete Phase 4B (156 lessons + 33 quizzes + 7 exams + 8 projects) per user directive and `docs/PHASE4B_HANDOFF.md`; close the last remaining content gap before platform integration.
+- **Affected Documents:** New: `content/stg-02-photoshop/STG-02-PROJECT.md`, `content/stg-03-illustrator/STG-03-PROJECT.md`, `content/stg-04-after-effects/STG-04-PROJECT.md`, `content/stg-05-premiere/STG-05-PROJECT.md`, `content/stg-06-lightroom/STG-06-PROJECT.md`, `content/stg-07-indesign/STG-07-PROJECT.md`, `content/stg-08-integrated-studio/STG-08-PROJECT.md`. Updated: `docs/PROJECT_STATE.md` (v1.3.15), `docs/13_PROJECT_CHANGELOG.md` (v1.0.26).
+- **Version:** DOC-13 1.0.25 → 1.0.26; PROJECT_STATE 1.3.14 → 1.3.15.
+
+> **Next entry:** `CHG-028` — to be appended by the next agent that modifies the repository.
