@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.15 |
+| **Version** | 1.0.24 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-08-01 |
@@ -251,4 +251,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, and new content files `content/stg-08-integrated-studio/mod-0801-cross-app/QUIZ-MOD-0801.md`, `mod-0802-professional-practice/QUIZ-MOD-0802.md`, `mod-0803-capstone-project/QUIZ-MOD-0803.md`, `mod-0804-graduation/QUIZ-MOD-0804.md`.
 - **Version:** DOC-22 unchanged (1.0.14 — quizzes are not LES-registry rows); DOC-13 1.0.22 → 1.0.23.
 
-> **Next entry:** `CHG-025` — to be appended by the next agent that modifies the repository.
+### CHG-025 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B content completion: production of all 7 remaining stage exams (AT-06 gates).
+- **Description:** Produced STG-02..08 stage exams, one per stage directory (`STG-02-EXAM.md` … `STG-08-EXAM.md`), each holding exactly **30 practical/scenario-based items** — no rote memorization — with balanced coverage of every module in its stage (STG-02: 7/6/6/6/5 across five modules; STG-03..08: 8/8/7/7 across four modules) and questions aligned to the actually-produced lessons (verified against lesson concept maps). Full DOC-08 AT-06 compliance: ≥75% pass threshold, 2 attempts with 7-day cooldown, 60–90 min duration, solution-internal key table + answer rule (≥23/30 = 76.7%) per DOC-08 §3.1. Answer keys diversified across all four option letters (أ/ب/ج/د, 6–9 per letter per exam) instead of the predictable أ/ب-only pattern. Language-quality pass: STG-05-EXAM fully rewritten; STG-03/04-EXAM polished (removed garbled distractor phrases). All 8 exams (incl. pre-existing STG-01) verified through the platform parser (`app/src/lib/exam.ts::loadExam`): 30 items × 4 options × 1 ✅ each, zero malformed items, config parsed correctly (pass 75 / attempts 2 / cooldown 7 / duration 60–90). **Content fixes:** `LES-080303.md` header corrected `# LES-030303` → `# LES-080303` (internal metadata was already correct); stray Latin letter typo fixed in `LES-080304.md`; `الأربعة الساعة` → `الأربعة السابقة` typo fixed in `LES-080305.md`.
+- **Reason:** User-approved Phase 4B content completion; stage exams were the only missing AT-06 assessment gates after quizzes (CHG-024).
+- **Affected Documents:** `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, and content files `content/stg-02-photoshop/STG-02-EXAM.md`, `content/stg-03-illustrator/STG-03-EXAM.md`, `content/stg-04-after-effects/STG-04-EXAM.md`, `content/stg-05-premiere/STG-05-EXAM.md`, `content/stg-06-lightroom/STG-06-EXAM.md`, `content/stg-07-indesign/STG-07-EXAM.md`, `content/stg-08-integrated-studio/STG-08-EXAM.md`, plus fixes in `content/stg-08-integrated-studio/mod-0803-capstone-project/LES-080303.md`, `LES-080304.md`, `LES-080305.md`.
+- **Version:** DOC-22 unchanged (1.0.14 — exams are not LES-registry rows); DOC-13 1.0.23 → 1.0.24.
+
+> **Next entry:** `CHG-026` — to be appended by the next agent that modifies the repository.
