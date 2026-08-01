@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
-import { Card } from "@/components/ui";
+import { Alert } from "@/components/ui";
+import { ShieldCheckIcon, SearchIcon } from "@/components/icons";
 
 export const metadata = { title: "التحقق من الشهادة" };
 
@@ -13,38 +14,75 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
   }
 
   return (
-    <div className="mx-auto max-w-md">
-      <Card className="p-8">
-        <p className="text-4xl text-center" aria-hidden="true">🔍</p>
-        <h1 className="mt-3 text-center text-xl font-extrabold text-neutral-900">التحقق من الشهادة</h1>
-        <p className="mt-1 text-center text-sm text-neutral-500">
-          أدخل الرقم التسلسلي للشهادة (مثال: <span dir="ltr">ACA-2026-00001</span>) للتحقق من صحتها.
-        </p>
-        {serial !== undefined && !SERIAL_RE.test(code) && (
-          <p role="alert" className="mt-4 rounded-lg bg-red-50 px-4 py-2 text-center text-sm text-red-700">
-            صيغة الرقم التسلسلي غير صحيحة — الصيغة: <span dir="ltr" className="font-mono">ACA-YYYY-NNNNN</span>.
+    <div className="mx-auto max-w-lg">
+      <div className="card relative overflow-hidden p-8 md:p-10">
+        <div aria-hidden="true" className="absolute inset-0 -z-0">
+          <div className="absolute -top-24 right-1/2 h-56 w-56 translate-x-1/2 rounded-full bg-primary-500/10 blur-3xl" />
+        </div>
+
+        <div className="relative text-center">
+          <span
+            className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-primary-50 text-primary-600 ring-1 ring-primary-500/20"
+            aria-hidden="true"
+          >
+            <ShieldCheckIcon className="h-7 w-7" />
+          </span>
+          <h1 className="mt-5 text-2xl font-black tracking-tighter text-neutral-900">التحقق من الشهادة</h1>
+          <p className="mt-2.5 text-sm leading-relaxed text-neutral-500">
+            أدخل الرقم التسلسلي للشهادة (مثال:{" "}
+            <span dir="ltr" className="font-mono text-neutral-700">
+              ACA-2026-00001
+            </span>
+            ) للتحقق من صحتها.
           </p>
-        )}
-        <form method="get" action="/verify" className="mt-6 space-y-3">
-          <div>
-            <label htmlFor="serial" className="label">الرقم التسلسلي</label>
-            <input
-              id="serial"
-              name="serial"
-              required
-              dir="ltr"
-              className="input text-left font-mono"
-              placeholder="ACA-YYYY-NNNNN"
-              pattern="[A-Za-z]{3}-\d{4}-\d{5}"
-              defaultValue={serial}
-            />
+        </div>
+
+        {serial !== undefined && !SERIAL_RE.test(code) && (
+          <div className="mt-6 animate-shake">
+            <Alert tone="danger" role="alert">
+              صيغة الرقم التسلسلي غير صحيحة — الصيغة:{" "}
+              <span dir="ltr" className="font-mono font-bold">
+                ACA-YYYY-NNNNN
+              </span>
+              .
+            </Alert>
           </div>
-          <button type="submit" className="btn-primary w-full">تحقق</button>
+        )}
+
+        <form method="get" action="/verify" className="relative mt-7 space-y-4">
+          <div>
+            <label htmlFor="serial" className="label">
+              الرقم التسلسلي
+            </label>
+            <div className="relative">
+              <SearchIcon className="pointer-events-none absolute inset-y-0 left-3.5 my-auto h-4 w-4 text-neutral-400" />
+              <input
+                id="serial"
+                name="serial"
+                required
+                dir="ltr"
+                className={`input ps-10 text-left font-mono tracking-wider ${
+                  serial !== undefined && !SERIAL_RE.test(code) ? "input-invalid" : ""
+                }`}
+                placeholder="ACA-YYYY-NNNNN"
+                pattern="[A-Za-z]{3}-\d{4}-\d{5}"
+                defaultValue={serial}
+                aria-describedby="serial-hint"
+              />
+            </div>
+            <p id="serial-hint" className="hint">
+              الرقم مطبوع على الشهادة الرقمية الصادرة من الأكاديمية.
+            </p>
+          </div>
+          <button type="submit" className="btn-primary btn-lg w-full">
+            تحقّق الآن
+          </button>
         </form>
-        <p className="mt-4 text-center text-xs text-neutral-500">
+
+        <p className="relative mt-6 text-center text-xs text-neutral-400">
           خدمة تحقق عامة من «أكاديمية أدوبي الإبداعية» — لا تتطلب تسجيل دخول.
         </p>
-      </Card>
+      </div>
     </div>
   );
 }
