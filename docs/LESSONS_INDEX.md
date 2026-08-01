@@ -173,23 +173,23 @@ Each transition records: date, task ID, agent, reviewer (for review states).
 | LES-050402 | MOD-0504 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
 | LES-050403 | MOD-0504 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
 | LES-050404 | MOD-0504 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
-| LES-060101 | MOD-0601 | In review | AGT-003 · Phase 3 mass production |
-| LES-060102 | MOD-0601 | In review | AGT-003 · Phase 3 mass production |
-| LES-060103 | MOD-0601 | In review | AGT-003 · Phase 3 mass production |
-| LES-060104 | MOD-0601 | In review | AGT-003 · Phase 3 mass production |
-| LES-060201 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
-| LES-060202 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
-| LES-060203 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
-| LES-060204 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
-| LES-060205 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
-| LES-060206 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
-| LES-060301 | MOD-0603 | In review | AGT-003 · Phase 3 mass production |
-| LES-060302 | MOD-0603 | In review | AGT-003 · Phase 3 mass production |
-| LES-060303 | MOD-0603 | In review | AGT-003 · Phase 3 mass production |
-| LES-060304 | MOD-0603 | In review | AGT-003 · Phase 3 mass production |
-| LES-060401 | MOD-0604 | In review | AGT-003 · Phase 3 mass production |
-| LES-060402 | MOD-0604 | In review | AGT-003 · Phase 3 mass production |
-| LES-060403 | MOD-0604 | In review | AGT-003 · Phase 3 mass production |
+| LES-060101 | MOD-0601 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060102 | MOD-0601 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060103 | MOD-0601 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060104 | MOD-0601 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060201 | MOD-0602 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060202 | MOD-0602 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060203 | MOD-0602 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060204 | MOD-0602 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060205 | MOD-0602 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060206 | MOD-0602 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060301 | MOD-0603 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060302 | MOD-0603 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060303 | MOD-0603 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060304 | MOD-0603 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060401 | MOD-0604 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060402 | MOD-0604 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
+| LES-060403 | MOD-0604 | In review | TASK-201 · AGT-003 · In review (Phase 4B: placeholder replaced with original content) |
 | LES-070101 | MOD-0701 | In review | AGT-003 · Phase 3 mass production |
 | LES-070102 | MOD-0701 | In review | AGT-003 · Phase 3 mass production |
 | LES-070103 | MOD-0701 | In review | AGT-003 · Phase 3 mass production |

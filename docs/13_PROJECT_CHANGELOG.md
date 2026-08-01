@@ -219,4 +219,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-05-premiere/mod-0501-video-foundations/`, `mod-0502-editing/`, `mod-0503-color-audio/`, `mod-0504-delivery/`.
 - **Version:** DOC-22 1.0.10 → 1.0.11; DOC-13 1.0.18 → 1.0.19.
 
-> **Next entry:** `CHG-021` — to be appended by the next agent that modifies the repository.
+### CHG-021 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-06 (Lightroom & Photography) complete — MOD-0601 (LES-060101…060104), MOD-0602 (LES-060201…060206), MOD-0603 (LES-060301…060304), MOD-0604 (LES-060401…060403)
+- **Description:** Replaced all 17 placeholder-template lessons of Stage 6 with original, lesson-specific Arabic content per DOC-07 §3. Topics: exposure triangle, camera basics, raw & file formats, photographic composition; catalog & management, culling & rating, Develop module, corrections & AI masking, presets, full image workflow project; HDR & panorama merge, advanced masks, batch & sync, Lightroom↔Photoshop bridge; export for web & print, portfolio building, photo-series capstone. Frontmatter corrected per lesson (Adobe Lightroom Classic 14.x (2025)).
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-06-lightroom/mod-0601-photo-foundations/`, `mod-0602-library-develop/`, `mod-0603-advanced-workflow/`, `mod-0604-portfolio-export/`.
+- **Version:** DOC-22 1.0.11 → 1.0.12; DOC-13 1.0.19 → 1.0.20.
+
+> **Next entry:** `CHG-022` — to be appended by the next agent that modifies the repository.
