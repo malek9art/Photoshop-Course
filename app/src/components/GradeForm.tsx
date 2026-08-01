@@ -15,6 +15,7 @@ export function GradeForm({ submissionId, projectCode, criteria, title }: {
   const [scores, setScores] = useState<number[]>(criteria.map(() => 0));
   const [feedback, setFeedback] = useState("");
   const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const filled = scores.every((s) => s >= 1 && s <= 4);
   const avg = filled ? Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 100) / 100 : 0;
@@ -29,8 +30,14 @@ export function GradeForm({ submissionId, projectCode, criteria, title }: {
     scores.forEach((s, i) => fd.set(`criterion_${i}`, String(s)));
     try {
       const res = await fetch("/api/admin/grade-submission", { method: "POST", body: fd });
-      if (res.ok || res.redirected) router.refresh();
-      else alert("تعذر حفظ التقييم");
+      if (res.ok || res.redirected) {
+        setError(null);
+        router.refresh();
+      } else {
+        setError("تعذر حفظ التقييم — تأكد من اكتمال الدرجات وأعد المحاولة.");
+      }
+    } catch {
+      setError("تعذر الاتصال بالخادم — أعد المحاولة.");
     } finally {
       setBusy(false);
     }
@@ -65,6 +72,9 @@ export function GradeForm({ submissionId, projectCode, criteria, title }: {
           <textarea id={`f-${submissionId}`} rows={2} value={feedback} onChange={(e) => setFeedback(e.target.value)} className="input" placeholder="ما الذي أُحسن؟ وما الذي يُعدَّل؟" />
         </div>
       </div>
+      {error && (
+        <p role="alert" className="mt-3 rounded-lg bg-red-50 px-4 py-2 text-sm text-red-700">{error}</p>
+      )}
       <div className="mt-4 flex flex-wrap items-center gap-3">
         {filled && (
           <span className={`badge ${passed ? "badge-green" : "badge-amber"}`}>

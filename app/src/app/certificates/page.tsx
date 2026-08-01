@@ -54,7 +54,7 @@ export default async function CertificatesPage() {
               >
                 🔍 صفحة التحقق العامة (SCR-05)
               </Link>
-              <p className="mt-3 text-[10px] text-neutral-400">وثيقة رسمية من أكاديمية أدوبي الإبداعية — يُتحقق منها عبر الرقم التسلسلي.</p>
+              <p className="mt-3 text-[10px] text-neutral-500">وثيقة رسمية من أكاديمية أدوبي الإبداعية — يُتحقق منها عبر الرقم التسلسلي.</p>
             </Card>
           ))}
         </div>

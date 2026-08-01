@@ -15,7 +15,11 @@ export type ExamItem = { id: number; question: string; options: string[]; answer
 export type ExamConfig = { passPct: number; attempts: number; cooldownDays: number; durationMin: number };
 export type ExamDoc = { code: string; title: string; config: ExamConfig; items: ExamItem[] };
 
+// Cache: content tree is static per process.
+let examPathMapCache: Map<string, string> | null = null;
+
 export function buildExamPathMap(): Map<string, string> {
+  if (examPathMapCache) return examPathMapCache;
   const map = new Map<string, string>();
   if (!fs.existsSync(CONTENT_DIR)) return map;
   const walk = (dir: string) => {
@@ -28,6 +32,7 @@ export function buildExamPathMap(): Map<string, string> {
     }
   };
   walk(CONTENT_DIR);
+  examPathMapCache = map;
   return map;
 }
 

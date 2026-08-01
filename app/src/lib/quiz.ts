@@ -40,7 +40,11 @@ export type QuizDoc = {
 
 const AR_LETTERS = ["أ", "ب", "ج", "د", "ه", "و"];
 
+// Cache: content tree is static per process (SSOT files change on deploy, not runtime).
+let quizPathMapCache: Map<string, string> | null = null;
+
 export function buildQuizPathMap(): Map<string, string> {
+  if (quizPathMapCache) return quizPathMapCache;
   const map = new Map<string, string>();
   if (!fs.existsSync(CONTENT_DIR)) return map;
   const walk = (dir: string) => {
@@ -53,6 +57,7 @@ export function buildQuizPathMap(): Map<string, string> {
     }
   };
   walk(CONTENT_DIR);
+  quizPathMapCache = map;
   return map;
 }
 

@@ -41,7 +41,7 @@ export default async function VerifyPage({ searchParams }: { searchParams: Promi
           </div>
           <button type="submit" className="btn-primary w-full">تحقق</button>
         </form>
-        <p className="mt-4 text-center text-xs text-neutral-400">
+        <p className="mt-4 text-center text-xs text-neutral-500">
           خدمة تحقق عامة من «أكاديمية أدوبي الإبداعية» — لا تتطلب تسجيل دخول.
         </p>
       </Card>

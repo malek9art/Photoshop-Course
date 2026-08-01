@@ -66,7 +66,15 @@ export function ExamPlayer({ code }: { code: string }) {
   }
 
   if (error) return <p role="alert" className="rounded-lg bg-red-50 px-4 py-3 text-sm text-red-700">{error}</p>;
-  if (!config || items.length === 0) return <p className="text-sm text-neutral-500">جارٍ تحميل الاختبار…</p>;
+  if (!config || items.length === 0) {
+    return (
+      <div className="mx-auto max-w-md space-y-3" aria-busy="true" aria-label="جارٍ تحميل الاختبار">
+        <div className="h-6 w-56 animate-pulse rounded bg-neutral-200" />
+        <div className="h-40 animate-pulse rounded-xl bg-neutral-200" />
+        <div className="h-10 animate-pulse rounded-lg bg-neutral-200" />
+      </div>
+    );
+  }
 
   if (result) {
     const correctCount = result.results.filter((r) => r.correct).length;
