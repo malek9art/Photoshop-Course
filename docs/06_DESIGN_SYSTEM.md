@@ -7,10 +7,10 @@
 | **Title** | Design System |
 | **Purpose** | Defines the visual principles, brand guidelines, spacing, typography, color system, icon rules, accessibility requirements, and responsive principles for the academy. It is the single reference for all visual decisions — implementation tokens/components will be derived from it and must conform to it. |
 | **Owner** | Design Lead (role) |
-| **Version** | 1.0.0 |
+| **Version** | 1.0.1 |
 | **Status** | Active |
 | **Dependencies** | DOC-01 (premium positioning), DOC-04 (screen requirements), DOC-07 (content media rules) |
-| **Last Updated** | 2026-07-31 |
+| **Last Updated** | 2026-08-01 |
 | **Review Cadence** | At design milestones (MS-11) and whenever brand elements change |
 
 ## Table of Contents
@@ -193,6 +193,20 @@ Baseline: **WCAG 2.2 Level AA** — enforced in DOC-16 §Accessibility Review.
 | Empty state / Error state / 404 | Per DOC-04 §4; illustration + text + action |
 
 ---
+
+## Implementation Note — Phase 8 (2026-08-01)
+
+The roles defined in this document are now implemented in code as a **CSS custom-property token system**:
+
+- **Source of truth:** `app/src/app/globals.css` (`:root` for light, `.dark` for dark) exposes every role as an `R G B` triplet; `app/tailwind.config.ts` maps those variables onto Tailwind scales via `rgb(var(--token) / <alpha-value>)`, so opacity modifiers keep working and a single class renders correctly in both themes.
+- **Roles covered:** `primary`, `accent`, `neutral`, `success`, `warning`, `danger`, `info`, plus semantic surfaces (`surface`, `surface-muted`, `surface-raised`, `surface-sunken`, `surface-inverted`, `canvas`) and lines (`hairline`, `hairline-strong`), elevation shadows, and focus.
+- **Dark mode:** class strategy (`.dark` on `<html>`) with a render-blocking boot script (`app/src/components/theme.tsx`) that prevents flash-of-wrong-theme; the user preference persists in `localStorage` and defaults to the OS setting.
+- **Typography (§4):** fluid `clamp()` scale with Arabic-tuned line heights (body 1.9–2.05, headings 1.15–1.5) and negative tracking on display sizes.
+- **Iconography (§6):** a dependency-free stroke icon set lives in `app/src/components/icons.tsx` (24px grid, `currentColor`, `aria-hidden` by default) and replaces emoji iconography in the UI chrome.
+- **Motion (§7):** all keyframes are transform/opacity-only (GPU-accelerated) and are globally disabled by a `prefers-reduced-motion` rule in `globals.css`; scroll-reveal renders content visible server-side so motion can never hide content.
+- **Accessibility (§8):** skip link, visible focus rings on every interactive element, ≥44px touch targets, ARIA roles for tabs/dialogs/progress/live regions, and full keyboard support (Esc to close overlays, arrow-key tab navigation in RTL order).
+
+> These are implementation details derived from — and subordinate to — the roles above. Changing a **role** still requires a CCR/ADR; changing a **value** does not.
 
 ## Revision History
 

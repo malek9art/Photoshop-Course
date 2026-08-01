@@ -21,7 +21,15 @@ export function useReducedMotion() {
   return reduced;
 }
 
-/** Reveals children once they scroll into view. */
+/**
+ * Reveals children once they scroll into view.
+ *
+ * Fail-safe by design: the server renders the content **visible** (no
+ * `reveal` class), so a hydration failure, disabled JS or an unsupported
+ * IntersectionObserver can never hide content. The hidden→visible animation
+ * is only armed on the client, and only for elements that start below the
+ * fold — elements already on screen simply stay visible.
+ */
 export function Reveal({
   children,
   delay = 0,
@@ -34,20 +42,25 @@ export function Reveal({
   as?: "div" | "section" | "li" | "article";
 }) {
   const ref = useRef<HTMLElement | null>(null);
-  const [visible, setVisible] = useState(false);
+  // "idle" = server/first paint (visible), "armed" = hidden awaiting scroll.
+  const [phase, setPhase] = useState<"idle" | "armed" | "visible">("idle");
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setVisible(true);
-      return;
-    }
+    if (typeof IntersectionObserver === "undefined") return;
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    // Only animate what the user has not seen yet.
+    const rect = el.getBoundingClientRect();
+    if (rect.top < window.innerHeight * 0.92) return;
+
+    setPhase("armed");
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
           if (entry.isIntersecting) {
-            setVisible(true);
+            setPhase("visible");
             io.unobserve(entry.target);
           }
         }
@@ -62,8 +75,8 @@ export function Reveal({
     <Tag
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       ref={ref as any}
-      className={`reveal ${visible ? "is-visible" : ""} ${className}`}
-      style={{ transitionDelay: `${delay}ms` }}
+      className={`${phase === "idle" ? "" : phase === "armed" ? "reveal" : "reveal is-visible"} ${className}`}
+      style={phase === "idle" ? undefined : { transitionDelay: `${delay}ms` }}
     >
       {children}
     </Tag>
