@@ -211,4 +211,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-04-after-effects/mod-0401-motion-fundamentals/`, `mod-0402-animation-effects/`, `mod-0403-motion-graphics/`, `mod-0404-vfx-compositing/`.
 - **Version:** DOC-22 1.0.9 → 1.0.10; DOC-13 1.0.17 → 1.0.18.
 
-> **Next entry:** `CHG-020` — to be appended by the next agent that modifies the repository.
+### CHG-020 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-05 (Premiere Pro & Video Editing) complete — MOD-0501 (LES-050101…050104), MOD-0502 (LES-050201…050206), MOD-0503 (LES-050301…050304), MOD-0504 (LES-050401…050404)
+- **Description:** Replaced all 18 placeholder-template lessons of Stage 5 with original, lesson-specific Arabic content per DOC-07 §3. Topics: video fundamentals (frame rates, resolutions, scan), project & sequence setup, media import/logging, footage assembly project; the art of the cut, editing tools (Ripple/Roll/Slip/Slide, 3-point edits), multicam production, audio basics, narrative transitions, vertical social video; Lumetri color workflows, Essential Sound mixing, titles & MOGRT graphics, full-edit project; export & codecs (Media Encoder queues, bitrate policy), thumbnails & metadata, publishing for regional platforms, complete-story capstone. Frontmatter corrected per lesson (Adobe Premiere Pro 25.x (2025)).
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-05-premiere/mod-0501-video-foundations/`, `mod-0502-editing/`, `mod-0503-color-audio/`, `mod-0504-delivery/`.
+- **Version:** DOC-22 1.0.10 → 1.0.11; DOC-13 1.0.18 → 1.0.19.
+
+> **Next entry:** `CHG-021` — to be appended by the next agent that modifies the repository.
