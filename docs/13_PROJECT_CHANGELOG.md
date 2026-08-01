@@ -203,4 +203,12 @@ Each entry uses this exact structure:
 - **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-03-illustrator/mod-0303-logo-brand/` and `content/stg-03-illustrator/mod-0304-advanced-vector/`.
 - **Version:** DOC-22 1.0.8 → 1.0.9; DOC-13 1.0.16 → 1.0.17.
 
-> **Next entry:** `CHG-019` — to be appended by the next agent that modifies the repository.
+### CHG-019 — 2026-08-01
+- **Agent:** AGT-003 (Phase 4B Content Completion)
+- **Task(s):** TASK-201 — Phase 4B placeholder replacement: STG-04 (After Effects & Motion Design) complete — MOD-0401 (LES-040101…040106), MOD-0402 (LES-040201…040206), MOD-0403 (LES-040301…040306), MOD-0404 (LES-040401…040406)
+- **Description:** Replaced all 24 placeholder-template lessons of Stage 4 with original, lesson-specific Arabic content per DOC-07 §3 (learning goals, theory, guided practice, real-world example, best practices, common mistakes, portfolio challenge, mini assignment, checkpoint quiz, creative insight, official Adobe resources). Topics: timeline & keyframes, easing, layer transform, precomps, logo animation; shape layers, text animators, masks & track mattes, effects, follow-through/stagger, title sequence; motion design process, lower thirds (MOGRT), honest infographics, expressions basics, professional production, animated ad capstone; keying/Keylight, tracking & camera tracker, roto & cleanup, video color correction (Lumetri/Scopes/LUT), rendering & codecs, composite-scene capstone. Frontmatter metadata corrected per lesson (appVersion Adobe After Effects 25.x (2025), duration, prerequisites, objectives).
+- **Reason:** User-approved Phase 4B content completion following QA-03 findings; placeholders are no longer acceptable for release.
+- **Affected Documents:** `docs/LESSONS_INDEX.md`, `docs/PROJECT_STATE.md`, `docs/13_PROJECT_CHANGELOG.md`, content files under `content/stg-04-after-effects/mod-0401-motion-fundamentals/`, `mod-0402-animation-effects/`, `mod-0403-motion-graphics/`, `mod-0404-vfx-compositing/`.
+- **Version:** DOC-22 1.0.9 → 1.0.10; DOC-13 1.0.17 → 1.0.18.
+
+> **Next entry:** `CHG-020` — to be appended by the next agent that modifies the repository.
