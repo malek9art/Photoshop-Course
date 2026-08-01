@@ -92,134 +92,134 @@ Each transition records: date, task ID, agent, reviewer (for review states).
 | LES-020204 | MOD-0202 | In review | TASK-103 · AGT-002 · In review (Content Director pending) |
 | LES-020205 | MOD-0202 | In review | TASK-103 · AGT-002 · In review (Content Director pending) |
 | LES-020206 | MOD-0202 | In review | TASK-103 · AGT-002 · In review (Content Director pending) |
-| LES-020301 | MOD-0203 | Not started | — |
-| LES-020302 | MOD-0203 | Not started | — |
-| LES-020303 | MOD-0203 | Not started | — |
-| LES-020304 | MOD-0203 | Not started | — |
-| LES-020305 | MOD-0203 | Not started | — |
-| LES-020306 | MOD-0203 | Not started | — |
-| LES-020401 | MOD-0204 | Not started | — |
-| LES-020402 | MOD-0204 | Not started | — |
-| LES-020403 | MOD-0204 | Not started | — |
-| LES-020404 | MOD-0204 | Not started | — |
-| LES-020405 | MOD-0204 | Not started | — |
-| LES-020406 | MOD-0204 | Not started | — |
-| LES-020501 | MOD-0205 | Not started | — |
-| LES-020502 | MOD-0205 | Not started | — |
-| LES-020503 | MOD-0205 | Not started | — |
-| LES-020504 | MOD-0205 | Not started | — |
-| LES-030101 | MOD-0301 | Not started | — |
-| LES-030102 | MOD-0301 | Not started | — |
-| LES-030103 | MOD-0301 | Not started | — |
-| LES-030104 | MOD-0301 | Not started | — |
-| LES-030105 | MOD-0301 | Not started | — |
-| LES-030106 | MOD-0301 | Not started | — |
-| LES-030201 | MOD-0302 | Not started | — |
-| LES-030202 | MOD-0302 | Not started | — |
-| LES-030203 | MOD-0302 | Not started | — |
-| LES-030204 | MOD-0302 | Not started | — |
-| LES-030205 | MOD-0302 | Not started | — |
-| LES-030206 | MOD-0302 | Not started | — |
-| LES-030301 | MOD-0303 | Not started | — |
-| LES-030302 | MOD-0303 | Not started | — |
-| LES-030303 | MOD-0303 | Not started | — |
-| LES-030304 | MOD-0303 | Not started | — |
-| LES-030305 | MOD-0303 | Not started | — |
-| LES-030401 | MOD-0304 | Not started | — |
-| LES-030402 | MOD-0304 | Not started | — |
-| LES-030403 | MOD-0304 | Not started | — |
-| LES-030404 | MOD-0304 | Not started | — |
-| LES-030405 | MOD-0304 | Not started | — |
-| LES-030406 | MOD-0304 | Not started | — |
-| LES-040101 | MOD-0401 | Not started | — |
-| LES-040102 | MOD-0401 | Not started | — |
-| LES-040103 | MOD-0401 | Not started | — |
-| LES-040104 | MOD-0401 | Not started | — |
-| LES-040105 | MOD-0401 | Not started | — |
-| LES-040106 | MOD-0401 | Not started | — |
-| LES-040201 | MOD-0402 | Not started | — |
-| LES-040202 | MOD-0402 | Not started | — |
-| LES-040203 | MOD-0402 | Not started | — |
-| LES-040204 | MOD-0402 | Not started | — |
-| LES-040205 | MOD-0402 | Not started | — |
-| LES-040206 | MOD-0402 | Not started | — |
-| LES-040301 | MOD-0403 | Not started | — |
-| LES-040302 | MOD-0403 | Not started | — |
-| LES-040303 | MOD-0403 | Not started | — |
-| LES-040304 | MOD-0403 | Not started | — |
-| LES-040305 | MOD-0403 | Not started | — |
-| LES-040306 | MOD-0403 | Not started | — |
-| LES-040401 | MOD-0404 | Not started | — |
-| LES-040402 | MOD-0404 | Not started | — |
-| LES-040403 | MOD-0404 | Not started | — |
-| LES-040404 | MOD-0404 | Not started | — |
-| LES-040405 | MOD-0404 | Not started | — |
-| LES-040406 | MOD-0404 | Not started | — |
-| LES-050101 | MOD-0501 | Not started | — |
-| LES-050102 | MOD-0501 | Not started | — |
-| LES-050103 | MOD-0501 | Not started | — |
-| LES-050104 | MOD-0501 | Not started | — |
-| LES-050201 | MOD-0502 | Not started | — |
-| LES-050202 | MOD-0502 | Not started | — |
-| LES-050203 | MOD-0502 | Not started | — |
-| LES-050204 | MOD-0502 | Not started | — |
-| LES-050205 | MOD-0502 | Not started | — |
-| LES-050206 | MOD-0502 | Not started | — |
-| LES-050301 | MOD-0503 | Not started | — |
-| LES-050302 | MOD-0503 | Not started | — |
-| LES-050303 | MOD-0503 | Not started | — |
-| LES-050304 | MOD-0503 | Not started | — |
-| LES-050401 | MOD-0504 | Not started | — |
-| LES-050402 | MOD-0504 | Not started | — |
-| LES-050403 | MOD-0504 | Not started | — |
-| LES-050404 | MOD-0504 | Not started | — |
-| LES-060101 | MOD-0601 | Not started | — |
-| LES-060102 | MOD-0601 | Not started | — |
-| LES-060103 | MOD-0601 | Not started | — |
-| LES-060104 | MOD-0601 | Not started | — |
-| LES-060201 | MOD-0602 | Not started | — |
-| LES-060202 | MOD-0602 | Not started | — |
-| LES-060203 | MOD-0602 | Not started | — |
-| LES-060204 | MOD-0602 | Not started | — |
-| LES-060205 | MOD-0602 | Not started | — |
-| LES-060206 | MOD-0602 | Not started | — |
-| LES-060301 | MOD-0603 | Not started | — |
-| LES-060302 | MOD-0603 | Not started | — |
-| LES-060303 | MOD-0603 | Not started | — |
-| LES-060304 | MOD-0603 | Not started | — |
-| LES-060401 | MOD-0604 | Not started | — |
-| LES-060402 | MOD-0604 | Not started | — |
-| LES-060403 | MOD-0604 | Not started | — |
-| LES-070101 | MOD-0701 | Not started | — |
-| LES-070102 | MOD-0701 | Not started | — |
-| LES-070103 | MOD-0701 | Not started | — |
-| LES-070104 | MOD-0701 | Not started | — |
-| LES-070105 | MOD-0701 | Not started | — |
-| LES-070201 | MOD-0702 | Not started | — |
-| LES-070202 | MOD-0702 | Not started | — |
-| LES-070203 | MOD-0702 | Not started | — |
-| LES-070204 | MOD-0702 | Not started | — |
-| LES-070301 | MOD-0703 | Not started | — |
-| LES-070302 | MOD-0703 | Not started | — |
-| LES-070303 | MOD-0703 | Not started | — |
-| LES-070401 | MOD-0704 | Not started | — |
-| LES-070402 | MOD-0704 | Not started | — |
-| LES-080101 | MOD-0801 | Not started | — |
-| LES-080102 | MOD-0801 | Not started | — |
-| LES-080103 | MOD-0801 | Not started | — |
-| LES-080104 | MOD-0801 | Not started | — |
-| LES-080201 | MOD-0802 | Not started | — |
-| LES-080202 | MOD-0802 | Not started | — |
-| LES-080203 | MOD-0802 | Not started | — |
-| LES-080204 | MOD-0802 | Not started | — |
-| LES-080301 | MOD-0803 | Not started | — |
-| LES-080302 | MOD-0803 | Not started | — |
-| LES-080303 | MOD-0803 | Not started | — |
-| LES-080304 | MOD-0803 | Not started | — |
-| LES-080305 | MOD-0803 | Not started | — |
-| LES-080401 | MOD-0804 | Not started | — |
-| LES-080402 | MOD-0804 | Not started | — |
-| LES-080403 | MOD-0804 | Not started | — |
+| LES-020301 | MOD-0203 | In review | AGT-003 · MOD-0203 production |
+| LES-020302 | MOD-0203 | In review | AGT-003 · MOD-0203 production |
+| LES-020303 | MOD-0203 | In review | AGT-003 · MOD-0203 production |
+| LES-020304 | MOD-0203 | In review | AGT-003 · MOD-0203 production |
+| LES-020305 | MOD-0203 | In review | AGT-003 · MOD-0203 production |
+| LES-020306 | MOD-0203 | In review | AGT-003 · MOD-0203 production |
+| LES-020401 | MOD-0204 | In review | AGT-003 · MOD-0204 production |
+| LES-020402 | MOD-0204 | In review | AGT-003 · MOD-0204 production |
+| LES-020403 | MOD-0204 | In review | AGT-003 · MOD-0204 production |
+| LES-020404 | MOD-0204 | In review | AGT-003 · MOD-0204 production |
+| LES-020405 | MOD-0204 | In review | AGT-003 · MOD-0204 production |
+| LES-020406 | MOD-0204 | In review | AGT-003 · MOD-0204 production |
+| LES-020501 | MOD-0205 | In review | AGT-003 · MOD-0205 production |
+| LES-020502 | MOD-0205 | In review | AGT-003 · MOD-0205 production |
+| LES-020503 | MOD-0205 | In review | AGT-003 · MOD-0205 production |
+| LES-020504 | MOD-0205 | In review | AGT-003 · MOD-0205 production |
+| LES-030101 | MOD-0301 | In review | AGT-003 · MOD-0301 production |
+| LES-030102 | MOD-0301 | In review | AGT-003 · MOD-0301 production |
+| LES-030103 | MOD-0301 | In review | AGT-003 · MOD-0301 production |
+| LES-030104 | MOD-0301 | In review | AGT-003 · MOD-0301 production |
+| LES-030105 | MOD-0301 | In review | AGT-003 · MOD-0301 production |
+| LES-030106 | MOD-0301 | In review | AGT-003 · MOD-0301 production |
+| LES-030201 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
+| LES-030202 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
+| LES-030203 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
+| LES-030204 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
+| LES-030205 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
+| LES-030206 | MOD-0302 | In review | AGT-003 · MOD-0302 production |
+| LES-030301 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
+| LES-030302 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
+| LES-030303 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
+| LES-030304 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
+| LES-030305 | MOD-0303 | In review | AGT-003 · Phase 3 mass production |
+| LES-030401 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
+| LES-030402 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
+| LES-030403 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
+| LES-030404 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
+| LES-030405 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
+| LES-030406 | MOD-0304 | In review | AGT-003 · Phase 3 mass production |
+| LES-040101 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |
+| LES-040102 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |
+| LES-040103 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |
+| LES-040104 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |
+| LES-040105 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |
+| LES-040106 | MOD-0401 | In review | AGT-003 · Phase 3 mass production |
+| LES-040201 | MOD-0402 | In review | AGT-003 · Phase 3 mass production |
+| LES-040202 | MOD-0402 | In review | AGT-003 · Phase 3 mass production |
+| LES-040203 | MOD-0402 | In review | AGT-003 · Phase 3 mass production |
+| LES-040204 | MOD-0402 | In review | AGT-003 · Phase 3 mass production |
+| LES-040205 | MOD-0402 | In review | AGT-003 · Phase 3 mass production |
+| LES-040206 | MOD-0402 | In review | AGT-003 · Phase 3 mass production |
+| LES-040301 | MOD-0403 | In review | AGT-003 · Phase 3 mass production |
+| LES-040302 | MOD-0403 | In review | AGT-003 · Phase 3 mass production |
+| LES-040303 | MOD-0403 | In review | AGT-003 · Phase 3 mass production |
+| LES-040304 | MOD-0403 | In review | AGT-003 · Phase 3 mass production |
+| LES-040305 | MOD-0403 | In review | AGT-003 · Phase 3 mass production |
+| LES-040306 | MOD-0403 | In review | AGT-003 · Phase 3 mass production |
+| LES-040401 | MOD-0404 | In review | AGT-003 · Phase 3 mass production |
+| LES-040402 | MOD-0404 | In review | AGT-003 · Phase 3 mass production |
+| LES-040403 | MOD-0404 | In review | AGT-003 · Phase 3 mass production |
+| LES-040404 | MOD-0404 | In review | AGT-003 · Phase 3 mass production |
+| LES-040405 | MOD-0404 | In review | AGT-003 · Phase 3 mass production |
+| LES-040406 | MOD-0404 | In review | AGT-003 · Phase 3 mass production |
+| LES-050101 | MOD-0501 | In review | AGT-003 · Phase 3 mass production |
+| LES-050102 | MOD-0501 | In review | AGT-003 · Phase 3 mass production |
+| LES-050103 | MOD-0501 | In review | AGT-003 · Phase 3 mass production |
+| LES-050104 | MOD-0501 | In review | AGT-003 · Phase 3 mass production |
+| LES-050201 | MOD-0502 | In review | AGT-003 · Phase 3 mass production |
+| LES-050202 | MOD-0502 | In review | AGT-003 · Phase 3 mass production |
+| LES-050203 | MOD-0502 | In review | AGT-003 · Phase 3 mass production |
+| LES-050204 | MOD-0502 | In review | AGT-003 · Phase 3 mass production |
+| LES-050205 | MOD-0502 | In review | AGT-003 · Phase 3 mass production |
+| LES-050206 | MOD-0502 | In review | AGT-003 · Phase 3 mass production |
+| LES-050301 | MOD-0503 | In review | AGT-003 · Phase 3 mass production |
+| LES-050302 | MOD-0503 | In review | AGT-003 · Phase 3 mass production |
+| LES-050303 | MOD-0503 | In review | AGT-003 · Phase 3 mass production |
+| LES-050304 | MOD-0503 | In review | AGT-003 · Phase 3 mass production |
+| LES-050401 | MOD-0504 | In review | AGT-003 · Phase 3 mass production |
+| LES-050402 | MOD-0504 | In review | AGT-003 · Phase 3 mass production |
+| LES-050403 | MOD-0504 | In review | AGT-003 · Phase 3 mass production |
+| LES-050404 | MOD-0504 | In review | AGT-003 · Phase 3 mass production |
+| LES-060101 | MOD-0601 | In review | AGT-003 · Phase 3 mass production |
+| LES-060102 | MOD-0601 | In review | AGT-003 · Phase 3 mass production |
+| LES-060103 | MOD-0601 | In review | AGT-003 · Phase 3 mass production |
+| LES-060104 | MOD-0601 | In review | AGT-003 · Phase 3 mass production |
+| LES-060201 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
+| LES-060202 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
+| LES-060203 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
+| LES-060204 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
+| LES-060205 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
+| LES-060206 | MOD-0602 | In review | AGT-003 · Phase 3 mass production |
+| LES-060301 | MOD-0603 | In review | AGT-003 · Phase 3 mass production |
+| LES-060302 | MOD-0603 | In review | AGT-003 · Phase 3 mass production |
+| LES-060303 | MOD-0603 | In review | AGT-003 · Phase 3 mass production |
+| LES-060304 | MOD-0603 | In review | AGT-003 · Phase 3 mass production |
+| LES-060401 | MOD-0604 | In review | AGT-003 · Phase 3 mass production |
+| LES-060402 | MOD-0604 | In review | AGT-003 · Phase 3 mass production |
+| LES-060403 | MOD-0604 | In review | AGT-003 · Phase 3 mass production |
+| LES-070101 | MOD-0701 | In review | AGT-003 · Phase 3 mass production |
+| LES-070102 | MOD-0701 | In review | AGT-003 · Phase 3 mass production |
+| LES-070103 | MOD-0701 | In review | AGT-003 · Phase 3 mass production |
+| LES-070104 | MOD-0701 | In review | AGT-003 · Phase 3 mass production |
+| LES-070105 | MOD-0701 | In review | AGT-003 · Phase 3 mass production |
+| LES-070201 | MOD-0702 | In review | AGT-003 · Phase 3 mass production |
+| LES-070202 | MOD-0702 | In review | AGT-003 · Phase 3 mass production |
+| LES-070203 | MOD-0702 | In review | AGT-003 · Phase 3 mass production |
+| LES-070204 | MOD-0702 | In review | AGT-003 · Phase 3 mass production |
+| LES-070301 | MOD-0703 | In review | AGT-003 · Phase 3 mass production |
+| LES-070302 | MOD-0703 | In review | AGT-003 · Phase 3 mass production |
+| LES-070303 | MOD-0703 | In review | AGT-003 · Phase 3 mass production |
+| LES-070401 | MOD-0704 | In review | AGT-003 · Phase 3 mass production |
+| LES-070402 | MOD-0704 | In review | AGT-003 · Phase 3 mass production |
+| LES-080101 | MOD-0801 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080102 | MOD-0801 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080103 | MOD-0801 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080104 | MOD-0801 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080201 | MOD-0802 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080202 | MOD-0802 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080203 | MOD-0802 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080204 | MOD-0802 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080301 | MOD-0803 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080302 | MOD-0803 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080303 | MOD-0803 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080304 | MOD-0803 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080305 | MOD-0803 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080401 | MOD-0804 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080402 | MOD-0804 | In review | AGT-003 · STG-03 to STG-08 production |
+| LES-080403 | MOD-0804 | In review | AGT-003 · STG-03 to STG-08 production |
 **Totals:** 156 lessons · 33 modules · Status distribution: Not started = 128 · In review = 28 (P1-A).
 
 ## 5. Uniqueness & Registration Rules
