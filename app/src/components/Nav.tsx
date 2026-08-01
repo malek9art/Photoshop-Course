@@ -4,7 +4,16 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { focusRing } from "@/lib/a11y";
-import { MenuIcon, XIcon, ChevronLeftIcon } from "./icons";
+import {
+  MenuIcon,
+  XIcon,
+  ChevronLeftIcon,
+  HomeIcon,
+  LibraryIcon,
+  CertificateIcon,
+  ProjectIcon,
+  AdminIcon,
+} from "./icons";
 
 function useIsActive(href: string) {
   const pathname = usePathname() ?? "/";
@@ -35,16 +44,25 @@ export function NavLink({ href, label }: { href: string; label: string }) {
   );
 }
 
+const ICON_MAP: Record<string, (p: { className?: string }) => React.ReactElement> = {
+  HomeIcon,
+  LibraryIcon,
+  CertificateIcon,
+  ProjectIcon,
+  AdminIcon,
+};
+
 export function BottomNavLink({
   href,
   label,
-  Icon,
+  iconName,
 }: {
   href: string;
   label: string;
-  Icon: (p: { className?: string }) => React.ReactElement;
+  iconName: string;
 }) {
   const active = useIsActive(href);
+  const Icon = ICON_MAP[iconName] ?? HomeIcon;
   return (
     <Link
       href={href}

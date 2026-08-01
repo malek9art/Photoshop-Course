@@ -3,11 +3,6 @@ import { Brand, focusRing, touchTarget } from "./ui";
 import { ThemeToggle } from "./theme";
 import { NavLink, MobileNav } from "./Nav";
 import {
-  HomeIcon,
-  LibraryIcon,
-  CertificateIcon,
-  ProjectIcon,
-  AdminIcon,
   LogoutIcon,
 } from "./icons";
 
@@ -88,12 +83,12 @@ export async function Header({ user }: { user: HeaderUser }) {
   );
 }
 
-const BOTTOM_ICONS: Record<string, (p: { className?: string }) => React.ReactElement> = {
-  "/": HomeIcon,
-  "/catalog": LibraryIcon,
-  "/certificates": CertificateIcon,
-  "/projects": ProjectIcon,
-  "/admin": AdminIcon,
+const BOTTOM_ICONS: Record<string, string> = {
+  "/": "HomeIcon",
+  "/catalog": "LibraryIcon",
+  "/certificates": "CertificateIcon",
+  "/projects": "ProjectIcon",
+  "/admin": "AdminIcon",
 };
 
 /** Mobile bottom navigation (DOC-04 §12): max 5 items, RTL, 44px targets. */
@@ -119,7 +114,7 @@ export function BottomNav({ isAdmin = false }: { isAdmin?: boolean }) {
             key={item.href}
             href={item.href}
             label={item.label}
-            Icon={BOTTOM_ICONS[item.href] ?? HomeIcon}
+            iconName={BOTTOM_ICONS[item.href] ?? "HomeIcon"}
           />
         ))}
       </div>
