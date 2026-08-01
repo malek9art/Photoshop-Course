@@ -35,8 +35,8 @@ export default async function ProjectsPage({ searchParams }: { searchParams: Pro
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/projects");
   const projects = listProjects();
-  const mine = all<{ project_code: string; title: string; status: string; created_at: string }>(
-    "SELECT project_code, title, status, created_at FROM submissions WHERE user_id = ? ORDER BY created_at DESC",
+  const mine = await all<{ project_code: string; title: string; status: string; created_at: string }>(
+    "SELECT project_code, title, status, created_at FROM submissions WHERE user_id = $1 ORDER BY created_at DESC",
     user.id
   );
 

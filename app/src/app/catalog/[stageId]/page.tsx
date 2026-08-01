@@ -11,10 +11,11 @@ export const dynamic = "force-dynamic";
 export default async function StagePage({ params }: { params: Promise<{ stageId: string }> }) {
   const { stageId } = await params;
   const user = await getCurrentUser();
-  const stage = getStage(stageId);
+  const stage = await getStage(stageId);
   if (!stage) notFound();
 
-  const modules = listModulesWithLessons(stageId, user?.id);
+  const modules = await listModulesWithLessons(stageId, user?.id);
+  const lessonsByModule = new Map(await Promise.all(modules.map(async (mod) => [mod.id, await listLessons(mod.id, user?.id)] as const)));
   const quizzes = buildQuizPathMap();
   const exams = buildExamPathMap();
 
@@ -48,7 +49,7 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
       ) : (
       <div className="space-y-6">
         {modules.map((mod) => {
-          const lessons = listLessons(mod.id, user?.id);
+          const lessons = lessonsByModule.get(mod.id) ?? [];
           const percent = mod.lesson_count > 0 ? Math.round((mod.completed_lessons / mod.lesson_count) * 100) : 0;
           return (
             <Card key={mod.id} className="p-6">

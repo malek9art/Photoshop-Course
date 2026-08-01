@@ -11,12 +11,14 @@ export default async function ProfilePage() {
   const user = await getCurrentUser();
   if (!user) redirect("/login?next=/profile");
 
-  const stages = listStages();
-  const overall = all(
-    "SELECT COUNT(*) AS c FROM progress WHERE user_id = ? AND target_type='lesson' AND state='completed'",
-    user.id
-  )[0] as any;
-  const totalLessons = all("SELECT COUNT(*) AS c FROM lessons WHERE content_path IS NOT NULL")[0] as any;
+  const [stages, overallRows, totalLessonRows] = await Promise.all([
+    listStages(),
+    all<{ c: number }>("SELECT COUNT(*)::int AS c FROM progress WHERE user_id = $1 AND target_type='lesson' AND state='completed'", user.id),
+    all<{ c: number }>("SELECT COUNT(*)::int AS c FROM lessons WHERE content_path IS NOT NULL"),
+  ]);
+  const overall = overallRows[0] ?? { c: 0 };
+  const totalLessons = totalLessonRows[0] ?? { c: 0 };
+  const modulesByStage = new Map(await Promise.all(stages.map(async (stage) => [stage.id, await listModulesWithLessons(stage.id, user.id)] as const)));
   const percent = totalLessons.c > 0 ? Math.round((overall.c / totalLessons.c) * 100) : 0;
 
   return (
@@ -55,7 +57,7 @@ export default async function ProfilePage() {
         ) : (
         <div className="grid gap-4 md:grid-cols-2">
           {stages.map((stage) => {
-            const modules = listModulesWithLessons(stage.id, user.id);
+            const modules = modulesByStage.get(stage.id) ?? [];
             const total = modules.reduce((s, m) => s + m.lesson_count, 0);
             const done = modules.reduce((s, m) => s + m.completed_lessons, 0);
             const p = total > 0 ? Math.round((done / total) * 100) : 0;

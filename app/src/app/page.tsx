@@ -8,7 +8,7 @@ export const dynamic = "force-dynamic";
 
 export default async function HomePage() {
   const user = await getCurrentUser();
-  const stages = listStages();
+  const stages = await listStages();
 
   // Continue-learning: most recent incomplete lesson for logged-in users.
   let nextLesson: { id: string; title_ar: string; module_title_ar: string; stage_title_ar: string } | null = null;
@@ -17,7 +17,7 @@ export default async function HomePage() {
   let totalAvailable = 0;
   if (user) {
     nextLesson =
-      all<{ id: string; title_ar: string; module_title_ar: string; stage_title_ar: string }>(
+      (await all<{ id: string; title_ar: string; module_title_ar: string; stage_title_ar: string }>(
         `SELECT l.id, l.title_ar, m.title_ar AS module_title_ar, s.title_ar AS stage_title_ar
          FROM lessons l
          JOIN modules m ON m.id = l.module_id
@@ -25,16 +25,16 @@ export default async function HomePage() {
          WHERE l.content_path IS NOT NULL
            AND NOT EXISTS (
              SELECT 1 FROM progress p
-             WHERE p.target_type='lesson' AND p.target_id = l.id AND p.user_id = ? AND p.state='completed'
+             WHERE p.target_type='lesson' AND p.target_id = l.id AND p.user_id = $1 AND p.state='completed'
            )
          ORDER BY l.id LIMIT 1`,
         user.id
-      )[0] ?? null;
-    totalAvailable = (all("SELECT COUNT(*) AS c FROM lessons WHERE content_path IS NOT NULL")[0] as any).c as number;
-    totalDone = (all(
-      "SELECT COUNT(*) AS c FROM progress WHERE user_id = ? AND target_type='lesson' AND state='completed'",
+      ))[0] ?? null;
+    totalAvailable = (await all<{ c: number }>("SELECT COUNT(*)::int AS c FROM lessons WHERE content_path IS NOT NULL"))[0]?.c ?? 0;
+    totalDone = (await all<{ c: number }>(
+      "SELECT COUNT(*)::int AS c FROM progress WHERE user_id = $1 AND target_type='lesson' AND state='completed'",
       user.id
-    )[0] as any).c as number;
+    ))[0]?.c ?? 0;
     overallPercent = totalAvailable > 0 ? Math.round((totalDone / totalAvailable) * 100) : 0;
   }
 

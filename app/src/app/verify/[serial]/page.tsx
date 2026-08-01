@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Card } from "@/components/ui";
-import { getDb, get } from "@/lib/db";
+import { get } from "@/lib/db";
 
 export const dynamic = "force-dynamic";
 
@@ -13,11 +13,10 @@ type CertRow = {
 export default async function VerifySerialPage({ params }: { params: Promise<{ serial: string }> }) {
   const { serial } = await params;
   const code = serial.toUpperCase();
-  getDb();
-  const cert = get<CertRow>(
+  const cert = await get<CertRow>(
     `SELECT c.*, u.name AS user_name
      FROM certificates c JOIN users u ON u.id = c.user_id
-     WHERE c.serial = ?`,
+     WHERE c.serial = $1`,
     code
   );
 

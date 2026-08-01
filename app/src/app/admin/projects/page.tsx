@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { Card } from "@/components/ui";
 import { GradeForm } from "@/components/GradeForm";
 import { getCurrentUser } from "@/lib/auth";
-import { getDb, all } from "@/lib/db";
+import { all } from "@/lib/db";
 import { loadProjectRubric } from "@/lib/rubric";
 
 export const dynamic = "force-dynamic";
@@ -12,8 +12,7 @@ export default async function AdminProjectsPage() {
   if (!user) redirect("/login?next=/admin/projects");
   if (user.role !== "admin") redirect("/");
 
-  getDb();
-  const submissions = all<{
+  const submissions = await all<{
     id: string; user_id: string; project_code: string; title: string; note: string | null; status: string; created_at: string;
     user_name: string; user_email: string; has_grade: number; score_avg: number | null; feedback: string | null;
   }>(

@@ -6,8 +6,8 @@ export const dynamic = "force-dynamic";
 
 export const metadata = { title: "المكتبة الدراسية" };
 
-export default function CatalogPage() {
-  const stages = listStages();
+export default async function CatalogPage() {
+  const stages = await listStages();
   return (
     <div className="space-y-6">
       <header>
