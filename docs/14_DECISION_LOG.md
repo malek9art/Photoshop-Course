@@ -158,6 +158,17 @@ Every decision record uses this structure:
 | **Reason** | User directive (implementation phase); single codebase maximizes multi-agent velocity; SQLite/node:sqlite requires no external services so every batch is runnable in this environment; Markdown content reuse links the platform to the produced P1-A lessons immediately. |
 | **Impact** | OPD-001, OPD-002 resolved (stack chosen); OPD-003/004/005 remain open (hosting/media/payment — non-blocking for local implementation); `app/` created (previously planned for MS-08 — deviation documented in CHG-005); SYSTEM_MANIFEST components C-01…C-14 move to In progress as batches land; lesson content remains the SSOT (DOC-03/07/22), the DB is derived data. |
 
+### ADR-011 — Audio architecture: provider-agnostic engine + local-first lesson audio
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-02 |
+| **Status** | Accepted (user-directed Phase 9; frontend-only, no DB/API/auth changes) |
+| **Problem** | Lessons need a premium audio listening experience (Udemy/Coursera-like) without third-party dependencies, while the platform will later need TTS narration (OpenAI / ElevenLabs / Azure) without a UI rewrite. |
+| **Alternatives** | (a) Hard-code an `<audio>` element per page (fast, but every future provider requires UI surgery), (b) adopt a media library (rejected — no new dependencies allowed), (c) provider-agnostic engine contract + registry (chosen). |
+| **Chosen Solution** | A small **AudioEngine contract** (`src/lib/audio/types.ts`) implemented by an **HTML5 `<audio>` engine** today, created through a **registry** (`engine-registry.ts`) that already reserves TTS provider slots (openai/elevenlabs/azure) — registering a factory is the only step a future provider needs. UI consumes a single `AudioProvider` context + hooks (`useAudio`, `useAudioPosition`, `usePlaybackRate`, `useAudioVolume`, `useAudioMediaSession`). Audio files live in `content/audio/{LES-XXXXXX}.{ext}` (ADR-006 content-as-data) and are streamed by a range-capable route handler (`/api/audio/[lessonId]`) — no external service, no API keys, no DB columns. |
+| **Reason** | Zero dependencies; the player works offline/local-first; a future TTS integration touches only the registry + a new engine file; graceful "unavailable" engine renders the standard error UI instead of breaking pages. |
+| **Impact** | New `app/src/lib/audio/`, `app/src/components/audio/`, `app/src/components/lesson/`, `app/src/lib/audio-assets.ts`, `app/src/app/api/audio/[lessonId]/route.ts`, `content/audio/` (empty convention dir + README). OPD-004 (media pipeline) remains open — this ADR deliberately does not decide hosting/transcoding. |
+
 ## 3. Open Decisions (OPD)
 
 | ID | Decision | Needed by | Blocking | Notes |

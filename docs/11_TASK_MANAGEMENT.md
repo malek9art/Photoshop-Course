@@ -176,6 +176,7 @@ Legend: **Status:** NS = Not Started · IP = In Progress · BL = Blocked · CP =
 | TASK-216 | MS-11: Design tokens & components | Implement DOC-06 tokens, component inventory, dark mode | Unassigned — claim me | P1 | TASK-207 | NS | — | Pend | Design Lead | Brand `[TBD]`s must resolve first |
 | TASK-217 | MS-11: Accessibility audit | WCAG 2.2 AA audit of all screens; fix critical issues | Unassigned — claim me | P1 | TASK-216 | NS | — | Pend | A11y Lead | |
 | TASK-218 | MS-11: RTL QA matrix | Full RTL verification per DOC-04 §11/DOC-06 §9 on all breakpoints | Unassigned — claim me | P1 | TASK-216 | NS | — | Pend | UX Lead | |
+| TASK-308 | Phase 9: Premium audio learning experience + dark theme polish | Frontend-only: dependency-free audio player (play/pause/stop/±10s/progress/volume/speed/mini player), lesson audio integration via `content/audio/`, reading experience (progress, ETA, resume, sticky toolbar, TOC, Arabic typography), premium dark theme (homepage-first), motion system, a11y pass, and provider-agnostic audio architecture (future TTS: OpenAI/ElevenLabs/Azure — no keys, no services) | AGT-005 (Phase 9) | P1 | Phase 8 (CHG-028) | CP | 2026-08-02 | Pend | UX Lead + A11y Lead | ADR-011; CHG-029 |
 
 ## 8. Master Task Board — Launch & Growth (MS-12…MS-14)
 

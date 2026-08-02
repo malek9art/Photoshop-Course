@@ -7,10 +7,10 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.27 |
+| **Version** | 1.0.28 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
-| **Last Updated** | 2026-08-01 |
+| **Last Updated** | 2026-08-02 |
 | **Review Cadence** | Continuous; verified at milestone boundaries |
 
 ## Table of Contents
@@ -284,4 +284,13 @@ Each entry uses this exact structure:
 - **Verification:** `npm run typecheck` PASS and `npm run build` PASS after **every** batch. All 28 routes present and unchanged; shared first-load JS unchanged at 105 kB (no performance regression); no new runtime dependencies added.
 - **Version:** DOC-06 1.0.0 → 1.0.1; DOC-13 1.0.26 → 1.0.27.
 
-> **Next entry:** `CHG-029` — to be appended by the next agent that modifies the repository.
+### CHG-029 — 2026-08-02
+- **Agent:** AGT-005 (Phase 9 — Premium Audio Learning Experience + Dark Theme Polish)
+- **Task(s):** TASK-308 (DOC-11) — frontend-only Phase 9, delivered in 7 verified batches.
+- **Description:** (1) **Premium audio player** — dependency-free Udemy/Coursera-grade player: play/pause/stop, replay/forward 10s, scrubbing progress bar with elapsed/remaining time, volume + mute, playback speed (0.75×/1×/1.25×/1.5×/2×), animated equalizer, MediaSession lock-screen controls, and a fixed glass **mini player** that appears while scrolling; fully responsive & RTL. (2) **Lesson integration** — audio files resolved from `content/audio/{LES-XXXXXX}.{ext}` (ADR-011) and streamed via a range-capable route (`/api/audio/[lessonId]`, HTTP 206 verified); graceful "النسخة الصوتية ستتوفر قريبًا" card when no file exists; no external services. (3) **Reading experience** — sticky lesson toolbar (title, live reading %, resume-from-last-position via localStorage, mobile TOC sheet, prev/next), enhanced TOC with section progress + status dots + back-to-top, reading-time + word-count chips, refined Arabic typography and spacing. (4) **Dark theme premium** — deeper near-black surfaces with blue undertone, real elevation (inset highlights + layered shadows), light glass effects (`.glass`, header/footer/toolbar blur), luminous gold accent scale, premium dark buttons with gradient fill + glow, homepage hero with gradient ring + gold crown glow, darkened shimmer skeletons; washed-out colours bumped for contrast. (5) **Motion** — `page-in` route transition, card hover sheen sweep, existing ripple extended to audio transport buttons, EQ animation, micro-interactions (active-scale, icon nudges); all neutralised under `prefers-reduced-motion`. (6) **Accessibility** — ARIA menu-button/listbox speed menu with roving tabindex + Escape, live status region, `aria-valuetext` on the seek slider, focus rings everywhere, 44px touch targets on mobile, contrast fixes. (7) **Audio architecture** — provider-agnostic `AudioEngine` contract, HTML5 engine, engine registry with reserved TTS slots (OpenAI/ElevenLabs/Azure) and a graceful unavailable engine; `AudioProvider` context + hooks; no API keys, no services, no DB/API/auth/routes changed.
+- **Reason:** User directive (Phase 9): premium audio learning experience and a truly premium dark theme without external libraries, while preparing the architecture for future TTS providers.
+- **Affected Documents:** `docs/11_TASK_MANAGEMENT.md` (TASK-308), `docs/13_PROJECT_CHANGELOG.md`, `docs/14_DECISION_LOG.md` (ADR-011). Code (new): `app/src/lib/audio/{types.ts,html-engine.ts,engine-registry.ts,audio-provider.tsx,hooks.ts,format.ts}`, `app/src/lib/audio-assets.ts`, `app/src/lib/reading.ts`, `app/src/components/audio/{audio-icons.tsx,AudioPlayer.tsx,MiniAudioPlayer.tsx}`, `app/src/components/lesson/{LessonExperience.tsx,LessonToolbar.tsx,LessonAudioBlock.tsx}`, `app/src/app/api/audio/[lessonId]/route.ts`, `content/audio/README.md`. Code (modified): `app/src/app/learn/[lessonId]/page.tsx`, `app/src/app/page.tsx`, `app/src/app/globals.css`, `app/src/components/{PageTransition,motion,LessonToc,Header,SiteFooter,CatalogBrowser,icons}.tsx`.
+- **Verification:** `npm run typecheck` PASS and `npm run build` PASS after every batch (7/7). Shared first-load JS unchanged at 105 kB (lesson page +13 kB from the player/toolbar, expected); no new runtime dependencies; all routes intact; API range streaming verified (200 + 206 with correct `Content-Range`).
+- **Version:** DOC-13 1.0.27 → 1.0.28.
+
+> **Next entry:** `CHG-030` — to be appended by the next agent that modifies the repository.
