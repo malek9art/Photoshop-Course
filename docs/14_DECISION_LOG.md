@@ -182,6 +182,17 @@ Every decision record uses this structure:
 | OPD-007 | Brand identity values (colors, fonts, logo) | MS-11 (TASK-216) | Design-system implementation | DOC-06 `[TBD]` tokens; legal review of name |
 | OPD-008 | Learner AI-assistance enforcement details | MS-12 (TASK-302) | Integrity tooling | Completes ADR-008 |
 
+### ADR-012 — Learning Path: strict sequential gating + verified completion
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-02 |
+| **Status** | Accepted (user-directed Phase 11; additive schema only) |
+| **Problem** | Learners could skip stages/modules/lessons and complete content arbitrarily; completion was a client-trusted POST; quizzes/exams were open before their prerequisites. |
+| **Alternatives** | (a) Enforce layered rules per level (stage→module→lesson each with its own predecessor check — more SQL, same outcome), (b) client-only UI gating (rejected: trivially bypassable), (c) **single-chain sequential gate + server-verified completion (chosen)**. |
+| **Chosen Solution** | The path collapses to one rule: every available lesson has exactly one required predecessor — the previous available lesson in global order (stage position → module position → lesson position). All unlock checks (`getLessonLock`, `getModuleLock`, `getStageLock`, `getQuizLock`, `getExamLock`) derive from that chain in `src/lib/locks.ts` and run server-side in every page and every API (progress/quiz/exam). Completion of a lesson is verified server-side (`src/lib/completion.ts`): lesson unlocked + opened (`progress.opened_at`) + ≥70% of expected reading time (wall-clock since first open vs `duration_min`/content estimate) + reached page end (`reached_end`) + explicit completion POST. Module/stage progress rows are always recomputed server-side from lesson rows (client writes are ignored). Achievements (first lesson / first module / half stage / stage complete / course complete) are awarded server-side in `src/lib/achievements.ts` with `UNIQUE(user_id, code)`. Guests keep read-only preview (nothing to track); all progress features require auth. |
+| **Reason** | Prevents skipping by construction; a single chain is simpler to verify than per-level rules; all checks live on the server so direct URLs, API calls and manual navigation cannot bypass; migration 002 is additive (3 new columns + achievements table) and preserves all existing data. |
+| **Impact** | New `src/lib/{locks,completion,achievements}.ts`, `scripts/migrations/002_learning_path.sql`, lock UI (`LockUI.tsx`, `LessonRowLink.tsx`, `GateLink.tsx`, `LessonNavCards.tsx`, `PathTrail.tsx`), reworked `/api/progress` + quiz/exam gates, lesson/stage/catalog/quiz/exam page gates, profile achievements section, home continue-card lock awareness. OPD-008 remains open (AI-assistance policy is orthogonal). |
+
 ## 4. Decision Change Policy
 
 1. An ADR is **superseded** only by a new ADR that explicitly references it; the old ADR keeps its Status = Superseded (never deleted).
