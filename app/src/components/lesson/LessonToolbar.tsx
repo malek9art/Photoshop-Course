@@ -18,6 +18,7 @@ import {
   ArrowRightIcon,
   BookIcon,
   PlayIcon,
+  LockIcon,
 } from "@/components/icons";
 
 export type LessonNav = { href: string; title: string } | null;
@@ -29,6 +30,7 @@ export function LessonToolbar({
   tocItems,
   prev,
   next,
+  nextLocked = false,
 }: {
   lessonId: string;
   title: string;
@@ -36,6 +38,7 @@ export function LessonToolbar({
   tocItems: TocItem[];
   prev: LessonNav;
   next: LessonNav;
+  nextLocked?: boolean;
 }) {
   const percent = useReadingProgress("lesson-body");
   const { canResume, resume } = useReadingPosition(lessonId);
@@ -163,14 +166,23 @@ export function LessonToolbar({
             </Link>
           ) : null}
           {next ? (
-            <Link
-              href={next.href}
-              title={`الدرس التالي: ${next.title}`}
-              aria-label={`الدرس التالي: ${next.title}`}
-              className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm transition-all duration-fast ease-smooth hover:-translate-y-px hover:bg-primary-700 hover:shadow-md active:scale-95 md:h-9 md:w-9 dark:bg-primary-500 dark:hover:bg-primary-400 ${focusRing}`}
-            >
-              <ArrowLeftIcon className="h-4 w-4" />
-            </Link>
+            nextLocked ? (
+              <span
+                title="أكمل هذا الدرس أولاً لفتح التالي"
+                className="inline-flex h-11 w-11 items-center justify-center rounded-xl border border-hairline bg-surface-muted text-neutral-400 opacity-70 md:h-9 md:w-9 dark:border-white/10 dark:bg-white/5 dark:text-neutral-500"
+              >
+                <LockIcon className="h-4 w-4" />
+              </span>
+            ) : (
+              <Link
+                href={next.href}
+                title={`الدرس التالي: ${next.title}`}
+                aria-label={`الدرس التالي: ${next.title}`}
+                className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-primary-600 text-white shadow-sm transition-all duration-fast ease-smooth hover:-translate-y-px hover:bg-primary-700 hover:shadow-md active:scale-95 md:h-9 md:w-9 dark:bg-primary-500 dark:hover:bg-primary-400 ${focusRing}`}
+              >
+                <ArrowLeftIcon className="h-4 w-4" />
+              </Link>
+            )
           ) : null}
         </div>
       </div>

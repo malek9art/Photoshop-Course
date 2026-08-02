@@ -252,3 +252,11 @@ export const LayersIcon = (p: IconProps) => (
     <path d="m4 12.4 8 4.2 8-4.2M4 16.6l8 4.2 8-4.2" />
   </Svg>
 );
+
+export const TrophyIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M8 4.4h8v5.2a4 4 0 0 1-8 0Z" />
+    <path d="M8 5.4H4.8a2 2 0 0 0 2 3.6h1M16 5.4h3.2a2 2 0 0 1-2 3.6h-1" />
+    <path d="M12 13.6v2.6M8.8 19.4h6.4M10 16.2h4l.8 3.2H9.2Z" />
+  </Svg>
+);

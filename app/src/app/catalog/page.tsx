@@ -1,15 +1,26 @@
 import { CatalogBrowser } from "@/components/CatalogBrowser";
 import { listStages } from "@/lib/data";
+import { getCurrentUser } from "@/lib/auth";
+import { getStageLock, type LockInfo } from "@/lib/locks";
 
 export const dynamic = "force-dynamic";
 
 export const metadata = { title: "المكتبة الدراسية" };
 
 export default async function CatalogPage() {
+  const user = await getCurrentUser();
   const stages = await listStages();
   const totalModules = stages.reduce((s, x) => s + (x.module_count ?? 0), 0);
   const totalLessons = stages.reduce((s, x) => s + (x.lesson_count ?? 0), 0);
   const totalHours = stages.reduce((s, x) => s + (x.effort_hours ?? 0), 0);
+
+  /* Server-side stage gates — shown as lock chips on the cards. */
+  const stageLocks: Record<string, LockInfo> = {};
+  if (user) {
+    for (const stage of stages) {
+      stageLocks[stage.id] = await getStageLock(user.id, stage.id);
+    }
+  }
 
   return (
     <div className="stack-lg">
@@ -40,7 +51,7 @@ export default async function CatalogPage() {
         </div>
       </header>
 
-      <CatalogBrowser stages={stages} />
+      <CatalogBrowser stages={stages} stageLocks={stageLocks} />
     </div>
   );
 }

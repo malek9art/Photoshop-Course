@@ -3,8 +3,14 @@ import { randomBytes } from "node:crypto";
 import { loadQuiz } from "@/lib/quiz";
 import { getCurrentUser } from "@/lib/auth";
 import { all, run } from "@/lib/db";
+import { getQuizLock } from "@/lib/locks";
 export const runtime = "nodejs";
 const DRAWN_COUNT = 8, MAX_ATTEMPTS = 3, COOLDOWN_MS = 24 * 60 * 60 * 1000;
+
+/** 403 payload shared by GET/POST — the client renders the lock UI. */
+function lockedResponse(lock: Awaited<ReturnType<typeof getQuizLock>>) {
+  return NextResponse.json({ error: "locked", lock }, { status: 403 });
+}
 function shuffle<T>(arr: T[]): T[] { const a = [...arr]; for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; } return a; }
 async function attemptState(userId: string, code: string) {
   const rows = await all<{ score_pct: number; passed: number; created_at: string }>("SELECT score_pct, passed, created_at FROM quiz_attempts WHERE user_id = $1 AND quiz_code = $2 ORDER BY created_at DESC", userId, code);
@@ -15,12 +21,19 @@ async function attemptState(userId: string, code: string) {
 export async function GET(_req: NextRequest, { params }: { params: Promise<{ code: string }> }) {
   const { code } = await params; const quiz = loadQuiz(code);
   if (!quiz || !quiz.items.length) return NextResponse.json({ error: "not-found" }, { status: 404 });
-  const user = await getCurrentUser(); const drawn = shuffle(quiz.items).slice(0, DRAWN_COUNT);
+  const user = await getCurrentUser();
+  if (user) {
+    const lock = await getQuizLock(user.id, code);
+    if (lock.locked) return lockedResponse(lock);
+  }
+  const drawn = shuffle(quiz.items).slice(0, DRAWN_COUNT);
   return NextResponse.json({ code: quiz.code, title: quiz.title, config: quiz.config, items: drawn.map((it) => ({ id: it.id, question: it.question, options: it.options })), ...(user ? await attemptState(user.id, code) : {}) });
 }
 export async function POST(req: NextRequest, { params }: { params: Promise<{ code: string }> }) {
   const { code } = await params; const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const lock = await getQuizLock(user.id, code);
+  if (lock.locked) return lockedResponse(lock);
   const quiz = loadQuiz(code); if (!quiz || !quiz.items.length) return NextResponse.json({ error: "not-found" }, { status: 404 });
   let body: { itemIds?: number[]; answers?: number[]; finalize?: boolean };
   try { body = await req.json(); } catch { return NextResponse.json({ error: "bad-json" }, { status: 400 }); }

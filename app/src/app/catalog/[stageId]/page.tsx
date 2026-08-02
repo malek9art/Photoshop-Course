@@ -17,6 +17,10 @@ import { getStage, listModulesWithLessons, listLessons } from "@/lib/data";
 import { getCurrentUser } from "@/lib/auth";
 import { buildQuizPathMap } from "@/lib/quiz";
 import { buildExamPathMap } from "@/lib/exam";
+import { getStageLock, getModuleLock, getLessonLocks, getQuizLock, getExamLock, type LockInfo } from "@/lib/locks";
+import { LessonRowLink, type LessonRowModel } from "@/components/LessonRowLink";
+import { GateLink, LockChip } from "@/components/GateLink";
+import { LockedContent } from "@/components/LockUI";
 
 export const dynamic = "force-dynamic";
 
@@ -26,12 +30,49 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
   const stage = await getStage(stageId);
   if (!stage) notFound();
 
+  /* ---- Server-side stage gate (Batch 2 / Batch 9): no entry when locked */
+  const stageLock = await getStageLock(user?.id ?? null, stageId);
+  if (stageLock.locked) {
+    return (
+      <LockedContent
+        lock={stageLock}
+        title={stage.title_ar}
+        icon={
+          <span className="text-4xl" aria-hidden="true">
+            🔒
+          </span>
+        }
+      />
+    );
+  }
+
   const modules = await listModulesWithLessons(stageId, user?.id);
   const lessonsByModule = new Map(
     await Promise.all(modules.map(async (mod) => [mod.id, await listLessons(mod.id, user?.id)] as const))
   );
   const quizzes = buildQuizPathMap();
   const exams = buildExamPathMap();
+
+  /* Lock info for every module + every lesson (server-side truth). */
+  const moduleLocks = new Map<string, LockInfo>(
+    await Promise.all(modules.map(async (mod) => [mod.id, await getModuleLock(user?.id ?? null, mod.id)] as const))
+  );
+  const allLessonIds = modules.flatMap((m) => lessonsByModule.get(m.id) ?? []).map((l) => l.id);
+  const lessonLocks = await getLessonLocks(user?.id ?? null, allLessonIds);
+
+  /* Quiz/exam gates for this stage (server-side, computed once). */
+  const examCode = `${stageId}-EXAM`;
+  const examLock = user && exams.has(examCode) ? await getExamLock(user.id, examCode) : null;
+  const quizLocks = new Map<string, LockInfo>(
+    await Promise.all(
+      modules
+        .filter((m) => quizzes.has(`QUIZ-${m.id}`))
+        .map(async (m) => {
+          const ql = user ? await getQuizLock(user.id, `QUIZ-${m.id}`) : { locked: false, message: "", reason: null };
+          return [`QUIZ-${m.id}`, ql] as const;
+        })
+    )
+  );
 
   const totalLessons = modules.reduce((s, m) => s + m.lesson_count, 0);
   const doneLessons = modules.reduce((s, m) => s + m.completed_lessons, 0);
@@ -68,12 +109,23 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
                 <MetaChip icon={<ClockIcon className="h-3 w-3" />}>{stage.effort_hours ?? "—"} ساعة تقديرية</MetaChip>
               </div>
 
-              {exams.has(`${stage.id}-EXAM`) && (
-                <Link href={`/exam/${stage.id}-EXAM`} className="btn-outline mt-6">
+              {exams.has(examCode) && user && examLock ? (
+                <GateLink
+                  href={`/exam/${examCode}`}
+                  lock={examLock}
+                  className="btn-outline mt-6"
+                  lockedClassName="btn-outline mt-6 !cursor-not-allowed opacity-60"
+                >
                   <ExamIcon className="h-4 w-4" />
-                  اختبار المرحلة — {stage.id}-EXAM
+                  اختبار المرحلة — {examCode}
+                  {examLock.locked ? <LockIcon className="h-3.5 w-3.5" /> : null}
+                </GateLink>
+              ) : exams.has(examCode) ? (
+                <Link href={`/exam/${examCode}`} className="btn-outline mt-6">
+                  <ExamIcon className="h-4 w-4" />
+                  اختبار المرحلة — {examCode}
                 </Link>
-              )}
+              ) : null}
             </div>
 
             {user && totalLessons > 0 && (
@@ -104,20 +156,23 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
             const lessons = lessonsByModule.get(mod.id) ?? [];
             const percent = mod.lesson_count > 0 ? Math.round((mod.completed_lessons / mod.lesson_count) * 100) : 0;
             const moduleDone = percent === 100 && mod.lesson_count > 0;
+            const modLock = moduleLocks.get(mod.id) ?? { locked: false, message: "", reason: null };
             return (
               <Reveal key={mod.id} as="section" delay={mi * 40}>
-                <div className="card overflow-hidden p-0">
+                <div className={`card overflow-hidden p-0 ${modLock.locked ? "opacity-90" : ""}`}>
                   {/* Module header */}
                   <div className="flex flex-wrap items-start justify-between gap-4 border-b border-hairline bg-surface-muted/50 p-6">
                     <div className="min-w-0">
                       <div className="flex flex-wrap items-center gap-2">
                         <span className="font-mono text-2xs font-bold tracking-wider text-primary-600">{mod.id}</span>
-                        {moduleDone && (
+                        {moduleDone ? (
                           <span className="badge-green">
                             <CheckIcon className="h-3 w-3" strokeWidth={2.6} />
                             مكتملة
                           </span>
-                        )}
+                        ) : modLock.locked ? (
+                          <LockChip label="مقفلة — أكمل الوحدة السابقة" />
+                        ) : null}
                       </div>
                       <h2 className="mt-2 text-lg font-bold text-neutral-900">{mod.title_ar}</h2>
                       <p className="mt-0.5 text-xs text-neutral-400" dir="ltr">
@@ -143,7 +198,18 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
                       </div>
                     )}
 
-                    {quizzes.has(`QUIZ-${mod.id}`) && (
+                    {quizzes.has(`QUIZ-${mod.id}`) && user ? (
+                      <GateLink
+                        href={`/quiz/QUIZ-${mod.id}`}
+                        lock={quizLocks.get(`QUIZ-${mod.id}`) ?? { locked: false, message: "", reason: null }}
+                        className="mb-5 inline-flex items-center gap-2 rounded-xl border border-accent-500/25 bg-accent-50 px-4 py-2.5 text-sm font-semibold text-accent-700 transition-all duration-fast hover:border-accent-500/50 hover:shadow-sm"
+                        lockedClassName="mb-5 inline-flex items-center gap-2 rounded-xl border border-hairline bg-surface-muted px-4 py-2.5 text-sm font-semibold text-neutral-500 opacity-75"
+                      >
+                        <QuizIcon className="h-4 w-4" />
+                        اختبار الوحدة (QUIZ-{mod.id})
+                        {(quizLocks.get(`QUIZ-${mod.id}`)?.locked ?? false) ? <LockIcon className="h-3.5 w-3.5" /> : null}
+                      </GateLink>
+                    ) : quizzes.has(`QUIZ-${mod.id}`) ? (
                       <Link
                         href={`/quiz/QUIZ-${mod.id}`}
                         className="mb-5 inline-flex items-center gap-2 rounded-xl border border-accent-500/25 bg-accent-50 px-4 py-2.5 text-sm font-semibold text-accent-700 transition-all duration-fast hover:border-accent-500/50 hover:shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
@@ -151,66 +217,25 @@ export default async function StagePage({ params }: { params: Promise<{ stageId:
                         <QuizIcon className="h-4 w-4" />
                         اختبار الوحدة (QUIZ-{mod.id})
                       </Link>
-                    )}
+                    ) : null}
 
                     {lessons.length === 0 ? (
                       <p className="text-sm text-neutral-500">لا توجد دروس في هذه الوحدة بعد.</p>
                     ) : (
                       <ol className="space-y-1.5">
                         {lessons.map((lesson) => {
-                          const locked = !lesson.content_path;
-                          const done = lesson.state === "completed";
+                          const lock = lessonLocks.get(lesson.id) ?? { locked: false, message: "", reason: null };
+                          const model: LessonRowModel = {
+                            id: lesson.id,
+                            title: lesson.title_ar,
+                            durationMin: lesson.duration_min,
+                            position: lesson.position,
+                            state: lesson.state,
+                            status: lesson.status,
+                            available: Boolean(lesson.content_path),
+                          };
                           return (
-                            <li key={lesson.id}>
-                              <Link
-                                href={locked ? "#" : `/learn/${lesson.id}`}
-                                aria-disabled={locked}
-                                tabIndex={locked ? -1 : 0}
-                                className={`group flex items-center justify-between gap-3 rounded-xl border border-transparent px-3.5 py-3 transition-all duration-fast ease-smooth focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600 ${
-                                  locked
-                                    ? "cursor-not-allowed opacity-55"
-                                    : "hover:border-hairline hover:bg-surface-muted"
-                                }`}
-                              >
-                                <span className="flex min-w-0 items-center gap-3">
-                                  <span
-                                    className={`flex h-8 w-8 shrink-0 items-center justify-center rounded-xl text-xs font-bold transition-colors ${
-                                      done
-                                        ? "bg-success-100 text-success-700"
-                                        : locked
-                                          ? "bg-neutral-100 text-neutral-400"
-                                          : "bg-surface-muted text-neutral-500 ring-1 ring-hairline group-hover:bg-primary-50 group-hover:text-primary-600"
-                                    }`}
-                                    aria-hidden="true"
-                                  >
-                                    {done ? <CheckIcon className="h-4 w-4" strokeWidth={2.6} /> : locked ? <LockIcon className="h-3.5 w-3.5" /> : lesson.position}
-                                  </span>
-                                  <span className="min-w-0">
-                                    <span className="block truncate text-sm font-semibold text-neutral-800">
-                                      {lesson.title_ar}
-                                    </span>
-                                    <span className="mt-0.5 flex items-center gap-2 text-2xs text-neutral-400">
-                                      <span className="font-mono">{lesson.id}</span>
-                                      {lesson.duration_min ? (
-                                        <>
-                                          <span aria-hidden="true">·</span>
-                                          <span className="inline-flex items-center gap-1">
-                                            <ClockIcon className="h-3 w-3" />
-                                            {lesson.duration_min} د
-                                          </span>
-                                        </>
-                                      ) : null}
-                                    </span>
-                                  </span>
-                                </span>
-                                <span className="flex shrink-0 items-center gap-2">
-                                  <LessonStateBadge state={lesson.state} status={lesson.status} />
-                                  {!locked && (
-                                    <ChevronLeftIcon className="h-4 w-4 text-neutral-300 transition-all duration-base group-hover:-translate-x-0.5 group-hover:text-primary-600" />
-                                  )}
-                                </span>
-                              </Link>
-                            </li>
+                            <LessonRowLink key={lesson.id} lesson={model} lock={lock} />
                           );
                         })}
                       </ol>

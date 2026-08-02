@@ -4,8 +4,14 @@ import { loadExam, gradeExam, stageFromExamCode } from "@/lib/exam";
 import { getCurrentUser } from "@/lib/auth";
 import { all, run } from "@/lib/db";
 import { maybeIssueStageCert } from "@/lib/certs";
+import { getExamLock } from "@/lib/locks";
 export const runtime = "nodejs";
 const DAY_MS = 24 * 60 * 60 * 1000;
+
+/** 403 payload shared by GET/POST — the client renders the lock UI. */
+function lockedResponse(lock: Awaited<ReturnType<typeof getExamLock>>) {
+  return NextResponse.json({ error: "locked", lock }, { status: 403 });
+}
 
 async function attemptState(userId: string, code: string, config: { attempts: number; cooldownDays: number }) {
   const rows = await all<{ score_pct: number; passed: number; created_at: string }>("SELECT score_pct, passed, created_at FROM exam_attempts WHERE user_id = $1 AND exam_code = $2 ORDER BY created_at DESC", userId, code);
@@ -20,6 +26,10 @@ export async function GET(_req: NextRequest, { params }: { params: Promise<{ cod
   const exam = loadExam(code);
   if (!exam || !exam.items.length) return NextResponse.json({ error: "not-found" }, { status: 404 });
   const user = await getCurrentUser();
+  if (user) {
+    const lock = await getExamLock(user.id, code);
+    if (lock.locked) return lockedResponse(lock);
+  }
   return NextResponse.json({ code: exam.code, title: exam.title, config: exam.config, items: exam.items.map((it) => ({ id: it.id, question: it.question, options: it.options })), ...(user ? await attemptState(user.id, code, exam.config) : {}) });
 }
 
@@ -27,6 +37,8 @@ export async function POST(req: NextRequest, { params }: { params: Promise<{ cod
   const { code } = await params;
   const user = await getCurrentUser();
   if (!user) return NextResponse.json({ error: "unauthorized" }, { status: 401 });
+  const lock = await getExamLock(user.id, code);
+  if (lock.locked) return lockedResponse(lock);
   const exam = loadExam(code);
   if (!exam || !exam.items.length) return NextResponse.json({ error: "not-found" }, { status: 404 });
   const state = await attemptState(user.id, code, exam.config);

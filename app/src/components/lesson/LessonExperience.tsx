@@ -21,6 +21,7 @@ export function LessonExperience({
   tocItems,
   prev,
   next,
+  nextLocked = false,
   children,
 }: {
   lessonId: string;
@@ -30,6 +31,7 @@ export function LessonExperience({
   tocItems: TocItem[];
   prev: LessonNav;
   next: LessonNav;
+  nextLocked?: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -41,6 +43,7 @@ export function LessonExperience({
         tocItems={tocItems}
         prev={prev}
         next={next}
+        nextLocked={nextLocked}
       />
       {children}
       {audio ? <MiniAudioPlayer title={title} /> : null}
