@@ -24,7 +24,7 @@ function buildNav(user: HeaderUser): NavItem[] {
 export async function Header({ user }: { user: HeaderUser }) {
   const NAV = buildNav(user);
   return (
-    <header className="sticky top-0 z-header border-b border-hairline bg-canvas/72 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-canvas/62">
+    <header className="sticky top-0 z-header border-b border-hairline bg-canvas/72 backdrop-blur-xl backdrop-saturate-150 supports-[backdrop-filter]:bg-canvas/62 dark:border-white/[0.07] dark:bg-canvas/60 dark:shadow-[0_16px_48px_-24px_rgb(0_0_0/0.85)]">
       <div className="container-app flex h-16 items-center justify-between gap-3 md:h-[4.5rem]">
         <div className="flex items-center gap-2">
           <MobileNav items={NAV} isAuthed={Boolean(user)} userName={user?.name} />

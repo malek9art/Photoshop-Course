@@ -108,7 +108,7 @@ export function CatalogBrowser({ stages }: { stages: StageRow[] }) {
                   <h2 className="mt-1.5 text-lg font-bold leading-snug text-neutral-900 transition-colors group-hover:text-primary-600">
                     {stage.title_ar}
                   </h2>
-                  <p className="mt-1 text-xs text-neutral-400" dir="ltr">
+                  <p className="mt-1 text-xs text-neutral-400 dark:text-neutral-500" dir="ltr">
                     {stage.title_en}
                   </p>
                 </div>

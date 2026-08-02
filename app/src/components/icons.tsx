@@ -238,6 +238,14 @@ export const PlayIcon = (p: IconProps) => (
   </Svg>
 );
 
+export const HeadphonesIcon = (p: IconProps) => (
+  <Svg {...p}>
+    <path d="M4.4 13v-1a7.6 7.6 0 0 1 15.2 0v1" />
+    <path d="M4.4 13a2.2 2.2 0 0 0-2.2 2.2v2A2.2 2.2 0 0 0 4.4 19.4h1.2a1 1 0 0 0 1-1v-4.4a1 1 0 0 0-1-1Z" />
+    <path d="M19.6 13a2.2 2.2 0 0 1 2.2 2.2v2a2.2 2.2 0 0 1-2.2 2.2h-1.2a1 1 0 0 1-1-1v-4.4a1 1 0 0 1 1-1Z" />
+  </Svg>
+);
+
 export const LayersIcon = (p: IconProps) => (
   <Svg {...p}>
     <path d="m12 3.8 8 4.2-8 4.2-8-4.2Z" />

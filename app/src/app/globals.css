@@ -96,28 +96,29 @@
   --primary-900: 214 250 245;
   --primary-950: 240 253 250;
 
-  --accent-50: 60 33 6;
-  --accent-100: 88 48 8;
-  --accent-200: 131 72 16;
-  --accent-300: 176 104 12;
-  --accent-400: 217 146 20;
-  --accent-500: 242 180 46;
-  --accent-600: 250 205 96;
-  --accent-700: 252 226 154;
-  --accent-800: 253 238 199;
-  --accent-900: 255 248 230;
+  /* Accent: luminous, luxurious gold (Phase 9 refinement) */
+  --accent-50: 66 42 8;
+  --accent-100: 92 58 12;
+  --accent-200: 138 86 18;
+  --accent-300: 206 138 30;
+  --accent-400: 232 168 48;
+  --accent-500: 245 194 76;
+  --accent-600: 250 214 122;
+  --accent-700: 253 231 170;
+  --accent-800: 254 243 209;
+  --accent-900: 255 250 236;
 
   /* Neutrals inverted: `text-neutral-800` stays "high contrast text" */
-  --neutral-50: 20 20 21;
-  --neutral-100: 28 28 30;
-  --neutral-200: 42 42 45;
-  --neutral-300: 62 62 66;
-  --neutral-400: 122 122 128;
-  --neutral-500: 156 156 162;
-  --neutral-600: 186 186 192;
-  --neutral-700: 214 214 219;
-  --neutral-800: 234 234 238;
-  --neutral-900: 247 247 249;
+  --neutral-50: 16 16 18;
+  --neutral-100: 26 26 29;
+  --neutral-200: 40 40 45;
+  --neutral-300: 58 58 65;
+  --neutral-400: 126 126 135;
+  --neutral-500: 158 158 167;
+  --neutral-600: 188 188 196;
+  --neutral-700: 215 215 221;
+  --neutral-800: 235 235 239;
+  --neutral-900: 248 248 250;
   --neutral-950: 255 255 255;
 
   --success-50: 8 46 26; --success-100: 12 66 38; --success-200: 18 92 53;
@@ -129,15 +130,16 @@
   --info-50: 18 33 66; --info-100: 24 45 92; --info-200: 32 62 128;
   --info-500: 96 158 250; --info-600: 138 184 252; --info-700: 186 213 253; --info-800: 219 234 254;
 
-  --canvas: 12 12 13;
-  --surface: 22 22 24;
-  --surface-muted: 28 28 30;
-  --surface-raised: 32 32 35;
-  --surface-sunken: 16 16 18;
-  --surface-inverted: 247 247 249;
+  /* Deep, near-black surfaces with a hint of blue (premium, Apple/Linear-like) */
+  --canvas: 9 9 11;
+  --surface: 19 19 23;
+  --surface-muted: 25 25 30;
+  --surface-raised: 30 30 36;
+  --surface-sunken: 13 13 16;
+  --surface-inverted: 248 248 250;
 
-  --hairline: 44 44 48;
-  --hairline-strong: 62 62 66;
+  --hairline: 42 42 50;
+  --hairline-strong: 64 64 74;
   --shadow: 0 0 0;
   --focus: var(--primary-500);
 }
@@ -239,21 +241,76 @@
   /* --- Surfaces --------------------------------------------------------- */
   .card {
     @apply relative rounded-2xl border border-hairline bg-surface shadow-sm;
+    /* `clip` (not `hidden`) keeps sticky children working while letting the
+       hover sheen and gradient hairlines stay inside the rounded shape. */
+    overflow: clip;
     transition: border-color var(--dur-base) var(--ease-smooth),
       box-shadow var(--dur-base) var(--ease-smooth),
       transform var(--dur-base) var(--ease-smooth),
       background-color var(--dur-base) var(--ease-smooth);
   }
+  /* Premium dark elevation: subtle top highlight + layered depth shadows. */
+  .dark .card {
+    background-image: linear-gradient(180deg, rgb(var(--surface-raised) / 0.55), rgb(var(--surface) / 0.92) 52%);
+    box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.045), 0 1px 2px rgb(0 0 0 / 0.45),
+      0 12px 32px -18px rgb(0 0 0 / 0.75);
+  }
   .card-hover {
     @apply hover:-translate-y-0.5 hover:border-hairline-strong hover:shadow-md;
   }
+  .dark .card-hover:hover {
+    border-color: rgb(var(--hairline-strong));
+    box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.06), 0 1px 2px rgb(0 0 0 / 0.45),
+      0 24px 52px -22px rgb(var(--primary-500) / 0.3);
+  }
+  /* Sheen sweep on hover (GPU-cheap transform; neutralised by reduced-motion). */
+  .card-hover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(115deg, transparent 36%, rgb(24 23 22 / 0.05) 50%, transparent 64%);
+    transform: translateX(130%);
+    opacity: 0;
+    transition: transform 760ms var(--ease-expo), opacity 240ms var(--dur-fast);
+  }
+  .dark .card-hover::after {
+    background: linear-gradient(115deg, transparent 36%, rgb(255 255 255 / 0.07) 50%, transparent 64%);
+  }
+  .card-hover:hover::after {
+    transform: translateX(-130%);
+    opacity: 1;
+  }
   .card-glass {
     @apply rounded-2xl border border-white/15 bg-white/10 backdrop-blur-xl;
+  }
+  .glass {
+    background: rgb(255 255 255 / 0.72);
+    -webkit-backdrop-filter: blur(18px) saturate(1.5);
+    backdrop-filter: blur(18px) saturate(1.5);
+    border: 1px solid rgb(255 255 255 / 0.55);
+    box-shadow: 0 12px 40px -18px rgb(24 23 22 / 0.25);
+  }
+  .dark .glass {
+    background: rgb(24 24 29 / 0.6);
+    border-color: rgb(255 255 255 / 0.09);
+    box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.06), 0 16px 48px -20px rgb(0 0 0 / 0.8);
   }
   .panel {
     @apply rounded-2xl border border-hairline bg-surface-muted;
   }
   .hairline { @apply border-hairline; }
+
+  /* Premium audio player surface (Phase 9) */
+  .audio-player {
+    background: rgb(var(--surface));
+  }
+  .dark .audio-player {
+    background-image: linear-gradient(180deg, rgb(var(--surface-raised) / 0.75), rgb(var(--surface) / 0.95) 55%);
+    box-shadow: inset 0 1px 0 0 rgb(255 255 255 / 0.05), 0 1px 2px rgb(0 0 0 / 0.45),
+      0 18px 44px -20px rgb(var(--primary-500) / 0.18);
+  }
 
   /* --- Buttons ---------------------------------------------------------- */
   .btn {
@@ -268,12 +325,37 @@
            hover:bg-primary-800 hover:shadow-md
            dark:bg-primary-500 dark:text-neutral-50 dark:hover:bg-primary-400;
   }
+  /* Dark: gradient fill + inner highlight + soft teal glow (premium). */
+  .dark .btn-primary {
+    background-image: linear-gradient(180deg, rgb(var(--primary-500)), rgb(var(--primary-600)));
+    border: 1px solid rgb(var(--primary-400) / 0.4);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.16), 0 10px 28px -14px rgb(var(--primary-500) / 0.55);
+    text-shadow: 0 1px 0 rgb(0 0 0 / 0.18);
+  }
+  .dark .btn-primary:hover {
+    background-image: linear-gradient(180deg, rgb(var(--primary-400)), rgb(var(--primary-500)));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.2), 0 14px 36px -14px rgb(var(--primary-400) / 0.6);
+  }
   .btn-accent {
     @apply btn bg-accent-500 text-neutral-950 shadow-sm hover:bg-accent-400 hover:shadow-md;
+  }
+  .dark .btn-accent {
+    background-image: linear-gradient(180deg, rgb(var(--accent-400)), rgb(var(--accent-500)));
+    border: 1px solid rgb(var(--accent-300) / 0.45);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.22), 0 10px 28px -14px rgb(var(--accent-500) / 0.5);
+    text-shadow: 0 1px 0 rgb(0 0 0 / 0.15);
   }
   .btn-outline {
     @apply btn border border-hairline-strong bg-surface text-neutral-700
            hover:border-primary-400 hover:bg-surface-muted hover:text-neutral-900;
+  }
+  .dark .btn-outline {
+    background: rgb(var(--surface-muted) / 0.55);
+    border-color: rgb(var(--hairline-strong));
+  }
+  .dark .btn-outline:hover {
+    background: rgb(var(--surface-raised) / 0.7);
+    border-color: rgb(var(--primary-400) / 0.5);
   }
   .btn-ghost {
     @apply btn text-neutral-600 hover:bg-neutral-200/60 hover:text-neutral-900;
@@ -331,7 +413,7 @@
     @apply text-2xs font-bold uppercase tracking-widest text-primary-600;
   }
 
-  /* Shimmer skeleton */
+  /* Shimmer skeleton — light sheen on stone, whisper-white on dark */
   .shimmer {
     @apply relative overflow-hidden bg-neutral-200/70;
   }
@@ -339,31 +421,45 @@
     content: "";
     @apply absolute inset-0 bg-sheen bg-shimmer animate-shimmer;
   }
+  .dark .shimmer {
+    background: rgb(var(--neutral-300) / 0.16);
+  }
+  .dark .shimmer::after {
+    background-image: linear-gradient(100deg, transparent 20%, rgb(255 255 255 / 0.07) 45%, transparent 70%);
+    background-size: 220% 100%;
+    animation: shimmer 1.9s linear infinite;
+  }
 
   /* --- Arabic prose ----------------------------------------------------- */
+  /* Phase 9 (Batch 3): wider rhythm, generous section spacing, calmer body
+     colour, refined heading presence — tuned for Arabic reading comfort. */
   .prose-ar {
-    @apply text-[1.0625rem] leading-[2.05] text-neutral-700;
+    @apply text-[1.0625rem] leading-[2.1] text-neutral-700;
+    letter-spacing: 0.002em;
   }
   .prose-ar > * + * { @apply mt-5; }
   .prose-ar h1, .prose-ar h2, .prose-ar h3, .prose-ar h4 {
     @apply font-display font-bold text-neutral-900;
     scroll-margin-top: 7rem;
+    text-wrap: balance;
   }
-  .prose-ar h1 { @apply mt-10 text-3xl; }
+  .prose-ar h1 { @apply mt-12 text-3xl; }
   .prose-ar h2 {
-    @apply mt-10 flex items-center gap-3 text-2xl;
+    @apply mb-6 mt-14 flex items-center gap-3 text-2xl;
   }
   .prose-ar h2::before {
     content: "";
-    @apply inline-block h-5 w-1 shrink-0 rounded-full bg-gradient-to-b from-primary-500 to-accent-500;
+    @apply inline-block h-6 w-1.5 shrink-0 rounded-full bg-gradient-to-b from-primary-500 to-accent-500;
+    box-shadow: 0 0 14px rgb(var(--primary-500) / 0.35);
   }
-  .prose-ar h3 { @apply mt-8 text-xl; }
-  .prose-ar h4 { @apply mt-6 text-lg; }
-  .prose-ar p { @apply my-5; }
+  .prose-ar h3 { @apply mb-4 mt-10 text-xl; }
+  .prose-ar h4 { @apply mb-3 mt-8 text-lg; }
+  .prose-ar p { @apply my-6; }
   .prose-ar strong { @apply font-bold text-neutral-900; }
-  .prose-ar ul, .prose-ar ol { @apply my-5 space-y-2 pr-6; }
+  .prose-ar ul, .prose-ar ol { @apply my-6 space-y-2.5 pr-6; }
   .prose-ar ul { @apply list-disc marker:text-primary-500; }
   .prose-ar ol { @apply list-decimal marker:font-bold marker:text-primary-500; }
+  .prose-ar li { line-height: 2.05; }
   .prose-ar li::marker { font-size: 0.95em; }
   .prose-ar table {
     @apply my-7 block w-full overflow-x-auto rounded-2xl border border-hairline text-sm md:table;
@@ -444,4 +540,50 @@
     -webkit-mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
     mask-image: linear-gradient(to bottom, black 65%, transparent 100%);
   }
+
+  /* Page transition (Batch 5) — GPU-cheap, reduced-motion safe. */
+  .page-in {
+    animation: page-in 460ms var(--ease-expo) both;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .page-in { animation: none; }
+  }
+
+  /* Audio EQ bars (Batch 1) */
+  .eq-bar {
+    transform-origin: bottom;
+    animation: audio-eq 1.05s ease-in-out infinite;
+  }
+  .eq-bar.paused {
+    animation-play-state: paused;
+    transform: scaleY(0.35);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .eq-bar { animation: none; transform: scaleY(0.45); }
+  }
+
+  /* Mini player: keep page content clear of the fixed bar. */
+  body.aca-mini-player-open {
+    padding-bottom: calc(env(safe-area-inset-bottom) + 10.75rem);
+  }
+  @media (min-width: 768px) {
+    body.aca-mini-player-open { padding-bottom: 7.25rem; }
+  }
+
+  /* Hidden native range reused for progress/volume (visual layer is custom). */
+  .aca-range { -webkit-appearance: none; appearance: none; background: transparent; }
+}
+
+/* ==========================================================================
+   Keyframes (Phase 9 additions)
+   ========================================================================== */
+
+@keyframes page-in {
+  from { opacity: 0; transform: translate3d(0, 14px, 0); }
+  to { opacity: 1; transform: translate3d(0, 0, 0); }
+}
+
+@keyframes audio-eq {
+  0%, 100% { transform: scaleY(0.3); }
+  50% { transform: scaleY(1); }
 }

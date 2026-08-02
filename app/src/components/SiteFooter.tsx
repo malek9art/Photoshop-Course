@@ -28,7 +28,7 @@ const GROUPS: { title: string; links: { href: string; label: string }[] }[] = [
 export function SiteFooter() {
   const year = new Date().getFullYear();
   return (
-    <footer className="mt-20 border-t border-hairline bg-surface-muted/60">
+    <footer className="mt-20 border-t border-hairline bg-surface-muted/60 dark:border-white/[0.07] dark:bg-black/20">
       <div className="container-app py-12 md:py-16">
         <div className="grid gap-10 md:grid-cols-[1.4fr_repeat(3,1fr)]">
           <div>
@@ -39,9 +39,9 @@ export function SiteFooter() {
               >
                 أ
               </span>
-              <span className="text-sm font-bold text-neutral-900">أكاديمية أدوبي الإبداعية</span>
+              <span className="text-sm font-bold text-neutral-900 dark:text-white">أكاديمية أدوبي الإبداعية</span>
             </div>
-            <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-500">
+            <p className="mt-4 max-w-xs text-sm leading-relaxed text-neutral-500 dark:text-neutral-400">
               منصة عربية احترافية لتعلّم برامج أدوبي الإبداعية — منهج متدرّج، تقييم عادل، وشهادات
               قابلة للتحقق.
             </p>
@@ -49,7 +49,7 @@ export function SiteFooter() {
 
           {GROUPS.map((group) => (
             <nav key={group.title} aria-label={group.title}>
-              <h2 className="text-2xs font-bold uppercase tracking-widest text-neutral-400">
+              <h2 className="text-2xs font-bold uppercase tracking-widest text-neutral-400 dark:text-neutral-500">
                 {group.title}
               </h2>
               <ul className="mt-4 space-y-2.5">
@@ -57,7 +57,7 @@ export function SiteFooter() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className={`rounded text-sm text-neutral-600 transition-colors hover:text-primary-600 ${focusRing}`}
+                      className={`rounded text-sm text-neutral-600 transition-colors hover:text-primary-600 dark:text-neutral-400 dark:hover:text-primary-300 ${focusRing}`}
                     >
                       {link.label}
                     </Link>
@@ -68,7 +68,7 @@ export function SiteFooter() {
           ))}
         </div>
 
-        <div className="mt-12 flex flex-col items-center gap-3 border-t border-hairline pt-6 text-xs text-neutral-500 sm:flex-row sm:justify-between">
+        <div className="mt-12 flex flex-col items-center gap-3 border-t border-hairline pt-6 text-xs text-neutral-500 sm:flex-row sm:justify-between dark:border-white/[0.07] dark:text-neutral-400">
           <p>© {year} أكاديمية أدوبي الإبداعية — جميع الحقوق محفوظة.</p>
           <p className="flex items-center gap-2">
             <span className="inline-flex h-1.5 w-1.5 rounded-full bg-success-500" aria-hidden="true" />
