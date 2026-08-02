@@ -5,9 +5,20 @@ import Markdown from "@/components/Markdown";
 import { CompleteLessonButton } from "@/components/CompleteLessonButton";
 import { LessonToc, type TocItem } from "@/components/LessonToc";
 import { ReadingProgress } from "@/components/motion";
-import { ClockIcon, ArrowLeftIcon, ArrowRightIcon, CheckIcon, LockIcon, BookIcon } from "@/components/icons";
+import { LessonExperience } from "@/components/lesson/LessonExperience";
+import { LessonAudioBlock } from "@/components/lesson/LessonAudioBlock";
+import {
+  ClockIcon,
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CheckIcon,
+  LockIcon,
+  BookIcon,
+  HeadphonesIcon,
+} from "@/components/icons";
 import { getLesson, listLessons, getLessonProgress } from "@/lib/data";
 import { loadLessonFile } from "@/lib/content";
+import { resolveLessonAudio } from "@/lib/audio-assets";
 import { getCurrentUser } from "@/lib/auth";
 
 export const dynamic = "force-dynamic";
@@ -56,6 +67,8 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
     ? Number(doc.frontmatter.duration_min) || estimateReadingMinutes(doc.markdown)
     : lesson.duration_min ?? estimateReadingMinutes(doc.markdown);
   const toc = extractToc(doc.markdown);
+  const audio = resolveLessonAudio(lesson.id);
+  const wordCount = doc.markdown.replace(/[#*`>_\-|]/g, " ").split(/\s+/).filter(Boolean).length;
 
   const doneInModule = moduleLessons.filter((l) => l.state === "completed").length;
   const modulePercent =
@@ -65,50 +78,76 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
     <>
       <ReadingProgress targetId="lesson-body" />
 
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-10">
-        {/* ==================================================== Lesson body */}
-        <article className="min-w-0">
-          <Breadcrumb
-            items={[
-              { label: "المكتبة", href: "/catalog" },
-              { label: lesson.stage_title_ar, href: `/catalog/${lesson.stage_id}` },
-              { label: lesson.module_title_ar },
-            ]}
-          />
+      <LessonExperience
+        lessonId={lesson.id}
+        title={doc.titleAr}
+        audio={
+          audio
+            ? { kind: "url", url: audio.url, title: doc.titleAr, mimeType: audio.mimeType }
+            : null
+        }
+        readingMinutes={readingMinutes}
+        tocItems={toc}
+        prev={prev?.content_path ? { href: `/learn/${prev.id}`, title: prev.title_ar } : null}
+        next={next?.content_path ? { href: `/learn/${next.id}`, title: next.title_ar } : null}
+      >
+        <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_18rem] lg:gap-10">
+          {/* ==================================================== Lesson body */}
+          <article className="min-w-0">
+            <Breadcrumb
+              items={[
+                { label: "المكتبة", href: "/catalog" },
+                { label: lesson.stage_title_ar, href: `/catalog/${lesson.stage_id}` },
+                { label: lesson.module_title_ar },
+              ]}
+            />
 
-          <header className="mt-5">
-            <div className="flex flex-wrap items-center gap-2.5">
-              <span className="font-mono text-2xs font-bold tracking-wider text-primary-600">{lesson.id}</span>
-              <LessonStateBadge
-                state={user ? moduleLessons.find((l) => l.id === lesson.id)?.state ?? null : null}
-                status={lesson.status}
-              />
-              <span className="inline-flex items-center gap-1.5 text-2xs font-medium text-neutral-500">
-                <ClockIcon className="h-3.5 w-3.5" />
-                {readingMinutes} دقيقة قراءة
-              </span>
+            <header className="mt-5">
+              <div className="flex flex-wrap items-center gap-2.5">
+                <span className="font-mono text-2xs font-bold tracking-wider text-primary-600">{lesson.id}</span>
+                <LessonStateBadge
+                  state={user ? moduleLessons.find((l) => l.id === lesson.id)?.state ?? null : null}
+                  status={lesson.status}
+                />
+                <span className="inline-flex items-center gap-1.5 text-2xs font-medium text-neutral-500 dark:text-neutral-400">
+                  <ClockIcon className="h-3.5 w-3.5" />
+                  {readingMinutes} دقيقة قراءة
+                </span>
+                <span className="hidden items-center gap-1.5 text-2xs font-medium text-neutral-500 sm:inline-flex dark:text-neutral-400">
+                  <BookIcon className="h-3.5 w-3.5" />
+                  {wordCount.toLocaleString("ar-EG")} كلمة
+                </span>
+                {audio ? (
+                  <span className="inline-flex items-center gap-1.5 rounded-full bg-primary-50 px-2.5 py-0.5 text-2xs font-bold text-primary-700 ring-1 ring-inset ring-primary-500/20 dark:bg-primary-500/15 dark:text-primary-300">
+                    <HeadphonesIcon className="h-3 w-3" />
+                    النسخة الصوتية متاحة
+                  </span>
+                ) : null}
+              </div>
+
+              <h1 className="mt-4 text-3xl font-black leading-[1.3] tracking-tighter text-neutral-900 md:text-4xl">
+                {doc.titleAr}
+              </h1>
+
+              <div className="mt-6 flex items-center gap-3 border-b border-hairline pb-6">
+                <span className="text-2xs font-semibold text-neutral-500">
+                  الدرس {idx + 1} من {moduleLessons.length}
+                </span>
+                <ProgressBar
+                  percent={moduleLessons.length ? ((idx + 1) / moduleLessons.length) * 100 : 0}
+                  size="sm"
+                  className="max-w-[10rem]"
+                  label={`الدرس ${idx + 1} من ${moduleLessons.length}`}
+                />
+              </div>
+            </header>
+
+            {/* Premium audio player — or a graceful coming-soon card */}
+            <LessonAudioBlock title={doc.titleAr} sizeBytes={audio?.sizeBytes} />
+
+            <div id="lesson-body" className="mt-10">
+              <Markdown>{doc.markdown}</Markdown>
             </div>
-
-            <h1 className="mt-4 text-3xl font-black leading-[1.3] tracking-tighter text-neutral-900 md:text-4xl">
-              {doc.titleAr}
-            </h1>
-
-            <div className="mt-6 flex items-center gap-3 border-b border-hairline pb-6">
-              <span className="text-2xs font-semibold text-neutral-500">
-                الدرس {idx + 1} من {moduleLessons.length}
-              </span>
-              <ProgressBar
-                percent={moduleLessons.length ? ((idx + 1) / moduleLessons.length) * 100 : 0}
-                size="sm"
-                className="max-w-[10rem]"
-                label={`الدرس ${idx + 1} من ${moduleLessons.length}`}
-              />
-            </div>
-          </header>
-
-          <div id="lesson-body" className="mt-8">
-            <Markdown>{doc.markdown}</Markdown>
-          </div>
 
           {/* Lesson actions */}
           <div className="mt-12 rounded-3xl border border-hairline bg-surface-muted/60 p-5 md:p-6">
@@ -215,7 +254,8 @@ export default async function LessonPage({ params }: { params: Promise<{ lessonI
             </div>
           </div>
         </aside>
-      </div>
+        </div>
+      </LessonExperience>
     </>
   );
 }
