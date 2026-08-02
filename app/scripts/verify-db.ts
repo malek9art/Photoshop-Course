@@ -7,12 +7,14 @@ import { all, closeDb, get } from "../src/lib/db";
 const TABLES = [
   "users", "sessions", "stages", "modules", "lessons", "enrollments",
   "progress", "certificates", "submissions", "exam_attempts", "quiz_attempts", "grades",
+  "achievements",
 ] as const;
 
 const INDEXES = [
   "idx_sessions_user", "idx_sessions_token", "idx_modules_stage", "idx_lessons_module",
   "idx_enroll_user", "idx_progress_user", "idx_certs_user", "idx_submissions_user",
   "idx_exam_attempts_user", "idx_quiz_attempts_user", "idx_grades_submission",
+  "idx_progress_opened", "idx_achievements_user",
 ] as const;
 
 async function main() {
@@ -35,7 +37,8 @@ async function main() {
   const foreignKeys = await get<{ c: number }>(
     "SELECT COUNT(*)::int AS c FROM information_schema.table_constraints WHERE table_schema = current_schema() AND constraint_type = 'FOREIGN KEY'"
   );
-  if ((foreignKeys?.c ?? 0) !== 11) throw new Error(`Expected 11 foreign keys, found ${foreignKeys?.c ?? 0}`);
+  // 11 original FKs + 1 added by migration 002 (achievements.user_id → users).
+  if ((foreignKeys?.c ?? 0) !== 12) throw new Error(`Expected 12 foreign keys, found ${foreignKeys?.c ?? 0}`);
 
   const [stages, modules, lessons, demoUsers] = await Promise.all([
     get<{ c: number }>("SELECT COUNT(*)::int AS c FROM stages"),
@@ -48,7 +51,7 @@ async function main() {
   for (const key of Object.keys(expected) as Array<keyof typeof expected>) {
     if (actual[key] !== expected[key]) throw new Error(`Expected ${key}=${expected[key]}, found ${actual[key]}`);
   }
-  console.log(`Verified PostgreSQL schema: ${TABLES.length} tables, ${INDEXES.length} indexes, 11 foreign keys; seed: 8 stages, 33 modules, 156 lessons, 2 demo users.`);
+  console.log(`Verified PostgreSQL schema: ${TABLES.length} tables, ${INDEXES.length} indexes, 12 foreign keys; seed: 8 stages, 33 modules, 156 lessons, 2 demo users.`);
 }
 
 main()

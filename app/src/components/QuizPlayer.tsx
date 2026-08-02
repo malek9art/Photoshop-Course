@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Alert, ProgressRing } from "./ui";
 import { SuccessCheck, Skeleton } from "./feedback";
+import { LockModal } from "./LockUI";
+import type { LockInfo } from "@/lib/locks";
 import { ClockIcon, ArrowLeftIcon, CheckCircleIcon, AlertIcon, QuizIcon } from "./icons";
 
 type QuizMeta = { code: string; title: string; config: { passPct: number; attempts: number } };
@@ -31,17 +33,28 @@ export function QuizPlayer({ code }: { code: string }) {
   const [attemptsLeft, setAttemptsLeft] = useState<number | null>(null);
   const [cooldownUntil, setCooldownUntil] = useState<string | null>(null);
   const [bestScore, setBestScore] = useState<number | null>(null);
+  const [lock, setLock] = useState<LockInfo | null>(null);
   const startedRef = useRef(false);
 
   useEffect(() => {
     if (startedRef.current) return;
     startedRef.current = true;
     fetch(`/api/quiz/${code}`)
-      .then((r) => {
-        if (r.status === 401) router.replace(`/login?next=/quiz/${code}`);
+      .then(async (r) => {
+        if (r.status === 401) {
+          router.replace(`/login?next=/quiz/${code}`);
+          return null;
+        }
+        if (r.status === 403) {
+          const data = await r.json().catch(() => null);
+          if (data?.error === "locked" && data?.lock) setLock(data.lock);
+          else setError("استنفدت محاولاتك الثلاث لهذا الاختبار (DOC-08 §5).");
+          return null;
+        }
         return r.ok ? r.json() : Promise.reject(new Error("not-found"));
       })
       .then((data) => {
+        if (!data) return;
         setMeta({ code: data.code, title: data.title, config: data.config });
         setItems(data.items);
         setItemIds(data.items.map((i: QuizItem) => i.id));
@@ -51,6 +64,14 @@ export function QuizPlayer({ code }: { code: string }) {
       })
       .catch(() => setError("تعذر تحميل الاختبار. تأكد من وجود ملف الاختبار."));
   }, [code, router]);
+
+  /* Server-side gate: the API refused — show the lock dialog (Batch 8). */
+  if (lock)
+    return (
+      <div className="py-10">
+        <LockModal open lock={lock} onClose={() => router.replace("/catalog")} />
+      </div>
+    );
 
   /** Formative per-question feedback — never consumes an attempt. */
   async function submitAnswer() {

@@ -4,6 +4,8 @@ import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Alert, ProgressRing } from "./ui";
 import { SuccessCheck, Skeleton } from "./feedback";
+import { LockModal } from "./LockUI";
+import type { LockInfo } from "@/lib/locks";
 import { ClockIcon, ArrowLeftIcon, ArrowRightIcon, CheckCircleIcon, AlertIcon, ExamIcon } from "./icons";
 
 type ExamConfig = { passPct: number; attempts: number; cooldownDays: number; durationMin: number };
@@ -24,17 +26,28 @@ export function ExamPlayer({ code }: { code: string }) {
   const [result, setResult] = useState<{ score: number; passed: boolean; results: GradeResult[] } | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
+  const [lock, setLock] = useState<LockInfo | null>(null);
   const startedRef = useRef(false);
 
   useEffect(() => {
     if (startedRef.current) return;
     startedRef.current = true;
     fetch(`/api/exam/${code}`)
-      .then((r) => {
-        if (r.status === 401) router.replace(`/login?next=/exam/${code}`);
+      .then(async (r) => {
+        if (r.status === 401) {
+          router.replace(`/login?next=/exam/${code}`);
+          return null;
+        }
+        if (r.status === 403) {
+          const data = await r.json().catch(() => null);
+          if (data?.error === "locked" && data?.lock) setLock(data.lock);
+          else setError("استنفدت محاولاتك لهذا الاختبار.");
+          return null;
+        }
         return r.ok ? r.json() : Promise.reject(new Error("not-found"));
       })
       .then((d) => {
+        if (!d) return;
         setTitle(d.title);
         setConfig(d.config);
         setItems(d.items);
@@ -43,6 +56,14 @@ export function ExamPlayer({ code }: { code: string }) {
       })
       .catch(() => setError("تعذر تحميل الاختبار."));
   }, [code, router]);
+
+  /* Server-side gate: the API refused — show the lock dialog (Batch 8). */
+  if (lock)
+    return (
+      <div className="py-10">
+        <LockModal open lock={lock} onClose={() => router.replace("/catalog")} />
+      </div>
+    );
 
   async function submit() {
     if (busy) return;

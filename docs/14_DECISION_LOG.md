@@ -158,6 +158,17 @@ Every decision record uses this structure:
 | **Reason** | User directive (implementation phase); single codebase maximizes multi-agent velocity; SQLite/node:sqlite requires no external services so every batch is runnable in this environment; Markdown content reuse links the platform to the produced P1-A lessons immediately. |
 | **Impact** | OPD-001, OPD-002 resolved (stack chosen); OPD-003/004/005 remain open (hosting/media/payment — non-blocking for local implementation); `app/` created (previously planned for MS-08 — deviation documented in CHG-005); SYSTEM_MANIFEST components C-01…C-14 move to In progress as batches land; lesson content remains the SSOT (DOC-03/07/22), the DB is derived data. |
 
+### ADR-011 — Audio architecture: provider-agnostic engine + local-first lesson audio
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-02 |
+| **Status** | Accepted (user-directed Phase 9; frontend-only, no DB/API/auth changes) |
+| **Problem** | Lessons need a premium audio listening experience (Udemy/Coursera-like) without third-party dependencies, while the platform will later need TTS narration (OpenAI / ElevenLabs / Azure) without a UI rewrite. |
+| **Alternatives** | (a) Hard-code an `<audio>` element per page (fast, but every future provider requires UI surgery), (b) adopt a media library (rejected — no new dependencies allowed), (c) provider-agnostic engine contract + registry (chosen). |
+| **Chosen Solution** | A small **AudioEngine contract** (`src/lib/audio/types.ts`) implemented by an **HTML5 `<audio>` engine** today, created through a **registry** (`engine-registry.ts`) that already reserves TTS provider slots (openai/elevenlabs/azure) — registering a factory is the only step a future provider needs. UI consumes a single `AudioProvider` context + hooks (`useAudio`, `useAudioPosition`, `usePlaybackRate`, `useAudioVolume`, `useAudioMediaSession`). Audio files live in `content/audio/{LES-XXXXXX}.{ext}` (ADR-006 content-as-data) and are streamed by a range-capable route handler (`/api/audio/[lessonId]`) — no external service, no API keys, no DB columns. |
+| **Reason** | Zero dependencies; the player works offline/local-first; a future TTS integration touches only the registry + a new engine file; graceful "unavailable" engine renders the standard error UI instead of breaking pages. |
+| **Impact** | New `app/src/lib/audio/`, `app/src/components/audio/`, `app/src/components/lesson/`, `app/src/lib/audio-assets.ts`, `app/src/app/api/audio/[lessonId]/route.ts`, `content/audio/` (empty convention dir + README). OPD-004 (media pipeline) remains open — this ADR deliberately does not decide hosting/transcoding. |
+
 ## 3. Open Decisions (OPD)
 
 | ID | Decision | Needed by | Blocking | Notes |
@@ -170,6 +181,17 @@ Every decision record uses this structure:
 | OPD-006 | Independent governance/verification model | MS-02 (TASK-102) | Baseline review | **Resolved** by ADR-009 (2026-07-31): role-based review per DOC-35 |
 | OPD-007 | Brand identity values (colors, fonts, logo) | MS-11 (TASK-216) | Design-system implementation | DOC-06 `[TBD]` tokens; legal review of name |
 | OPD-008 | Learner AI-assistance enforcement details | MS-12 (TASK-302) | Integrity tooling | Completes ADR-008 |
+
+### ADR-012 — Learning Path: strict sequential gating + verified completion
+| Field | Value |
+|-------|-------|
+| **Date** | 2026-08-02 |
+| **Status** | Accepted (user-directed Phase 11; additive schema only) |
+| **Problem** | Learners could skip stages/modules/lessons and complete content arbitrarily; completion was a client-trusted POST; quizzes/exams were open before their prerequisites. |
+| **Alternatives** | (a) Enforce layered rules per level (stage→module→lesson each with its own predecessor check — more SQL, same outcome), (b) client-only UI gating (rejected: trivially bypassable), (c) **single-chain sequential gate + server-verified completion (chosen)**. |
+| **Chosen Solution** | The path collapses to one rule: every available lesson has exactly one required predecessor — the previous available lesson in global order (stage position → module position → lesson position). All unlock checks (`getLessonLock`, `getModuleLock`, `getStageLock`, `getQuizLock`, `getExamLock`) derive from that chain in `src/lib/locks.ts` and run server-side in every page and every API (progress/quiz/exam). Completion of a lesson is verified server-side (`src/lib/completion.ts`): lesson unlocked + opened (`progress.opened_at`) + ≥70% of expected reading time (wall-clock since first open vs `duration_min`/content estimate) + reached page end (`reached_end`) + explicit completion POST. Module/stage progress rows are always recomputed server-side from lesson rows (client writes are ignored). Achievements (first lesson / first module / half stage / stage complete / course complete) are awarded server-side in `src/lib/achievements.ts` with `UNIQUE(user_id, code)`. Guests keep read-only preview (nothing to track); all progress features require auth. |
+| **Reason** | Prevents skipping by construction; a single chain is simpler to verify than per-level rules; all checks live on the server so direct URLs, API calls and manual navigation cannot bypass; migration 002 is additive (3 new columns + achievements table) and preserves all existing data. |
+| **Impact** | New `src/lib/{locks,completion,achievements}.ts`, `scripts/migrations/002_learning_path.sql`, lock UI (`LockUI.tsx`, `LessonRowLink.tsx`, `GateLink.tsx`, `LessonNavCards.tsx`, `PathTrail.tsx`), reworked `/api/progress` + quiz/exam gates, lesson/stage/catalog/quiz/exam page gates, profile achievements section, home continue-card lock awareness. OPD-008 remains open (AI-assistance policy is orthogonal). |
 
 ## 4. Decision Change Policy
 

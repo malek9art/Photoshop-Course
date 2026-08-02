@@ -141,8 +141,8 @@ export function Counter({
   );
 }
 
-/** Thin reading-progress bar pinned under the header. */
-export function ReadingProgress({ targetId }: { targetId?: string }) {
+/** Shared reading-progress computation (rAF-throttled, passive). */
+export function useReadingProgress(targetId?: string): number {
   const [percent, setPercent] = useState(0);
 
   useEffect(() => {
@@ -175,6 +175,12 @@ export function ReadingProgress({ targetId }: { targetId?: string }) {
     };
   }, [targetId]);
 
+  return percent;
+}
+
+/** Thin reading-progress bar pinned under the header. */
+export function ReadingProgress({ targetId }: { targetId?: string }) {
+  const percent = useReadingProgress(targetId);
   return (
     <div
       className="pointer-events-none fixed inset-x-0 top-0 z-50 h-0.5 bg-transparent"

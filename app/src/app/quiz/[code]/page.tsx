@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { QuizPlayer } from "@/components/QuizPlayer";
 import { loadQuiz } from "@/lib/quiz";
 import { getCurrentUser } from "@/lib/auth";
+import { getQuizLock } from "@/lib/locks";
+import { LockedContent } from "@/components/LockUI";
 import { LockIcon } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +36,22 @@ export default async function QuizPage({ params }: { params: Promise<{ code: str
           إنشاء حساب جديد
         </Link>
       </div>
+    );
+  }
+
+  /* ---- Server-side quiz gate (Batch 4 / Batch 9): direct URL is blocked. */
+  const lock = await getQuizLock(user.id, code);
+  if (lock.locked) {
+    return (
+      <LockedContent
+        lock={lock}
+        title={`اختبار الوحدة — ${quiz.code}`}
+        icon={
+          <span className="text-4xl" aria-hidden="true">
+            🔒
+          </span>
+        }
+      />
     );
   }
 

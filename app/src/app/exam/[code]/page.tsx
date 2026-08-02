@@ -3,6 +3,8 @@ import { notFound } from "next/navigation";
 import { ExamPlayer } from "@/components/ExamPlayer";
 import { loadExam } from "@/lib/exam";
 import { getCurrentUser } from "@/lib/auth";
+import { getExamLock } from "@/lib/locks";
+import { LockedContent } from "@/components/LockUI";
 import { LockIcon } from "@/components/icons";
 
 export const dynamic = "force-dynamic";
@@ -34,6 +36,22 @@ export default async function ExamPage({ params }: { params: Promise<{ code: str
           إنشاء حساب جديد
         </Link>
       </div>
+    );
+  }
+
+  /* ---- Server-side exam gate (Batch 4 / Batch 9): direct URL is blocked. */
+  const lock = await getExamLock(user.id, code);
+  if (lock.locked) {
+    return (
+      <LockedContent
+        lock={lock}
+        title={`اختبار المرحلة — ${exam.code}`}
+        icon={
+          <span className="text-4xl" aria-hidden="true">
+            🔒
+          </span>
+        }
+      />
     );
   }
 

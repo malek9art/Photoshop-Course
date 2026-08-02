@@ -4,8 +4,9 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 import { DifficultyBadge, EmptyState, MetaChip } from "./ui";
 import { SearchInput, FilterChips } from "./ui-client";
-import { LayersIcon, BookIcon, ClockIcon, ArrowLeftIcon, CompassIcon, SearchIcon } from "./icons";
+import { LayersIcon, BookIcon, ClockIcon, ArrowLeftIcon, CompassIcon, SearchIcon, LockIcon } from "./icons";
 import type { StageRow } from "@/lib/data";
+import type { LockInfo } from "@/lib/locks";
 
 type LevelFilter = "all" | "B" | "I" | "A";
 
@@ -20,7 +21,14 @@ const LEVEL_LABELS: Record<Exclude<LevelFilter, "all">, string> = {
  * Pure presentation: the data still comes from the server (`listStages`),
  * no API, route or query changes.
  */
-export function CatalogBrowser({ stages }: { stages: StageRow[] }) {
+export function CatalogBrowser({
+  stages,
+  stageLocks = {},
+}: {
+  stages: StageRow[];
+  /** stageId → LockInfo (server-computed) — shows which stages are gated. */
+  stageLocks?: Record<string, LockInfo>;
+}) {
   const [query, setQuery] = useState("");
   const [level, setLevel] = useState<LevelFilter>("all");
 
@@ -108,11 +116,21 @@ export function CatalogBrowser({ stages }: { stages: StageRow[] }) {
                   <h2 className="mt-1.5 text-lg font-bold leading-snug text-neutral-900 transition-colors group-hover:text-primary-600">
                     {stage.title_ar}
                   </h2>
-                  <p className="mt-1 text-xs text-neutral-400" dir="ltr">
+                  <p className="mt-1 text-xs text-neutral-400 dark:text-neutral-500" dir="ltr">
                     {stage.title_en}
                   </p>
                 </div>
-                <DifficultyBadge level={stage.difficulty} />
+                {stageLocks[stage.id]?.locked ? (
+                  <span
+                    className="inline-flex shrink-0 items-center gap-1 rounded-full bg-neutral-100 px-2.5 py-1 text-2xs font-bold text-neutral-500 ring-1 ring-inset ring-hairline dark:bg-white/5 dark:text-neutral-400 dark:ring-white/10"
+                    title="أكمل المتطلبات السابقة أولاً."
+                  >
+                    <LockIcon className="h-3 w-3" />
+                    مقفلة
+                  </span>
+                ) : (
+                  <DifficultyBadge level={stage.difficulty} />
+                )}
               </div>
 
               <div className="mt-5 flex flex-wrap gap-1.5">
