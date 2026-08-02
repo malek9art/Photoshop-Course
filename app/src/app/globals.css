@@ -587,3 +587,30 @@
   0%, 100% { transform: scaleY(0.3); }
   50% { transform: scaleY(1); }
 }
+
+/* Celebratory confetti (Phase 11 — Batch 10). GPU-cheap: transform + opacity.
+   The keyframe order uses overflow: visible pieces falling from the top. */
+@keyframes confetti-fall {
+  0% {
+    transform: translate3d(var(--cx, 0), -12px, 0) rotate(0deg);
+    opacity: 1;
+  }
+  85% { opacity: 1; }
+  100% {
+    transform: translate3d(calc(var(--cx, 0) * 1.4), 340px, 0) rotate(var(--cr, 540deg));
+    opacity: 0;
+  }
+}
+.confetti-piece {
+  position: absolute;
+  top: 0;
+  width: 8px;
+  height: 14px;
+  border-radius: 2px;
+  animation: confetti-fall 2.6s var(--ease-out-expo, cubic-bezier(0.16, 1, 0.3, 1)) both;
+  animation-delay: var(--cd, 0s);
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .confetti-piece { animation: none; opacity: 0; }
+}

@@ -23,6 +23,7 @@ import {
 import { listStages } from "@/lib/data";
 import { getCurrentUser } from "@/lib/auth";
 import { all } from "@/lib/db";
+import { getLessonLock, getLastVisitedLesson, type LockInfo } from "@/lib/locks";
 
 export const dynamic = "force-dynamic";
 
@@ -30,8 +31,11 @@ export default async function HomePage() {
   const user = await getCurrentUser();
   const stages = await listStages();
 
-  // Continue-learning: most recent incomplete lesson for logged-in users.
+  // Continue-learning: the first incomplete lesson is by construction the
+  // recommended (unlocked) next step; verified against the lock engine.
   let nextLesson: { id: string; title_ar: string; module_title_ar: string; stage_title_ar: string } | null = null;
+  let nextLock: LockInfo = { locked: false, message: "", reason: null };
+  let lastVisited: { title: string; href: string } | null = null;
   let overallPercent = 0;
   let totalDone = 0;
   let totalAvailable = 0;
@@ -50,6 +54,8 @@ export default async function HomePage() {
          ORDER BY l.id LIMIT 1`,
         user.id
       ))[0] ?? null;
+    nextLock = nextLesson ? await getLessonLock(user.id, nextLesson.id) : nextLock;
+    lastVisited = await getLastVisitedLesson(user.id);
     totalAvailable = (await all<{ c: number }>("SELECT COUNT(*)::int AS c FROM lessons WHERE content_path IS NOT NULL"))[0]?.c ?? 0;
     totalDone = (await all<{ c: number }>(
       "SELECT COUNT(*)::int AS c FROM progress WHERE user_id = $1 AND target_type='lesson' AND state='completed'",
@@ -174,10 +180,18 @@ export default async function HomePage() {
                       <span>{nextLesson.module_title_ar}</span>
                     </p>
                     <p className="mt-2 text-xl font-bold tracking-tight text-neutral-900">{nextLesson.title_ar}</p>
-                    <Link href={`/learn/${nextLesson.id}`} className="btn-primary group mt-5">
-                      متابعة الدرس
-                      <ArrowLeftIcon className="h-4 w-4 transition-transform duration-base group-hover:-translate-x-1" />
-                    </Link>
+
+                    {/* Path blocked? The lock engine decides (Batch 9). */}
+                    {nextLock.locked ? (
+                      <p className="mt-2.5 max-w-md rounded-xl border border-warning-500/25 bg-warning-50 px-3.5 py-2.5 text-xs font-medium text-warning-700 dark:border-warning-400/20 dark:bg-warning-500/10 dark:text-warning-500">
+                        {nextLock.message} — أكمل الدرس السابق أولاً لمتابعة المسار.
+                      </p>
+                    ) : (
+                      <Link href={`/learn/${nextLesson.id}`} className="btn-primary group mt-5">
+                        متابعة الدرس
+                        <ArrowLeftIcon className="h-4 w-4 transition-transform duration-base group-hover:-translate-x-1" />
+                      </Link>
+                    )}
                   </>
                 ) : (
                   <>
@@ -190,6 +204,20 @@ export default async function HomePage() {
                       تصفح المكتبة
                     </Link>
                   </>
+                )}
+
+                {/* Last visited (Batch 6 progress map) */}
+                {lastVisited && (
+                  <p className="mt-4 flex items-center gap-2 text-2xs font-medium text-neutral-400">
+                    <ClockIcon className="h-3 w-3" />
+                    آخر درس تمت زيارته:
+                    <Link
+                      href={lastVisited.href}
+                      className="font-semibold text-primary-600 underline decoration-primary-500/30 underline-offset-2 transition-colors hover:text-primary-700"
+                    >
+                      {lastVisited.title}
+                    </Link>
+                  </p>
                 )}
               </div>
 

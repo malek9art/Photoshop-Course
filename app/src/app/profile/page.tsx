@@ -14,6 +14,7 @@ import {
 import { getCurrentUser } from "@/lib/auth";
 import { listStages, listModulesWithLessons } from "@/lib/data";
 import { all } from "@/lib/db";
+import { listAchievements, ACHIEVEMENT_META, type AchievementCode } from "@/lib/achievements";
 
 export const dynamic = "force-dynamic";
 
@@ -49,6 +50,10 @@ export default async function ProfilePage() {
     (s, x) => s + x.modules.filter((m) => m.lesson_count > 0 && m.completed_lessons === m.lesson_count).length,
     0
   );
+
+  /* Achievements (Phase 11 — Batch 7) */
+  const earned = await listAchievements(user.id);
+  const earnedCodes = new Set(earned.map((a) => a.code));
 
   return (
     <div className="stack-lg">
@@ -132,6 +137,48 @@ export default async function ProfilePage() {
             icon={<CertificateIcon className="h-5 w-5" />}
             tone="success"
           />
+        </div>
+      </Reveal>
+
+      {/* ================================================= Achievements */}
+      <Reveal as="section">
+        <SectionHeader
+          eyebrow="الإنجازات"
+          title="أوسمتك في الرحلة"
+          subtitle="تُمنح تلقائيًا من الخادم عند تحقيق كل محطة في مسار التعلّم."
+        />
+        <div className="stagger grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
+          {(Object.keys(ACHIEVEMENT_META) as AchievementCode[]).map((code) => {
+            const meta = ACHIEVEMENT_META[code];
+            const has = earnedCodes.has(code);
+            return (
+              <div
+                key={code}
+                className={`card relative overflow-hidden p-4 text-center transition-all duration-base ${
+                  has ? "border-accent-500/30" : "opacity-60"
+                }`}
+              >
+                <span
+                  aria-hidden="true"
+                  className={`mx-auto flex h-14 w-14 items-center justify-center rounded-2xl text-3xl transition-transform duration-base ease-spring ${
+                    has ? "animate-pop-check bg-accent-50 ring-1 ring-inset ring-accent-500/25 dark:bg-accent-500/10" : "bg-surface-muted ring-1 ring-hairline grayscale"
+                  }`}
+                >
+                  {meta.icon}
+                </span>
+                <p className={`mt-3 text-sm font-bold ${has ? "text-neutral-900 dark:text-white" : "text-neutral-400"}`}>
+                  {meta.title}
+                </p>
+                <p className="mt-1 text-2xs leading-relaxed text-neutral-400">{meta.hint}</p>
+                {has && (
+                  <span className="mt-2.5 inline-flex items-center gap-1 rounded-full bg-accent-500/10 px-2.5 py-0.5 text-2xs font-bold text-accent-600 ring-1 ring-inset ring-accent-500/25 dark:text-accent-400">
+                    <CheckIcon className="h-3 w-3" strokeWidth={2.6} />
+                    حصلت عليها
+                  </span>
+                )}
+              </div>
+            );
+          })}
         </div>
       </Reveal>
 
