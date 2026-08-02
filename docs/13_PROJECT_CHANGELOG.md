@@ -7,7 +7,7 @@
 | **Title** | Project Changelog |
 | **Purpose** | Records **every modification** to the project: date, agent, description, reason, affected documents, and version. The changelog is append-only and is the audit trail of the entire project. |
 | **Owner** | Governance Lead (role) |
-| **Version** | 1.0.29 |
+| **Version** | 1.0.30 |
 | **Status** | Active — append-only (see §2) |
 | **Dependencies** | DOC-10 (R-05 requires entries), DOC-11 (tasks), DOC-14 (decisions) |
 | **Last Updated** | 2026-08-02 |
@@ -302,4 +302,13 @@ Each entry uses this exact structure:
 - **Verification:** `npm run typecheck` PASS and `npm run build` PASS after every batch (10/10); guest smoke tests (401 on unauthenticated progress, quiz/exam content 200, lesson/catalog/quiz pages 200); no new runtime dependencies; existing routes/APIs/auth untouched (auth requirements unchanged).
 - **Version:** DOC-13 1.0.28 → 1.0.29.
 
-> **Next entry:** `CHG-031` — to be appended by the next agent that modifies the repository.
+### CHG-031 — 2026-08-02
+- **Agent:** AGT-005 (Phase 11 follow-up — CI validation fix)
+- **Task(s):** TASK-309 (DOC-11) — merge-blocking CI failure in `PostgreSQL Runtime Validation / validate-postgres`.
+- **Description:** `app/scripts/verify-db.ts` hard-coded the pre-Phase-11 schema expectations (12 tables, 11 indexes, 11 foreign keys). Migration `002_learning_path.sql` (CHG-030) additively introduced the `achievements` table (+1 FK `achievements.user_id → users`) and two indexes (`idx_progress_opened`, `idx_achievements_user`), so the CI check failed with `Expected 11 foreign keys, found 12`. Updated the verification script to the current additive schema: TABLES now includes `achievements` (13), INDEXES includes the two new indexes (13), and the FK assertion is 12 with an explanatory comment. No schema, seed, or application code changed — the migration itself was already correct.
+- **Reason:** CI gate must validate the real schema; the checker is a test artifact and must track additive migrations.
+- **Affected Documents:** `docs/13_PROJECT_CHANGELOG.md`. Code: `app/scripts/verify-db.ts`.
+- **Verification:** `npm run typecheck` PASS and `npm run build` PASS; migration files 001+002 applied to an in-memory PostgreSQL (PGlite) and queried with the script's exact SQL — tables 13/13, indexes 13/13, foreign keys 12/12 all match the updated expectations.
+- **Version:** DOC-13 1.0.29 → 1.0.30.
+
+> **Next entry:** `CHG-032` — to be appended by the next agent that modifies the repository.
